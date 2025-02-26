@@ -1,15 +1,24 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Home from './pages/Home'
 import Guild from './pages/Guild'
+import Layout from './components/layout/Layout'
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Home />
+    element: (
+      <Layout>
+        <Home />
+      </Layout>
+    )
   },
   {
     path: '/guild',
-    element: <Guild />
+    element: (
+      <Layout>
+        <Guild />
+      </Layout>
+    )
   }
 ])
 

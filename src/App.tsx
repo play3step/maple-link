@@ -1,11 +1,20 @@
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import Home from './pages/Home'
+import Guild from './pages/Guild'
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Home />
+  },
+  {
+    path: '/guild',
+    element: <Guild />
+  }
+])
+
 function App() {
-  return (
-    <>
-      <h1 className="text-3xl font-bold underline cursor-pointer">
-        Hello world!
-      </h1>
-    </>
-  )
+  return <RouterProvider router={router} />
 }
 
 export default App

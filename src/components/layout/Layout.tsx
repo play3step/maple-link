@@ -7,7 +7,7 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className="w-[1440px] min-h-[720px] mx-auto flex flex-col">
+    <div className="w-[1440px] min-h-[832px] mx-auto flex flex-col">
       <Header />
       <main className="flex-grow">{children}</main>
       <Footer />

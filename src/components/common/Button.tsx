@@ -1,10 +1,9 @@
-export type ButtonSize = 'large' | 'medium' | 'small'
-export type ButtonScheme = 'solid' | 'outlined' | 'subtle'
+import { Scheme, Size } from '../../types'
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode
-  size: ButtonSize
-  scheme: ButtonScheme
+  size: Size
+  scheme: Scheme
 }
 
 const Button = ({ children }: Props) => {

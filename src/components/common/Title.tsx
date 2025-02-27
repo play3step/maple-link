@@ -1,9 +1,8 @@
-type HeadingSize = 'large' | 'medium' | 'small'
-type ColorKey = 'primary' | 'secondary' | 'text'
+import { ColorKey, Size } from '../../types'
 
 interface Props {
   children: React.ReactNode
-  size: HeadingSize
+  size: Size
   color?: ColorKey
 }
 

@@ -1,14 +1,32 @@
-type HeadingSize = 'large' | 'medium' | 'small'
-type ColorKey = 'primary' | 'secondary' | 'text'
+import { ColorKey, Size } from '../../types'
 
 interface Props {
   children: React.ReactNode
-  size: HeadingSize
+  size: Size
   color?: ColorKey
 }
 
 const Title = ({ children, size, color }: Props) => {
-  return <h1 className={`${size} ${color}`}>{children}</h1>
+  return (
+    <h1
+      className={`${
+        size === 'large'
+          ? 'text-large'
+          : size === 'medium'
+            ? 'text-medium'
+            : 'text-small'
+      }
+      ${
+        color === 'primary'
+          ? 'text-primary'
+          : color === 'secondary'
+            ? 'text-secondary'
+            : 'text-text'
+      }
+    `}>
+      {children}
+    </h1>
+  )
 }
 
 export default Title

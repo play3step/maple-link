@@ -4,9 +4,9 @@ export default {
   theme: {
     extend: {
       fontSize: {
-        large: '1.5rem',
-        medium: '1rem',
-        small: '0.75rem'
+        large: '2rem',
+        medium: '1.5rem',
+        small: '1rem'
       },
       padding: {
         large: '1rem 2rem',
@@ -16,7 +16,7 @@ export default {
       colors: {
         primary: '#283EFF',
         secondary: 'lightgray',
-        text: 'lightgray',
+        text: 'black',
         button: {
           solid: {
             bg: '#283EFF',

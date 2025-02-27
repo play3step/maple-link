@@ -2,10 +2,10 @@ import { Link } from 'react-router-dom'
 
 function Header() {
   return (
-    <div className="w-[1440px] px-4 py-5 border-b border-black flex justify-between">
+    <div className="w-full max-w-[1440px] mx-auto px-4 py-5 border-b border-black flex justify-between">
       <Link
         to="/"
-        className="text-2xl">
+        className="md:text-2xl text-lg">
         Maple Nexus
       </Link>
     </div>

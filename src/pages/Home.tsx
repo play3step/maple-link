@@ -11,7 +11,6 @@ const Home = () => {
       const token = await result.user.getIdToken()
       if (token) {
         UserInfo(token)
-        console.log(token)
       }
     } catch (error) {
       console.error('구글 로그인 중 오류 발생:', error)
@@ -21,8 +20,7 @@ const Home = () => {
 
   return (
     <h1>
-      <button onClick={handleGoogleLogin}>로그인</button>
-      <SocialAuthButton />
+      <SocialAuthButton onClick={handleGoogleLogin}>Google</SocialAuthButton>
     </h1>
   )
 }

@@ -1,0 +1,13 @@
+import axios from 'axios'
+export const API_KEY = import.meta.env.VITE_TEST_URL
+const DEFAULT_TIMEOUT = 30000
+
+const basicApi = axios.create({
+  baseURL: API_KEY,
+  timeout: DEFAULT_TIMEOUT,
+  headers: {
+    'Content-Type': 'application/json;charset=utf-8'
+  }
+})
+
+export default basicApi

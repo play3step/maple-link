@@ -1,29 +1,28 @@
-import Button from '../components/common/Button'
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import SocialAuthButton from '../components/common/SocialAuthButton'
-import Title from '../components/common/Title'
+import { authService } from '../firebase'
+import { UserInfo } from '../apis/User/userController'
 
 const Home = () => {
+  const handleGoogleLogin = async () => {
+    try {
+      const provider = new GoogleAuthProvider()
+      const result = await signInWithPopup(authService, provider)
+      const token = await result.user.getIdToken()
+      if (token) {
+        UserInfo(token)
+        console.log(token)
+      }
+    } catch (error) {
+      console.error('구글 로그인 중 오류 발생:', error)
+      return null
+    }
+  }
+
   return (
     <h1>
+      <button onClick={handleGoogleLogin}>로그인</button>
       <SocialAuthButton />
-      <Button
-        size="large"
-        scheme="outlined">
-        1
-      </Button>
-      <Button
-        size="medium"
-        scheme="solid">
-        1
-      </Button>
-      <Button
-        size="small"
-        scheme="subtle">
-        1
-      </Button>
-      <Title size="large">1</Title>
-      <Title size="medium">1</Title>
-      <Title size="small">1</Title>
     </h1>
   )
 }

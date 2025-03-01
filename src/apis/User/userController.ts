@@ -1,11 +1,11 @@
 import basicApi from '..'
 
-export const UserInfo = (uid: string) => {
+export const fetchUserInfo = (uid: string) => {
   try {
     const response = basicApi.post(`/api/user`, {
-      firebaseId: uid
+      uid: uid
     })
-    console.log(response)
+    return response
   } catch (error) {
     console.error('Error fetching user info:', error)
     throw error

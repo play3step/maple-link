@@ -3,6 +3,7 @@ import Home from './pages/Home'
 import Guild from './pages/Guild'
 import Layout from './components/layout/Layout'
 import Character from './pages/Character'
+import { ProtectedRoute } from './components/layout/ProtectedRoute'
 
 const router = createBrowserRouter([
   {
@@ -16,17 +17,21 @@ const router = createBrowserRouter([
   {
     path: '/character',
     element: (
-      <Layout>
-        <Character />
-      </Layout>
+      <ProtectedRoute>
+        <Layout>
+          <Character />
+        </Layout>
+      </ProtectedRoute>
     )
   },
   {
     path: '/guild',
     element: (
-      <Layout>
-        <Guild />
-      </Layout>
+      <ProtectedRoute>
+        <Layout>
+          <Guild />
+        </Layout>
+      </ProtectedRoute>
     )
   }
 ])

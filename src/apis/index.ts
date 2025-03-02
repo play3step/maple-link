@@ -8,7 +8,7 @@ const basicApi = axios.create({
   timeout: DEFAULT_TIMEOUT,
   headers: {
     'Content-Type': 'application/json;charset=utf-8',
-    Authorization: getToken() ? getToken() : ''
+    Authorization: getToken() ? `Bearer ${getToken()}` : ''
   }
 })
 

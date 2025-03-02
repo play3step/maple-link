@@ -6,14 +6,16 @@ import { useAuthStore } from '../store/authStore'
 import { useEffect } from 'react'
 
 const Home = () => {
-  const { userLogin } = useAuth()
+  const { userLogin, loadUserInfo } = useAuth()
   const { isloggedIn } = useAuthStore()
 
   const nav = useNavigate()
 
   useEffect(() => {
     if (isloggedIn) {
-      nav('/character')
+      loadUserInfo().then(v =>
+        v?.nexonApiKey ? nav('/character') : nav('/signup')
+      )
     }
   }, [isloggedIn, nav])
 

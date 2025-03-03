@@ -2,6 +2,9 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Home from './pages/Home'
 import Guild from './pages/Guild'
 import Layout from './components/layout/Layout'
+import Character from './pages/Character'
+import { ProtectedRoute } from './components/layout/ProtectedRoute'
+import Signup from './pages/Signup'
 
 const router = createBrowserRouter([
   {
@@ -13,11 +16,33 @@ const router = createBrowserRouter([
     )
   },
   {
+    path: '/character',
+    element: (
+      <ProtectedRoute>
+        <Layout>
+          <Character />
+        </Layout>
+      </ProtectedRoute>
+    )
+  },
+  {
     path: '/guild',
     element: (
-      <Layout>
-        <Guild />
-      </Layout>
+      <ProtectedRoute>
+        <Layout>
+          <Guild />
+        </Layout>
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: '/signup',
+    element: (
+      <ProtectedRoute>
+        <Layout>
+          <Signup />
+        </Layout>
+      </ProtectedRoute>
     )
   }
 ])

@@ -12,6 +12,7 @@ const InputText = React.forwardRef(
   ) => {
     return (
       <input
+        className="border border-primary rounded-md p-medium"
         placeholder={placeholder}
         type={inputType}
         ref={ref}

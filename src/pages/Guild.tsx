@@ -1,5 +1,17 @@
+import Button from '../components/common/Button'
+import { CreateGuildModal } from '../components/modal/CreateGuildModal'
+
 const Guild = () => {
-  return <h1>guild</h1>
+  return (
+    <>
+      <Button
+        size="small"
+        scheme="solid">
+        길드 생성
+      </Button>
+      <CreateGuildModal />
+    </>
+  )
 }
 
 export default Guild

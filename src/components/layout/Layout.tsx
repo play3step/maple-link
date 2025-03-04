@@ -3,16 +3,17 @@ import Header from '../common/Header'
 
 interface LayoutProps {
   children: React.ReactNode
+  hide?: boolean
 }
 
-const Layout = ({ children }: LayoutProps) => {
+const Layout = ({ children, hide }: LayoutProps) => {
   return (
     <div className="w-full max-w-[1440px] min-h-[832px] mx-auto flex flex-col">
-      <Header />
+      {!hide && <Header />}
       <main className="flex-grow flex justify-center items-center">
         {children}
       </main>
-      <Footer />
+      {!hide && <Footer />}
     </div>
   )
 }

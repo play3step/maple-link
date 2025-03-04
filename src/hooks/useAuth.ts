@@ -1,10 +1,12 @@
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
 import { useAuthStore } from '../store/authStore'
 import { authService } from '../firebase'
 import { fetchUserInfo } from '../apis/User/userController'
+import { useNavigate } from 'react-router-dom'
 
 export const useAuth = () => {
-  const { storeLogin } = useAuthStore()
+  const { storeLogin, storeLoggout } = useAuthStore()
+  const nav = useNavigate()
 
   const userLogin = async () => {
     try {
@@ -19,6 +21,15 @@ export const useAuth = () => {
     }
   }
 
+  const userLogout = () => {
+    signOut(authService)
+      .then(() => {
+        storeLoggout()
+        nav('/')
+      })
+      .catch(error => console.error(error))
+  }
+
   const loadUserInfo = async () => {
     const uid = localStorage.getItem('uid')
     if (uid) {
@@ -31,5 +42,5 @@ export const useAuth = () => {
     }
   }
 
-  return { userLogin, loadUserInfo }
+  return { userLogin, userLogout, loadUserInfo }
 }

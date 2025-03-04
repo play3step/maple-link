@@ -6,7 +6,7 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   scheme: Scheme
 }
 
-const Button = ({ children, size, scheme }: Props) => {
+const Button = ({ children, size, scheme, onClick }: Props) => {
   return (
     <button
       className={`
@@ -25,7 +25,8 @@ const Button = ({ children, size, scheme }: Props) => {
               ? 'border border-button-outlined-border text-button-outlined-text bg-button-outlined-bg'
               : 'text-button-subtle-text'
         }
-      `}>
+      `}
+      onClick={onClick}>
       {children}
     </button>
   )

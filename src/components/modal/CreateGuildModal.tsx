@@ -10,6 +10,7 @@ import { worldNames } from '../../data/worlds'
 export const CreateGuildModal = () => {
   const [list, setList] = useState<SearchGuild[]>([])
   const [name, setName] = useState('')
+  const [server, setServer] = useState('')
 
   const onSearch = async () => {
     try {
@@ -27,7 +28,12 @@ export const CreateGuildModal = () => {
       console.error('길드 검색 에러:', error)
     }
   }
-  console.log(list)
+
+  const onSelect = (id: string) => {
+    setServer(id)
+  }
+
+  console.log(server)
 
   return (
     <ModalLayout>
@@ -44,7 +50,11 @@ export const CreateGuildModal = () => {
         </Button>
       </div>
 
-      <GuildList list={list} />
+      <GuildList
+        list={list}
+        onSelect={onSelect}
+        server={server}
+      />
     </ModalLayout>
   )
 }

@@ -3,9 +3,11 @@ import { GuildItme } from './GuildItem'
 
 interface Props {
   list: SearchGuild[]
+  onSelect: (id: string) => void
+  server: string
 }
 
-export const GuildList = ({ list }: Props) => {
+export const GuildList = ({ list, onSelect, server }: Props) => {
   return (
     <div className="flex flex-wrap gap-2">
       {list.map(v => (
@@ -13,6 +15,8 @@ export const GuildList = ({ list }: Props) => {
           key={v.world_name}
           world={v.world_name as WorldName}
           guild={v.guild_name}
+          onSelect={onSelect}
+          selected={server === v.world_name}
         />
       ))}
     </div>

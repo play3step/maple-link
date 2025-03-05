@@ -1,4 +1,4 @@
-import basicApi from '..'
+import { basicApi } from '..'
 import { useUserStore } from '../../store/userStore'
 
 import { User } from '../../types/auth'

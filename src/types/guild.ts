@@ -19,3 +19,8 @@ export interface Guild {
   worldName: WorldName
   guildName: string
 }
+
+export interface WorldData {
+  name: WorldName
+  icon: string
+}

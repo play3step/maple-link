@@ -19,7 +19,7 @@ export const nexonApi = axios.create({
   baseURL: Nexon,
   timeout: DEFAULT_TIMEOUT,
   headers: {
-    'x-nxopen-api-key': API_KEY,
+    'x-nxopen-api-key': Nexon_KEY,
     'Content-Type': 'application/json;charset=utf-8'
   }
 })

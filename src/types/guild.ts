@@ -12,10 +12,10 @@ export type WorldName =
   | '아케인'
   | '노바'
   | '에오스'
-  | '헬리오스'
+  | '핼리오스'
 
 export interface Guild {
-  guildId: number
+  guildId?: number
   worldName: WorldName
   guildName: string
 }
@@ -23,4 +23,10 @@ export interface Guild {
 export interface WorldData {
   name: WorldName
   icon: string
+}
+
+export interface SearchGuild {
+  world_name: string
+  guild_name: string
+  guild_master_name?: string
 }

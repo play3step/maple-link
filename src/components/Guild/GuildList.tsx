@@ -1,13 +1,18 @@
-import { worldNames } from '../../data/worlds'
+import { SearchGuild, WorldName } from '../../types/guild'
 import { GuildItme } from './GuildItem'
 
-export const GuildList = () => {
+interface Props {
+  list: SearchGuild[]
+}
+
+export const GuildList = ({ list }: Props) => {
   return (
     <div className="flex flex-wrap gap-2">
-      {worldNames.map(world => (
+      {list.map(v => (
         <GuildItme
-          key={world.name}
-          world={world}
+          key={v.world_name}
+          world={v.world_name as WorldName}
+          guild={v.guild_name}
         />
       ))}
     </div>

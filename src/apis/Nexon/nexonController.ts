@@ -1,5 +1,5 @@
 import { nexonApi } from '..'
-import { Guild } from '../../types/guild'
+import { Guild, SearchGuild } from '../../types/guild'
 
 export const searchGuild = async (params: Guild) => {
   const { data: oguild_id } = await nexonApi.get<{ oguild_id: string }>(
@@ -11,7 +11,12 @@ export const searchGuild = async (params: Guild) => {
       }
     }
   )
-  const { data: guildInfo } = await nexonApi.get<GuildInfo>(
+
+  if (!oguild_id || !oguild_id.oguild_id) {
+    return null
+  }
+
+  const { data: guildInfo } = await nexonApi.get<SearchGuild>(
     '/maplestory/v1/guild/basic',
     {
       params: { oguild_id: oguild_id.oguild_id }

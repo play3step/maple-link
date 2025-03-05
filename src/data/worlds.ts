@@ -28,5 +28,5 @@ export const worldNames: WorldData[] = [
   { name: '아케인', icon: arcaneIcon },
   { name: '노바', icon: novaIcon },
   { name: '에오스', icon: eosIcon },
-  { name: '헬리오스', icon: heliosIcon }
+  { name: '핼리오스', icon: heliosIcon }
 ]

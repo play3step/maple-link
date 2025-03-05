@@ -1,18 +1,20 @@
-import { WorldData } from '../../types/guild'
+import { worldNames } from '../../data/worlds'
 
 interface Props {
-  world: WorldData
+  world: string
+  guild: string
 }
 
-export const GuildItme = ({ world }: Props) => {
+export const GuildItme = ({ world, guild }: Props) => {
+  const worldData = worldNames.find(v => v.name === world)
   return (
     <div className="p-small bg-secondary rounded-3xl text-small flex items-center gap-1">
       <img
-        src={world.icon}
-        alt={world.name}
+        src={worldData?.icon}
+        alt={world}
         className="w-4 h-4"
       />
-      {world.name}
+      {`${world} - ${guild}`}
     </div>
   )
 }

@@ -6,6 +6,7 @@ import ModalLayout from './ModalLayout'
 import { SearchGuild } from '../../types/guild'
 import { searchGuild } from '../../apis/Nexon/nexonController'
 import { worldNames } from '../../data/worlds'
+import { addGuildList } from '../../apis/Guild/guildController'
 
 export const CreateGuildModal = () => {
   const [list, setList] = useState<SearchGuild[]>([])
@@ -35,8 +36,14 @@ export const CreateGuildModal = () => {
 
   console.log(server)
 
+  const createGuuld = () => {
+    if (name && server) {
+      addGuildList({ world_name: server, guild_name: name })
+    }
+  }
+
   return (
-    <ModalLayout>
+    <ModalLayout onSubmit={createGuuld}>
       <div className="flex gap-2">
         <InputText
           onChange={e => setName(e.target.value)}

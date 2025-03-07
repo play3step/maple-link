@@ -1,5 +1,5 @@
 import { SearchGuild, WorldName } from '../../types/guild'
-import { GuildItme } from './GuildItem'
+import { GuildItem } from './GuildItem'
 
 interface Props {
   list: SearchGuild[]
@@ -11,7 +11,7 @@ export const GuildList = ({ list, onSelect, server }: Props) => {
   return (
     <div className="flex flex-wrap gap-2">
       {list.map(v => (
-        <GuildItme
+        <GuildItem
           key={v.world_name}
           world={v.world_name as WorldName}
           guild={v.guild_name}

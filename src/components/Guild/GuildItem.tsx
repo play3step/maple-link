@@ -7,7 +7,7 @@ interface Props {
   onSelect: (id: string) => void
 }
 
-export const GuildItme = ({ world, guild, selected, onSelect }: Props) => {
+export const GuildItem = ({ world, guild, selected, onSelect }: Props) => {
   const worldData = worldNames.find(v => v.name === world)
   return (
     <div

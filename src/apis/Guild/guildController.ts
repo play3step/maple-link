@@ -10,3 +10,8 @@ export const addGuildList = async (params: SearchGuild) => {
   })
   return response.data.message
 }
+
+export const fetchGuildMember = async (guildId: number) => {
+  const response = await basicApi.get(`/api/guilds/${guildId}/members`)
+  return response.data
+}

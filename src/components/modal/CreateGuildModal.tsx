@@ -3,47 +3,30 @@ import Button from '../common/Button'
 import InputText from '../common/InputText'
 import { GuildList } from '../Guild/GuildList'
 import ModalLayout from './ModalLayout'
-import { SearchGuild } from '../../types/guild'
-import { searchGuild } from '../../apis/Nexon/nexonController'
-import { worldNames } from '../../data/worlds'
-import { addGuildList } from '../../apis/Guild/guildController'
+import { useSearchGuilds } from '../../hooks/Guild/useSearchGuilds'
 
 export const CreateGuildModal = () => {
-  const [list, setList] = useState<SearchGuild[]>([])
+  const { list, searchGuilds, createGuild } = useSearchGuilds()
+
   const [name, setName] = useState('')
   const [server, setServer] = useState('')
 
-  const onSearch = async () => {
-    try {
-      const results = await Promise.all(
-        worldNames.map(world =>
-          searchGuild({ worldName: world.name, guildName: name })
-        )
-      )
-
-      const validResults = results.filter(
-        (res): res is SearchGuild => res !== null
-      )
-      setList(validResults)
-    } catch (error) {
-      console.error('길드 검색 에러:', error)
-    }
+  const onSearch = () => {
+    searchGuilds(name)
   }
 
   const onSelect = (id: string) => {
     setServer(id)
   }
 
-  console.log(server)
-
-  const createGuuld = () => {
+  const onSubmit = () => {
     if (name && server) {
-      addGuildList({ world_name: server, guild_name: name })
+      createGuild(server, name)
     }
   }
 
   return (
-    <ModalLayout onSubmit={createGuuld}>
+    <ModalLayout onSubmit={onSubmit}>
       <div className="flex gap-2">
         <InputText
           onChange={e => setName(e.target.value)}

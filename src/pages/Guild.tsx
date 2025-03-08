@@ -27,7 +27,10 @@ const Guild = () => {
         onClick={() => showModal('createGuild')}>
         길드 생성
       </Button>
-      <MemberContainer list={guildMember} />
+      <MemberContainer
+        members={guildMember}
+        masterName={guildInfo?.guildMasterName}
+      />
       {activeModal === 'createGuild' && <CreateGuildModal />}
     </div>
   )

@@ -5,9 +5,13 @@ import { ModalType, useModalStore } from '../store/modalStore'
 import { fetchGuildMember } from '../apis/Guild/guildController'
 import { CharacterCard } from '../components/Guild/CharacterCard'
 import { GuildInfo } from '../types/guild'
+import { useGuildsList } from '../hooks/Guild/useGuildsList'
 
 const Guild = () => {
   const { activeModal, openModal } = useModalStore()
+
+  const { guildList } = useGuildsList()
+  console.log(guildList)
 
   const [list, setList] = useState<GuildInfo>()
 

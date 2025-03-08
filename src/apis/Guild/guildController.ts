@@ -1,6 +1,11 @@
 import { basicApi } from '..'
 import { SearchGuild } from '../../types/guild'
 
+export const fetchGuildList = async () => {
+  const response = await basicApi.get('/api/guilds')
+  return response.data
+}
+
 export const addGuildList = async (params: SearchGuild) => {
   const response = await basicApi.post('/api/guilds', null, {
     params: {

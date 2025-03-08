@@ -30,3 +30,18 @@ export interface SearchGuild {
   guild_name: string
   guild_master_name?: string
 }
+
+export interface GuildInfo {
+  guildId: string
+  guildName: string
+  worldName?: string
+  guildMasterName?: string
+  memberDetailResponse?: Member[]
+}
+
+export interface Member {
+  imagePath: string
+  job: string
+  level: string
+  name: string
+}

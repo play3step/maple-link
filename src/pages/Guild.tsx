@@ -10,7 +10,9 @@ const Guild = () => {
     openModal(name)
   }
   useEffect(() => {
-    fetchGuildMember(1)
+    fetchGuildMember(1).then(v => {
+      console.log(v)
+    })
   }, [])
 
   return (

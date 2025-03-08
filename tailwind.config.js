@@ -11,7 +11,7 @@ export default {
       padding: {
         large: '1rem 2rem',
         medium: '0.5rem 1rem',
-        small: '0.25rem 0.5rem'
+        small: '0.38rem 0.5rem'
       },
       colors: {
         primary: '#283EFF',

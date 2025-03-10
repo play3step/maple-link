@@ -1,4 +1,3 @@
-import Button from '../components/common/Button'
 import { CreateGuildModal } from '../components/modal/CreateGuildModal'
 import { ModalType, useModalStore } from '../store/modalStore'
 
@@ -6,6 +5,8 @@ import { useGuildsList } from '../hooks/Guild/useGuildsList'
 import { useGuildInfo } from '../hooks/Guild/useGuildInfo'
 import { MemberContainer } from '../components/Guild/MemberContainer'
 import { ListSwitch } from '../components/Guild/ListSwitch'
+import { ActionBtnList } from '../components/Guild/ActionBtnList'
+import { DetectMemberModal } from '../components/modal/DetectMemberModal'
 
 const Guild = () => {
   const { activeModal, openModal } = useModalStore()
@@ -23,12 +24,7 @@ const Guild = () => {
   return (
     <div>
       <div className=" flex mb-4 justify-between">
-        <Button
-          size="small"
-          scheme="solid"
-          onClick={() => showModal('createGuild')}>
-          길드 생성
-        </Button>
+        <ActionBtnList showModal={showModal} />
         <ListSwitch />
       </div>
       <MemberContainer
@@ -36,6 +32,7 @@ const Guild = () => {
         masterName={guildInfo?.guildMasterName}
       />
       {activeModal === 'createGuild' && <CreateGuildModal />}
+      {activeModal === 'detectMember' && <DetectMemberModal />}
     </div>
   )
 }

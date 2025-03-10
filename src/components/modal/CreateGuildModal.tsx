@@ -4,6 +4,7 @@ import InputText from '../common/InputText'
 import { GuildList } from '../Guild/GuildList'
 import ModalLayout from './ModalLayout'
 import { useSearchGuilds } from '../../hooks/Guild/useSearchGuilds'
+import Title from '../common/Title'
 
 export const CreateGuildModal = () => {
   const { list, searchGuilds, createGuild } = useSearchGuilds()
@@ -26,7 +27,14 @@ export const CreateGuildModal = () => {
   }
 
   return (
-    <ModalLayout onSubmit={onSubmit}>
+    <ModalLayout
+      onSubmit={onSubmit}
+      size="small">
+      <Title
+        size="medium"
+        color="primary">
+        길드 추가하기
+      </Title>
       <div className="flex gap-2">
         <InputText
           onChange={e => setName(e.target.value)}

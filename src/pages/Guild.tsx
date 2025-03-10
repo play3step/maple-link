@@ -1,42 +1,39 @@
-import { useEffect, useState } from 'react'
-import Button from '../components/common/Button'
 import { CreateGuildModal } from '../components/modal/CreateGuildModal'
 import { ModalType, useModalStore } from '../store/modalStore'
-import { fetchGuildMember } from '../apis/Guild/guildController'
-import { CharacterCard } from '../components/Guild/CharacterCard'
-import { GuildInfo } from '../types/guild'
+
+import { useGuildsList } from '../hooks/Guild/useGuildsList'
+import { useGuildInfo } from '../hooks/Guild/useGuildInfo'
+import { MemberContainer } from '../components/Guild/MemberContainer'
+import { ListSwitch } from '../components/Guild/ListSwitch'
+import { ActionBtnList } from '../components/Guild/ActionBtnList'
+import { DetectMemberModal } from '../components/modal/DetectMemberModal'
 
 const Guild = () => {
   const { activeModal, openModal } = useModalStore()
 
-  const [list, setList] = useState<GuildInfo>()
+  const { guildList } = useGuildsList()
+  console.log(guildList)
+
+  const { guildInfo } = useGuildInfo()
+  const guildMember = guildInfo?.memberDetailResponse ?? []
 
   const showModal = (name: ModalType) => {
     openModal(name)
   }
-  useEffect(() => {
-    fetchGuildMember(1).then(v => {
-      setList(v)
-      console.log(v)
-    })
-  }, [])
 
   return (
-    <>
-      <Button
-        size="small"
-        scheme="solid"
-        onClick={() => showModal('createGuild')}>
-        길드 생성
-      </Button>
-      <CharacterCard
-        imagePath={list?.memberDetailResponse[0].imagePath}
-        job={list?.memberDetailResponse[0].job}
-        level={list?.memberDetailResponse[0].level}
-        name={list?.memberDetailResponse[0].name}
+    <div>
+      <div className=" flex mb-4 justify-between">
+        <ActionBtnList showModal={showModal} />
+        <ListSwitch />
+      </div>
+      <MemberContainer
+        members={guildMember}
+        masterName={guildInfo?.guildMasterName}
       />
       {activeModal === 'createGuild' && <CreateGuildModal />}
-    </>
+      {activeModal === 'detectMember' && <DetectMemberModal />}
+    </div>
   )
 }
 

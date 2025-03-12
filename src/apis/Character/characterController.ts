@@ -1,5 +1,5 @@
 import { nexonApi } from '..'
-import { CharacterStats } from '../../types/character'
+import { CharacterAbility, CharacterStats } from '../../types/character'
 
 export const fetchCharacterStat = async () => {
   const response = await nexonApi.get<CharacterStats>(
@@ -10,6 +10,17 @@ export const fetchCharacterStat = async () => {
       }
     }
   )
+  return response.data
+}
 
+export const fetchCharacterAbility = async () => {
+  const response = await nexonApi.get<CharacterAbility>(
+    '/maplestory/v1/character/ability',
+    {
+      params: {
+        ocid: import.meta.env.VITE_ocid
+      }
+    }
+  )
   return response.data
 }

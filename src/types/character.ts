@@ -25,3 +25,16 @@ export interface CharacterAbility {
   ability_preset_2: AbilityPreset
   ability_preset_3: AbilityPreset
 }
+
+export interface HyperStatInfo {
+  stat_type: string
+  stat_point: number | null
+  stat_level: 0
+  stat_increase: string | null
+}
+
+export interface HyperStat {
+  hyper_stat_preset_1: HyperStatInfo[]
+  hyper_stat_preset_2: HyperStatInfo[]
+  hyper_stat_preset_3: HyperStatInfo[]
+}

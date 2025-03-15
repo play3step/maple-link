@@ -15,7 +15,7 @@ export const HyperStatContainer = ({ hyperStat }: Props) => {
         ? hyperStat.hyper_stat_preset_2
         : hyperStat.hyper_stat_preset_1
   return (
-    <div className="w-[316px] h-[628px] overflow-auto border border-black rounded-lg p-3">
+    <div className="w-[316px] h-[628px] border border-black rounded-lg p-3 flex flex-col">
       <div className="flex justify-center gap-4 mb-3">
         {[1, 2, 3].map(num => (
           <button
@@ -30,13 +30,15 @@ export const HyperStatContainer = ({ hyperStat }: Props) => {
           </button>
         ))}
       </div>
-      <div className="flex flex-col gap-1 p-2.5">
-        {selectedPreset.map((item, index) => (
-          <HyperStatTable
-            hyperStat={item}
-            key={index}
-          />
-        ))}
+      <div className="flex-1 border border-black  overflow-auto rounded-md">
+        <div className="flex flex-col gap-1 scroll-pl-2.5">
+          {selectedPreset.map((item, index) => (
+            <HyperStatTable
+              hyperStat={item}
+              key={index}
+            />
+          ))}
+        </div>
       </div>
     </div>
   )

@@ -1,6 +1,7 @@
 import { nexonApi } from '..'
 import {
   CharacterAbility,
+  CharacterBasic,
   CharacterStats,
   HyperStat
 } from '../../types/character'
@@ -32,6 +33,18 @@ export const fetchCharacterAbility = async () => {
 export const fetchCharacterHyperStat = async () => {
   const response = await nexonApi.get<HyperStat>(
     '/maplestory/v1/character/hyper-stat',
+    {
+      params: {
+        ocid: import.meta.env.VITE_ocid
+      }
+    }
+  )
+  return response.data
+}
+
+export const fetchCharacterBasic = async () => {
+  const response = await nexonApi.get<CharacterBasic>(
+    '/maplestory/v1/character/basic',
     {
       params: {
         ocid: import.meta.env.VITE_ocid

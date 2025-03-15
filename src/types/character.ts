@@ -38,3 +38,14 @@ export interface HyperStat {
   hyper_stat_preset_2: HyperStatInfo[]
   hyper_stat_preset_3: HyperStatInfo[]
 }
+
+export interface CharacterBasic {
+  character_name: string
+  world_name: string
+  character_class: string
+  character_level: string
+  character_exp_rate: string
+  character_guild_name: string
+  character_image: string
+  character_date_create: string
+}

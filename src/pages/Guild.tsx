@@ -7,12 +7,12 @@ import { MemberContainer } from '../components/Guild/MemberContainer'
 import { ListSwitch } from '../components/Guild/ListSwitch'
 import { ActionBtnList } from '../components/Guild/ActionBtnList'
 import { DetectMemberModal } from '../components/modal/DetectMemberModal'
+import { Empty } from '../components/common/Empty'
 
 const Guild = () => {
   const { activeModal, openModal } = useModalStore()
 
   const { guildList } = useGuildsList()
-  console.log(guildList)
 
   const { guildInfo } = useGuildInfo()
   const guildMember = guildInfo?.memberDetailResponse ?? []
@@ -22,15 +22,25 @@ const Guild = () => {
   }
 
   return (
-    <div>
-      <div className=" flex mb-4 justify-between">
-        <ActionBtnList showModal={showModal} />
-        <ListSwitch />
+    <div className="w-full h-full flex flex-col gap-1">
+      <div className="flex mb-4 justify-between">
+        <ActionBtnList
+          showModal={showModal}
+          guildList={guildList}
+        />
+        {guildList.length > 0 && <ListSwitch />}
       </div>
-      <MemberContainer
-        members={guildMember}
-        masterName={guildInfo?.guildMasterName}
-      />
+      <div className="flex-1 flex items-center justify-center">
+        {guildList.length > 0 && guildMember ? (
+          <MemberContainer
+            members={guildMember}
+            masterName={guildInfo?.guildMasterName}
+          />
+        ) : (
+          <Empty />
+        )}
+      </div>
+
       {activeModal === 'createGuild' && <CreateGuildModal />}
       {activeModal === 'detectMember' && <DetectMemberModal />}
     </div>

@@ -23,7 +23,7 @@ const Button = ({ children, size, scheme, onClick }: Props) => {
             ? 'bg-button-solid-bg text-button-solid-text'
             : scheme === 'outlined'
               ? 'border border-button-outlined-border text-button-outlined-text bg-button-outlined-bg'
-              : 'text-button-subtle-text'
+              : 'text-black hover:text-primary cursor-pointer'
         }
       `}
       onClick={onClick}>

@@ -4,11 +4,11 @@ import { getStatValue } from '../../utils/getStatValue'
 import StatTable from './StatTable'
 
 interface Props {
-  data: CharacterStats
+  Stats: CharacterStats
 }
 
-export const StatContainer = ({ data }: Props) => {
-  const stats = data.final_stat
+export const StatContainer = ({ Stats }: Props) => {
+  const stats = Stats.final_stat
 
   const basicRows = [
     {

@@ -1,13 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { Guild } from '../../types/guild'
 import { fetchGuildList } from '../../apis/Guild/guildController'
 
 export const useGuildsList = () => {
-  const [guildList, setGuildList] = useState<Guild[]>([])
-
-  useEffect(() => {
-    fetchGuildList().then(v => setGuildList(v))
-  }, [])
-
+  const { data: guildList } = useQuery<Guild[]>({
+    queryKey: ['guilds'],
+    queryFn: fetchGuildList
+  })
   return { guildList }
 }

@@ -16,7 +16,14 @@ export const addGuildList = async (params: SearchGuild) => {
   return response.data.message
 }
 
-export const fetchGuildMember = async (guildId: number) => {
+//API 멤버
+export const fetchNexonGuildMembers = async (guildId: number) => {
   const response = await basicApi.get(`/api/guilds/${guildId}/members`)
+  return response.data
+}
+
+//직접 기록한 멤버
+export const fetchRecordedGuildMembers = async (guildId: number) => {
+  const response = await basicApi.get(`/api/guild-member/add-list/${guildId}`)
   return response.data
 }

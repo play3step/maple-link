@@ -2,11 +2,12 @@ import { CreateGuildModal } from '../components/modal/CreateGuildModal'
 import { ModalType, useModalStore } from '../store/modalStore'
 
 import { useGuildsList } from '../hooks/Guild/useGuildsList'
-import { useGuildInfo } from '../hooks/Guild/useGuildInfo'
+
 import { MemberContainer } from '../components/Guild/MemberContainer'
 import { ListSwitch } from '../components/Guild/ListSwitch'
 import { ActionBtnList } from '../components/Guild/ActionBtnList'
 import { DetectMemberModal } from '../components/modal/DetectMemberModal'
+import { useGuildMember } from '../hooks/Guild/useGuildMember'
 import { Empty } from '../components/common/Empty'
 
 const Guild = () => {
@@ -14,12 +15,22 @@ const Guild = () => {
 
   const { guildList } = useGuildsList()
 
-  const { guildInfo } = useGuildInfo()
-  const guildMember = guildInfo?.memberDetailResponse ?? []
+  const { nexonMembers, recordedMembers } = useGuildMember()
 
+  let guildMember = []
+  let masterName = ''
+  if (nexonMembers) {
+    guildMember = nexonMembers.memberDetailResponse
+
+    masterName = nexonMembers.guildMasterName
+  } else if (recordedMembers) {
+    guildMember = recordedMembers.memberDetailResponse
+    masterName = ''
+  }
   const showModal = (name: ModalType) => {
     openModal(name)
   }
+  if (!guildList) return <div>Loading...</div>
 
   return (
     <div className="w-full h-full flex flex-col gap-1">
@@ -34,7 +45,7 @@ const Guild = () => {
         {guildList.length > 0 && guildMember ? (
           <MemberContainer
             members={guildMember}
-            masterName={guildInfo?.guildMasterName}
+            masterName={masterName}
           />
         ) : (
           <Empty />

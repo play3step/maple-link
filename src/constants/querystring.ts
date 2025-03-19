@@ -1,3 +1,4 @@
 export const QUERYSTRING = {
-  VIEW: 'view'
+  VIEW: 'view',
+  GUILD: 'guild'
 }

@@ -1,6 +1,9 @@
 import { ModalType } from '../../store/modalStore'
 import { Guild } from '../../types/guild'
 import Button from '../common/Button'
+import { useSearchParams } from 'react-router-dom'
+import { QUERYSTRING } from '../../constants/querystring'
+import { useEffect } from 'react'
 
 interface Props {
   showModal: (name: ModalType) => void
@@ -8,7 +11,23 @@ interface Props {
 }
 
 export const ActionBtnList = ({ showModal, guildList }: Props) => {
-  console.log(guildList)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const handleSwitch = (value: string) => {
+    const newSearchParams = new URLSearchParams(searchParams)
+    if (value === null) {
+      newSearchParams.delete(QUERYSTRING.GUILD)
+    } else {
+      newSearchParams.set(QUERYSTRING.GUILD, value)
+    }
+    setSearchParams(newSearchParams)
+  }
+
+  useEffect(() => {
+    if (!searchParams.get(QUERYSTRING.GUILD) && guildList.length > 0) {
+      handleSwitch(guildList[0].guildName)
+    }
+  }, [guildList, searchParams])
+
   return (
     <div className="flex gap-2">
       <Button
@@ -23,7 +42,8 @@ export const ActionBtnList = ({ showModal, guildList }: Props) => {
             <Button
               key={`${v.worldName}-${v.guildName}`}
               size="small"
-              scheme="solid">
+              scheme="solid"
+              onClick={() => handleSwitch(v.guildName)}>
               {v.worldName} - {v.guildName}
             </Button>
           ))}

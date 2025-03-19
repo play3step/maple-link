@@ -30,6 +30,7 @@ const Guild = () => {
   const showModal = (name: ModalType) => {
     openModal(name)
   }
+
   if (!guildList) return <div>Loading...</div>
 
   return (

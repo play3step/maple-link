@@ -10,7 +10,8 @@ import { DetectMemberModal } from '../components/modal/DetectMemberModal'
 import { useGuildMember } from '../hooks/Guild/useGuildMember'
 import { Empty } from '../components/common/Empty'
 import { DetailMemberModal } from '../components/modal/DetailMemberModal'
-// import { DetailMemberModal } from '../components/modal/DetailMemberModal'
+import { useState } from 'react'
+import { Member } from '../types/guild'
 
 const Guild = () => {
   const { activeModal, openModal } = useModalStore()
@@ -18,6 +19,8 @@ const Guild = () => {
   const { guildList } = useGuildsList()
 
   const { nexonMembers, recordedMembers } = useGuildMember()
+
+  const [selectedMember, setSelectedMember] = useState<Member>()
 
   let guildMember = []
   let masterName = ''
@@ -31,6 +34,11 @@ const Guild = () => {
   }
   const showModal = (name: ModalType) => {
     openModal(name)
+  }
+
+  const handleMemberSelect = async (member: Member) => {
+    await setSelectedMember(member)
+    openModal('detailMember')
   }
 
   if (!guildList) return <div>Loading...</div>
@@ -49,6 +57,7 @@ const Guild = () => {
           <MemberContainer
             members={guildMember}
             masterName={masterName}
+            onSelect={handleMemberSelect}
           />
         ) : (
           <Empty />
@@ -57,7 +66,9 @@ const Guild = () => {
 
       {activeModal === 'createGuild' && <CreateGuildModal />}
       {activeModal === 'detectMember' && <DetectMemberModal />}
-      {guildMember && <DetailMemberModal member={guildMember[0]} />}
+      {activeModal === 'detailMember' && selectedMember && (
+        <DetailMemberModal member={selectedMember} />
+      )}
     </div>
   )
 }

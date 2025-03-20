@@ -4,9 +4,10 @@ import { CharacterCard } from './CharacterCard'
 interface Props {
   members: Member[] | undefined
   masterName?: string
+  onSelect?: (member: Member) => void
 }
 
-export const MemberContainer = ({ members, masterName }: Props) => {
+export const MemberContainer = ({ members, masterName, onSelect }: Props) => {
   if (!members || members.length === 0) {
     return (
       <div className="text-sm text-gray-500">등록된 길드원이 없습니다.</div>
@@ -22,8 +23,9 @@ export const MemberContainer = ({ members, masterName }: Props) => {
       {sortedMembers.map(v => (
         <CharacterCard
           key={v.name}
-          members={v}
+          member={v}
           isMaster={v.name === masterName}
+          onSelect={onSelect}
         />
       ))}
     </div>

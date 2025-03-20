@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-export type ModalType = 'createGuild' | 'detectMember' | null
+export type ModalType = 'createGuild' | 'detectMember' | 'detailMember' | null
 
 interface StoreState {
   activeModal: ModalType

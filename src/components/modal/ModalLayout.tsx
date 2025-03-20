@@ -13,7 +13,7 @@ const ModalLayout = ({ children, onSubmit, size }: ModalLayoutProps) => {
   return (
     <div className="fixed top-0 left-0 w-screen h-screen bg-[rgba(0,0,0,0.5)] flex justify-center items-center z-50">
       <div
-        className={` ${size === 'medium' ? 'w-[864px]' : 'w-[472px]'} max-h-[649px] bg-white rounded-2xl p-5`}>
+        className={` ${size === 'medium' ? 'w-[864px] h-[649px]' : 'w-[472px]'} max-h-[649px] bg-white rounded-2xl p-5`}>
         <div className="w-full h-full border rounded-lg p-5 flex flex-col items-center gap-6">
           {children}
           <div className="flex gap-2">

@@ -9,6 +9,8 @@ import { ActionBtnList } from '../components/Guild/ActionBtnList'
 import { DetectMemberModal } from '../components/modal/DetectMemberModal'
 import { useGuildMember } from '../hooks/Guild/useGuildMember'
 import { Empty } from '../components/common/Empty'
+import { DetailMemberModal } from '../components/modal/DetailMemberModal'
+// import { DetailMemberModal } from '../components/modal/DetailMemberModal'
 
 const Guild = () => {
   const { activeModal, openModal } = useModalStore()
@@ -55,6 +57,7 @@ const Guild = () => {
 
       {activeModal === 'createGuild' && <CreateGuildModal />}
       {activeModal === 'detectMember' && <DetectMemberModal />}
+      {guildMember && <DetailMemberModal member={guildMember[0]} />}
     </div>
   )
 }

@@ -67,7 +67,11 @@ const Guild = () => {
       {activeModal === 'createGuild' && <CreateGuildModal />}
       {activeModal === 'detectMember' && <DetectMemberModal />}
       {activeModal === 'detailMember' && selectedMember && (
-        <DetailMemberModal member={selectedMember} />
+        <DetailMemberModal
+          member={selectedMember}
+          guildList={guildList}
+          guildMember={guildMember}
+        />
       )}
     </div>
   )

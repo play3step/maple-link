@@ -16,25 +16,28 @@ export const useGuildMember = () => {
   const guildName = params.get(QUERYSTRING.GUILD)
 
   const guildList = queryClient.getQueryData<Guild[]>(['guilds'])
-  const selectedGuild = guildList?.find(guild => guild.guildName === guildName)
 
   const isRecorded = view === '내기록'
   const isNexon = view === '길드정보'
-  const guildId = selectedGuild ? Number(selectedGuild.guildId) : 0
 
   const { data: nexonMembers } = useQuery({
-    queryKey: ['guildMembers', 'nexon', view, guildName],
-    queryFn: () => fetchNexonGuildMembers(guildId),
+    queryKey: ['guildMembers', 'nexon', params],
+    queryFn: () =>
+      Promise.all(
+        guildList?.map(v => fetchNexonGuildMembers(Number(v.guildId))) || []
+      ),
     staleTime: 60000,
     enabled: isNexon
   })
 
   const { data: recordedMembers } = useQuery({
-    queryKey: ['guildMembers', 'recorded', view, guildName],
-    queryFn: () => fetchRecordedGuildMembers(guildId),
+    queryKey: ['guildMembers', 'recorded', view],
+    queryFn: () => fetchRecordedGuildMembers(1),
     staleTime: 60000,
     enabled: isRecorded
   })
 
-  return { nexonMembers, recordedMembers }
+  const selectMember = nexonMembers?.find(v => v.guildName === guildName)
+
+  return { nexonMembers, recordedMembers, selectMember }
 }

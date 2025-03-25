@@ -1,5 +1,5 @@
 import { basicApi } from '..'
-import { SearchGuild } from '../../types/guild'
+import { GuildInfo, SearchGuild } from '../../types/guild'
 
 export const fetchGuildList = async () => {
   const response = await basicApi.get('/api/guilds')
@@ -18,7 +18,9 @@ export const addGuildList = async (params: SearchGuild) => {
 
 //API 멤버
 export const fetchNexonGuildMembers = async (guildId: number) => {
-  const response = await basicApi.get(`/api/guilds/${guildId}/members`)
+  const response = await basicApi.get<GuildInfo>(
+    `/api/guilds/${guildId}/members`
+  )
   return response.data
 }
 

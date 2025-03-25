@@ -1,5 +1,5 @@
 import { IoSaveOutline, IoSettingsOutline } from 'react-icons/io5'
-import { Guild, Member } from '../../types/guild'
+import { Guild, GuildInfo, Member } from '../../types/guild'
 import Title from '../common/Title'
 import { CharacterListItem } from '../Guild/CharacterListItem'
 import ModalLayout from './ModalLayout'
@@ -10,18 +10,15 @@ import { Dropdown } from '../common/DropDown'
 interface Props {
   member: Member
   guildList: Guild[]
-  guildMember: Member[]
+  guildInfo: GuildInfo[]
 }
 
-export const DetailMemberModal = ({
-  member,
-  guildList,
-  guildMember
-}: Props) => {
+export const DetailMemberModal = ({ member, guildList, guildInfo }: Props) => {
   const [isEditMode, setIsEditMode] = useState(false)
-  const [selected, setSelected] = useState('')
-  console.log(guildList)
-  console.log(selected)
+  const [selectedGuild, setSelectedGuild] = useState('')
+  const [selectedMember, setSelectedMember] = useState('')
+
+  const guildMemberList = guildInfo.find(v => v.guildName === selectedGuild)
 
   const toggleEditMode = () => {
     if (isEditMode) {
@@ -31,8 +28,13 @@ export const DetailMemberModal = ({
     }
     setIsEditMode(prev => !prev)
   }
-  const handleSelect = (guildName: string) => {
-    setSelected(guildName)
+  const handleSelectGuild = (guildName: string) => {
+    setSelectedGuild(guildName)
+    setSelectedMember('')
+  }
+
+  const handleSelectMember = (memberName: string) => {
+    setSelectedMember(memberName)
   }
 
   if (!member) return null
@@ -66,13 +68,15 @@ export const DetailMemberModal = ({
             <div className="flex gap-3">
               <Dropdown
                 list={guildList}
-                onSelect={handleSelect}
+                onSelect={handleSelectGuild}
+                selected={selectedGuild}
                 type="guild"
               />
-              {selected && (
+              {selectedGuild && (
                 <Dropdown
-                  list={guildMember}
-                  onSelect={handleSelect}
+                  list={guildMemberList?.memberDetailResponse || []}
+                  onSelect={handleSelectMember}
+                  selected={selectedMember}
                   type="member"
                 />
               )}

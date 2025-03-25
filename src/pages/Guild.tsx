@@ -18,20 +18,10 @@ const Guild = () => {
 
   const { guildList } = useGuildsList()
 
-  const { nexonMembers, recordedMembers } = useGuildMember()
+  const { nexonMembers, selectMember } = useGuildMember()
 
   const [selectedMember, setSelectedMember] = useState<Member>()
 
-  let guildMember = []
-  let masterName = ''
-  if (nexonMembers) {
-    guildMember = nexonMembers.memberDetailResponse
-
-    masterName = nexonMembers.guildMasterName
-  } else if (recordedMembers) {
-    guildMember = recordedMembers.memberDetailResponse
-    masterName = ''
-  }
   const showModal = (name: ModalType) => {
     openModal(name)
   }
@@ -53,10 +43,10 @@ const Guild = () => {
         {guildList.length > 0 && <ListSwitch />}
       </div>
       <div className="flex-1 flex items-center justify-center">
-        {guildList.length > 0 && guildMember ? (
+        {guildList.length > 0 && nexonMembers ? (
           <MemberContainer
-            members={guildMember}
-            masterName={masterName}
+            members={selectMember?.memberDetailResponse}
+            masterName={selectMember?.guildMasterName}
             onSelect={handleMemberSelect}
           />
         ) : (
@@ -66,11 +56,11 @@ const Guild = () => {
 
       {activeModal === 'createGuild' && <CreateGuildModal />}
       {activeModal === 'detectMember' && <DetectMemberModal />}
-      {activeModal === 'detailMember' && selectedMember && (
+      {activeModal === 'detailMember' && selectedMember && nexonMembers && (
         <DetailMemberModal
           member={selectedMember}
           guildList={guildList}
-          guildMember={guildMember}
+          guildInfo={nexonMembers}
         />
       )}
     </div>

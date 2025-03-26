@@ -1,8 +1,11 @@
+import { useGuildDetect } from '../../hooks/Guild/useGuildDetect'
 import Title from '../common/Title'
-import { CharacterListItem } from '../Guild/CharacterListItem'
+// import { CharacterListItem } from '../Guild/CharacterListItem'
 import ModalLayout from './ModalLayout'
 
 export const DetectMemberModal = () => {
+  const { detectMember } = useGuildDetect()
+  console.log(detectMember)
   return (
     <ModalLayout size="medium">
       <Title
@@ -14,24 +17,13 @@ export const DetectMemberModal = () => {
         <div className="w-full">
           <Title size="small">추가 인원</Title>
           <div className="mt-2 max-h-[400px] overflow-auto">
-            <CharacterListItem />
-            <CharacterListItem />
-            <CharacterListItem />
-            <CharacterListItem />
-            <CharacterListItem />
-            <CharacterListItem />
-            <CharacterListItem />
-            <CharacterListItem />
-            <CharacterListItem />
-            <CharacterListItem />
+            {detectMember?.toAdd.map(v => <p>{v}</p>)}
           </div>
         </div>
         <div className="w-full">
           <Title size="small">삭제 인원</Title>
           <div className="mt-2 max-h-[400px] overflow-auto">
-            <CharacterListItem />
-            <CharacterListItem />
-            <CharacterListItem />
+            {detectMember?.toRemove.map(v => <p>{v}</p>)}
           </div>
         </div>
       </div>

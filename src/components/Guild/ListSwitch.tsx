@@ -37,12 +37,6 @@ export const ListSwitch = () => {
         scheme={selected === '내기록' ? 'solid' : 'outlined'}>
         내 기록
       </Button>
-      <Button
-        onClick={() => handleSwitch('비교하기')}
-        size="small"
-        scheme={selected === '비교하기' ? 'solid' : 'outlined'}>
-        비교하기
-      </Button>
     </div>
   )
 }

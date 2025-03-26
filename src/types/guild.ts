@@ -54,3 +54,8 @@ export interface Member {
   level: string
   name: string
 }
+
+export interface Detect {
+  toAdd: string[]
+  toRemove: string[]
+}

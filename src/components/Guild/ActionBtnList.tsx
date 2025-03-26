@@ -26,7 +26,7 @@ export const ActionBtnList = ({ showModal, guildList }: Props) => {
     if (!searchParams.get(QUERYSTRING.GUILD) && guildList.length > 0) {
       handleSwitch(guildList[0].guildName)
     }
-  }, [guildList, searchParams])
+  }, [searchParams])
 
   return (
     <div className="flex gap-2">

@@ -35,14 +35,16 @@ const Guild = () => {
 
   return (
     <div className="w-full h-full flex flex-col gap-1">
-      <div className="flex mb-4 justify-between">
-        <ActionBtnList
-          showModal={showModal}
-          guildList={guildList}
-        />
-        {guildList.length > 0 && <ListSwitch />}
+      <div>
+        <div className="flex mb-4 justify-between">
+          <ActionBtnList
+            showModal={showModal}
+            guildList={guildList}
+          />
+          {guildList.length > 0 && <ListSwitch />}
+        </div>
       </div>
-      <div className="flex-1 flex items-center justify-center">
+      <div className="min-h-[760px] flex items-center justify-center overflow-y-auto">
         {guildList.length > 0 && nexonMembers ? (
           <MemberContainer
             members={selectMember?.members}

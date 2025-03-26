@@ -18,7 +18,7 @@ const ModalLayout = ({ children, onSubmit, size }: ModalLayoutProps) => {
         className={` ${size === 'medium' ? 'w-[864px] h-[649px]' : 'w-[472px]'} max-h-[649px] bg-white rounded-2xl p-5`}
         onClick={e => e.stopPropagation()}>
         <div className="w-full h-full border rounded-lg p-5 flex flex-col items-center gap-6">
-          {children}
+          <div className="flex-grow h-full w-full">{children}</div>
           <div className="flex gap-2">
             <Button
               size="small"

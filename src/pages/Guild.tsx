@@ -18,7 +18,7 @@ const Guild = () => {
 
   const { guildList } = useGuildsList()
 
-  const { nexonMembers, selectMember } = useGuildMember()
+  const { nexonMembers, selectMember, recordedMembers } = useGuildMember()
 
   const [selectedMember, setSelectedMember] = useState<Member>()
 
@@ -45,8 +45,13 @@ const Guild = () => {
       <div className="flex-1 flex items-center justify-center">
         {guildList.length > 0 && nexonMembers ? (
           <MemberContainer
-            members={selectMember?.memberDetailResponse}
-            masterName={selectMember?.guildMasterName}
+            members={selectMember?.members}
+            masterName={selectMember?.masterName}
+            onSelect={handleMemberSelect}
+          />
+        ) : guildList.length > 0 && recordedMembers ? (
+          <MemberContainer
+            members={selectMember?.members}
             onSelect={handleMemberSelect}
           />
         ) : (

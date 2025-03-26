@@ -1,5 +1,5 @@
 import { IoSaveOutline, IoSettingsOutline } from 'react-icons/io5'
-import { Guild, GuildInfo, Member } from '../../types/guild'
+import { Guild, NexonMembers, Member } from '../../types/guild'
 import Title from '../common/Title'
 import { CharacterListItem } from '../Guild/CharacterListItem'
 import ModalLayout from './ModalLayout'
@@ -10,7 +10,7 @@ import { Dropdown } from '../common/DropDown'
 interface Props {
   member: Member
   guildList: Guild[]
-  guildInfo: GuildInfo[]
+  guildInfo: NexonMembers[]
 }
 
 export const DetailMemberModal = ({ member, guildList, guildInfo }: Props) => {

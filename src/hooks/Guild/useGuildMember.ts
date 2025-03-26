@@ -5,7 +5,7 @@ import {
   fetchNexonGuildMembers,
   fetchRecordedGuildMembers
 } from '../../apis/Guild/guildController'
-import { Guild } from '../../types/guild'
+import { Guild, MemberData } from '../../types/guild'
 
 export const useGuildMember = () => {
   const queryClient = useQueryClient()
@@ -21,7 +21,7 @@ export const useGuildMember = () => {
   const isNexon = view === '길드정보'
 
   const { data: nexonMembers } = useQuery({
-    queryKey: ['guildMembers', 'nexon', params],
+    queryKey: ['nexonMembers', 'nexon', params],
     queryFn: () =>
       Promise.all(
         guildList?.map(v => fetchNexonGuildMembers(Number(v.guildId))) || []
@@ -31,13 +31,27 @@ export const useGuildMember = () => {
   })
 
   const { data: recordedMembers } = useQuery({
-    queryKey: ['guildMembers', 'recorded', view],
-    queryFn: () => fetchRecordedGuildMembers(1),
+    queryKey: ['recordedMembers', 'recorded', view],
+    queryFn: () =>
+      Promise.all(
+        guildList?.map(v => fetchRecordedGuildMembers(Number(v.guildId))) || []
+      ),
     staleTime: 60000,
     enabled: isRecorded
   })
-
-  const selectMember = nexonMembers?.find(v => v.guildName === guildName)
+  const selectMember: MemberData | undefined = isRecorded
+    ? recordedMembers?.[0]
+      ? { members: recordedMembers[0].addMembers }
+      : undefined
+    : nexonMembers?.find(v => v.guildName === guildName)
+      ? {
+          members:
+            nexonMembers.find(v => v.guildName === guildName)
+              ?.memberDetailResponse ?? [],
+          masterName: nexonMembers.find(v => v.guildName === guildName)
+            ?.guildMasterName
+        }
+      : undefined
 
   return { nexonMembers, recordedMembers, selectMember }
 }

@@ -31,12 +31,21 @@ export interface SearchGuild {
   guild_master_name?: string
 }
 
-export interface GuildInfo {
+export interface NexonMembers {
   guildId: string
   guildName: string
   worldName?: string
   guildMasterName?: string
   memberDetailResponse?: Member[]
+}
+
+export interface RecordedMembers {
+  addMembers: Member[]
+}
+
+export interface MemberData {
+  members: Member[]
+  masterName?: string
 }
 
 export interface Member {

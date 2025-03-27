@@ -31,7 +31,7 @@ export const useGuildMember = () => {
   })
 
   const { data: recordedMembers } = useQuery({
-    queryKey: ['recordedMembers', 'recorded', view],
+    queryKey: ['recordedMembers', 'recorded', params],
     queryFn: () =>
       Promise.all(
         guildList?.map(v => fetchRecordedGuildMembers(Number(v.guildId))) || []

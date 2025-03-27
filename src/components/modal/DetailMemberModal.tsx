@@ -4,7 +4,6 @@ import Title from '../common/Title'
 import { CharacterListItem } from '../Guild/CharacterListItem'
 import ModalLayout from './ModalLayout'
 import { useState } from 'react'
-import { MdOutlineAddCircleOutline } from 'react-icons/md'
 import { Dropdown } from '../common/DropDown'
 
 interface Props {
@@ -41,11 +40,18 @@ export const DetailMemberModal = ({ member, guildList, guildInfo }: Props) => {
 
   return (
     <ModalLayout size="medium">
-      <Title size="large">000의 기록</Title>
+      <Title size="large">{member.name} 정보</Title>
       <div className="w-full h-full flex gap-6">
-        <div className="border border-black w-full ">
-          <Title size="medium">캐릭터 정보</Title>
-          <img src={member.imagePath} />
+        <div className="w-full flex justify-center items-center flex-col">
+          <img
+            src={member.imagePath}
+            className="w-36 h-36"
+          />
+          <div className="flex gap-2">
+            <p>{member.name}</p>
+            <p>Lv.{member.level}</p>
+          </div>
+          <p className="text-neutral-500"> {member.job}</p>
         </div>
         <div className="w-full">
           <div className="flex justify-between items-center px-2">
@@ -62,25 +68,26 @@ export const DetailMemberModal = ({ member, guildList, guildInfo }: Props) => {
               />
             )}
           </div>
-          <div className="mt-2 flex flex-col justify-center items-center">
+          <div className="mt-2 flex flex-col gap-4">
             <CharacterListItem state={isEditMode} />
-            {isEditMode && <MdOutlineAddCircleOutline />}
-            <div className="flex gap-3">
-              <Dropdown
-                list={guildList}
-                onSelect={handleSelectGuild}
-                selected={selectedGuild}
-                type="guild"
-              />
-              {selectedGuild && (
+            {isEditMode && (
+              <div className="flex gap-3 justify-start">
                 <Dropdown
-                  list={guildMemberList?.memberDetailResponse || []}
-                  onSelect={handleSelectMember}
-                  selected={selectedMember}
-                  type="member"
+                  list={guildList}
+                  onSelect={handleSelectGuild}
+                  selected={selectedGuild}
+                  type="guild"
                 />
-              )}
-            </div>
+                {selectedGuild && (
+                  <Dropdown
+                    list={guildMemberList?.memberDetailResponse || []}
+                    onSelect={handleSelectMember}
+                    selected={selectedMember}
+                    type="member"
+                  />
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>

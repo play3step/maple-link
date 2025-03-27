@@ -1,5 +1,10 @@
 import { basicApi } from '..'
-import { SearchGuild } from '../../types/guild'
+import {
+  Detect,
+  NexonMembers,
+  RecordedMembers,
+  SearchGuild
+} from '../../types/guild'
 
 export const fetchGuildList = async () => {
   const response = await basicApi.get('/api/guilds')
@@ -16,7 +21,26 @@ export const addGuildList = async (params: SearchGuild) => {
   return response.data.message
 }
 
-export const fetchGuildMember = async (guildId: number) => {
-  const response = await basicApi.get(`/api/guilds/${guildId}/members`)
+//API 멤버
+export const fetchNexonGuildMembers = async (guildId: number) => {
+  const response = await basicApi.get<NexonMembers>(
+    `/api/guilds/${guildId}/members`
+  )
+  return response.data
+}
+
+//직접 기록한 멤버
+export const fetchRecordedGuildMembers = async (guildId: number) => {
+  const response = await basicApi.get<RecordedMembers>(
+    `/api/guild-member/add-list/${guildId}`
+  )
+  return response.data
+}
+
+//멤버 비교
+export const fetchDetectGuildMembers = async (guildId: number) => {
+  const response = await basicApi.get<Detect>(
+    `/api/guild-member/detect/${guildId}`
+  )
   return response.data
 }

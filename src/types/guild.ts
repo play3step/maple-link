@@ -31,7 +31,7 @@ export interface SearchGuild {
   guild_master_name?: string
 }
 
-export interface GuildInfo {
+export interface NexonMembers {
   guildId: string
   guildName: string
   worldName?: string
@@ -39,9 +39,23 @@ export interface GuildInfo {
   memberDetailResponse?: Member[]
 }
 
+export interface RecordedMembers {
+  addMembers: Member[]
+}
+
+export interface MemberData {
+  members: Member[]
+  masterName?: string
+}
+
 export interface Member {
   imagePath: string
   job: string
   level: string
   name: string
+}
+
+export interface Detect {
+  toAdd: string[]
+  toRemove: string[]
 }

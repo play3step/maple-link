@@ -2,37 +2,74 @@ import { CreateGuildModal } from '../components/modal/CreateGuildModal'
 import { ModalType, useModalStore } from '../store/modalStore'
 
 import { useGuildsList } from '../hooks/Guild/useGuildsList'
-import { useGuildInfo } from '../hooks/Guild/useGuildInfo'
+
 import { MemberContainer } from '../components/Guild/MemberContainer'
 import { ListSwitch } from '../components/Guild/ListSwitch'
 import { ActionBtnList } from '../components/Guild/ActionBtnList'
 import { DetectMemberModal } from '../components/modal/DetectMemberModal'
+import { useGuildMember } from '../hooks/Guild/useGuildMember'
+import { Empty } from '../components/common/Empty'
+import { DetailMemberModal } from '../components/modal/DetailMemberModal'
+import { useState } from 'react'
+import { Member } from '../types/guild'
 
 const Guild = () => {
   const { activeModal, openModal } = useModalStore()
 
   const { guildList } = useGuildsList()
-  console.log(guildList)
 
-  const { guildInfo } = useGuildInfo()
-  const guildMember = guildInfo?.memberDetailResponse ?? []
+  const { nexonMembers, selectMember, recordedMembers } = useGuildMember()
+
+  const [selectedMember, setSelectedMember] = useState<Member>()
 
   const showModal = (name: ModalType) => {
     openModal(name)
   }
 
+  const handleMemberSelect = async (member: Member) => {
+    await setSelectedMember(member)
+    openModal('detailMember')
+  }
+
+  if (!guildList) return <div>Loading...</div>
+
   return (
-    <div>
-      <div className=" flex mb-4 justify-between">
-        <ActionBtnList showModal={showModal} />
-        <ListSwitch />
+    <div className="w-full h-full flex flex-col gap-1">
+      <div>
+        <div className="flex mb-4 justify-between">
+          <ActionBtnList
+            showModal={showModal}
+            guildList={guildList}
+          />
+          {guildList.length > 0 && <ListSwitch />}
+        </div>
       </div>
-      <MemberContainer
-        members={guildMember}
-        masterName={guildInfo?.guildMasterName}
-      />
+      <div className="min-h-[760px] flex items-center justify-center overflow-y-auto">
+        {guildList.length > 0 && nexonMembers ? (
+          <MemberContainer
+            members={selectMember?.members}
+            masterName={selectMember?.masterName}
+            onSelect={handleMemberSelect}
+          />
+        ) : guildList.length > 0 && recordedMembers ? (
+          <MemberContainer
+            members={selectMember?.members}
+            onSelect={handleMemberSelect}
+          />
+        ) : (
+          <Empty />
+        )}
+      </div>
+
       {activeModal === 'createGuild' && <CreateGuildModal />}
       {activeModal === 'detectMember' && <DetectMemberModal />}
+      {activeModal === 'detailMember' && selectedMember && nexonMembers && (
+        <DetailMemberModal
+          member={selectedMember}
+          guildList={guildList}
+          guildInfo={nexonMembers}
+        />
+      )}
     </div>
   )
 }

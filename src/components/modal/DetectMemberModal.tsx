@@ -3,9 +3,12 @@ import Title from '../common/Title'
 // import { CharacterListItem } from '../Guild/CharacterListItem'
 import ModalLayout from './ModalLayout'
 
-export const DetectMemberModal = () => {
-  const { detectMember } = useGuildDetect()
-  console.log(detectMember)
+interface Props {
+  guildId?: number
+}
+
+export const DetectMemberModal = ({ guildId }: Props) => {
+  const { detectMember } = useGuildDetect(guildId)
   return (
     <ModalLayout size="medium">
       <Title

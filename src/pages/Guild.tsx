@@ -18,7 +18,7 @@ const Guild = () => {
 
   const { guildList } = useGuildsList()
 
-  const { nexonMembers, selectMember, recordedMembers } = useGuildMember()
+  const { nexonMembers, selectMember, view } = useGuildMember()
 
   const [selectedMember, setSelectedMember] = useState<Member>()
 
@@ -26,8 +26,8 @@ const Guild = () => {
     openModal(name)
   }
 
-  const handleMemberSelect = async (member: Member) => {
-    await setSelectedMember(member)
+  const handleMemberSelect = (member: Member) => {
+    setSelectedMember(member)
     openModal('detailMember')
   }
 
@@ -44,14 +44,15 @@ const Guild = () => {
           {guildList.length > 0 && <ListSwitch />}
         </div>
       </div>
+
       <div className="min-h-[760px] flex items-center justify-center overflow-y-auto">
-        {guildList.length > 0 && nexonMembers ? (
+        {guildList.length > 0 && view === '길드정보' ? (
           <MemberContainer
             members={selectMember?.members}
             masterName={selectMember?.masterName}
             onSelect={handleMemberSelect}
           />
-        ) : guildList.length > 0 && recordedMembers ? (
+        ) : guildList.length > 0 && view === '내기록' ? (
           <MemberContainer
             members={selectMember?.members}
             onSelect={handleMemberSelect}
@@ -62,7 +63,9 @@ const Guild = () => {
       </div>
 
       {activeModal === 'createGuild' && <CreateGuildModal />}
-      {activeModal === 'detectMember' && <DetectMemberModal />}
+      {activeModal === 'detectMember' && (
+        <DetectMemberModal guildId={Number(selectMember?.guildId)} />
+      )}
       {activeModal === 'detailMember' && selectedMember && nexonMembers && (
         <DetailMemberModal
           member={selectedMember}

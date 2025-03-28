@@ -26,7 +26,6 @@ export const useGuildMember = () => {
       Promise.all(
         guildList?.map(v => fetchNexonGuildMembers(Number(v.guildId))) || []
       ),
-    staleTime: 60000,
     enabled: isNexon
   })
 
@@ -36,15 +35,16 @@ export const useGuildMember = () => {
       Promise.all(
         guildList?.map(v => fetchRecordedGuildMembers(Number(v.guildId))) || []
       ),
-    staleTime: 60000,
     enabled: isRecorded
   })
+
   const selectMember: MemberData | undefined = isRecorded
     ? recordedMembers?.[0]
       ? { members: recordedMembers[0].addMembers }
       : undefined
     : nexonMembers?.find(v => v.guildName === guildName)
       ? {
+          guildId: nexonMembers.find(v => v.guildName === guildName)?.guildId,
           members:
             nexonMembers.find(v => v.guildName === guildName)
               ?.memberDetailResponse ?? [],
@@ -53,5 +53,5 @@ export const useGuildMember = () => {
         }
       : undefined
 
-  return { nexonMembers, recordedMembers, selectMember }
+  return { nexonMembers, recordedMembers, selectMember, view }
 }

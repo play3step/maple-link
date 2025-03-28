@@ -44,6 +44,7 @@ export interface RecordedMembers {
 }
 
 export interface MemberData {
+  guildId?: string
   members: Member[]
   masterName?: string
 }

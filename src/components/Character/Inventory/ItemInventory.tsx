@@ -1,12 +1,13 @@
-import { Inventory } from '../../types/character'
+import { Inventory } from '../../../types/character'
 import { Slot } from './Slot'
 
 interface Props {
   inventory: Inventory
   characterImg: string
+  onSelected: (item: string) => void
 }
 
-const CharacterInventory = ({ inventory, characterImg }: Props) => {
+const ItemInventory = ({ inventory, characterImg, onSelected }: Props) => {
   const slotMap = Object.fromEntries(
     inventory.item_equipment.map(item => [item.item_equipment_slot, item])
   )
@@ -46,6 +47,7 @@ const CharacterInventory = ({ inventory, characterImg }: Props) => {
           {leftSlots.map(slot => (
             <Slot
               key={slot}
+              onClick={onSelected}
               item={slotMap[slot]}
             />
           ))}
@@ -60,6 +62,7 @@ const CharacterInventory = ({ inventory, characterImg }: Props) => {
             {bottomSlots.map(slot => (
               <Slot
                 key={slot}
+                onClick={onSelected}
                 item={slotMap[slot]}
               />
             ))}
@@ -71,6 +74,7 @@ const CharacterInventory = ({ inventory, characterImg }: Props) => {
           {rightSlots.map(slot => (
             <Slot
               key={slot}
+              onClick={onSelected}
               item={slotMap[slot]}
             />
           ))}
@@ -82,6 +86,7 @@ const CharacterInventory = ({ inventory, characterImg }: Props) => {
         {extraSlots.map(slot => (
           <Slot
             key={slot}
+            onClick={onSelected}
             item={slotMap[slot]}
           />
         ))}
@@ -90,4 +95,4 @@ const CharacterInventory = ({ inventory, characterImg }: Props) => {
   )
 }
 
-export default CharacterInventory
+export default ItemInventory

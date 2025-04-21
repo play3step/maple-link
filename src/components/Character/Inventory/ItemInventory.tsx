@@ -1,4 +1,4 @@
-import { Inventory } from '../../../types/character'
+import { Inventory } from '../../../types/item'
 import { Slot } from './Slot'
 
 interface Props {

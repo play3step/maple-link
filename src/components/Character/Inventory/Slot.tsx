@@ -1,4 +1,4 @@
-import { Item } from '../../../types/character'
+import { Item } from '../../../types/item'
 
 interface Prop {
   item: Item

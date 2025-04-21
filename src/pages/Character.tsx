@@ -5,10 +5,13 @@ import { HyperStatContainer } from '../components/Character/HyperStatContainer'
 import { CharacterInfoContainer } from '../components/Character/CharacterInfoContainer'
 import { useCharacterData } from '../hooks/Character/useCharacterData'
 import CharacterInventory from '../components/Character/CharacterInventory'
+import { useInventory } from '../hooks/Character/useInventory'
 
 const Character = () => {
   const { characterStats, ability, hyperStat, basic, isLoading } =
     useCharacterData()
+
+  const { inventory } = useInventory()
 
   const state = false
 
@@ -30,7 +33,12 @@ const Character = () => {
       )}
 
       <div>
-        <CharacterInventory />
+        {inventory && basic?.character_image && (
+          <CharacterInventory
+            inventory={inventory}
+            characterImg={basic?.character_image}
+          />
+        )}
       </div>
     </div>
   )

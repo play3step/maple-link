@@ -49,3 +49,12 @@ export interface CharacterBasic {
   character_image: string
   character_date_create: string
 }
+
+export interface Inventory {
+  item_equipment: Item[]
+}
+
+export interface Item {
+  item_equipment_slot: string
+  item_icon: string
+}

@@ -11,8 +11,6 @@ interface Props {
 export const InventoryContainer = ({ inventory, characterImg }: Props) => {
   const [selected, setSelected] = useState<Item>()
 
-  console.log(selected)
-
   return (
     <div className="flex gap-2">
       <ItemInventory

@@ -5,10 +5,16 @@ export interface Inventory {
 export interface Item {
   item_equipment_slot: string
   item_icon: string
-  item_total_option: string
+
+  item_name: string
+
+  item_total_option: StatBlock
   item_base_option: StatBlock
-  item_add_option: StatBlock
-  item_starforce_option: StatBlock
+  item_add_option: StatBlock //추옵
+  item_etc_option: StatBlock //주흔
+  item_starforce_option: StatBlock //스타포스
+
+  item_exceptional_option: StatBlock
 
   potential_option_grade: string
   additional_potential_option_grade: string
@@ -33,14 +39,10 @@ export interface StatBlock {
   max_mp: string
   attack_power: string
   magic_power: string
-  armor: string
-  speed: string
-  jump: string
   boss_damage: string
   ignore_monster_armor: string
   all_stat: string
   damage: string
-  equipment_level_decrease: string
   max_hp_rate: string
   max_mp_rate: string
 }

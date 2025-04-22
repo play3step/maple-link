@@ -1,10 +1,10 @@
-import { Inventory } from '../../../types/item'
+import { Inventory, Item } from '../../../types/item'
 import { Slot } from './Slot'
 
 interface Props {
   inventory: Inventory
   characterImg: string
-  onSelected: (item: string) => void
+  onSelected: (item: Item | undefined) => void
 }
 
 const ItemInventory = ({ inventory, characterImg, onSelected }: Props) => {

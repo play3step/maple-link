@@ -2,7 +2,7 @@ import { Item } from '../../../types/item'
 
 interface Prop {
   item: Item
-  onClick: (item: string) => void
+  onClick: (item: Item) => void
 }
 
 export const Slot = ({ item, onClick }: Prop) => {
@@ -13,7 +13,7 @@ export const Slot = ({ item, onClick }: Prop) => {
           src={item.item_icon}
           alt={item.item_equipment_slot}
           className="w-full h-full object-contain"
-          onClick={() => onClick(item.item_equipment_slot)}
+          onClick={() => onClick(item)}
         />
       )}
     </div>

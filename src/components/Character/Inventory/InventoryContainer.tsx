@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Inventory } from '../../../types/item'
+import { Inventory, Item } from '../../../types/item'
 import ItemInventory from './ItemInventory'
 import { ItemOption } from './ItemOption'
 
@@ -9,18 +9,16 @@ interface Props {
 }
 
 export const InventoryContainer = ({ inventory, characterImg }: Props) => {
-  const [selected, setSelected] = useState('')
+  const [selected, setSelected] = useState<Item>()
 
-  const selectedHandle = (item: string) => {
-    setSelected(item)
-  }
+  console.log(selected)
 
   return (
     <div className="flex gap-2">
       <ItemInventory
         inventory={inventory}
         characterImg={characterImg}
-        onSelected={selectedHandle}
+        onSelected={setSelected}
       />
       <ItemOption selectedItem={selected} />
     </div>

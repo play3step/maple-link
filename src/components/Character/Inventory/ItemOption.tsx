@@ -1,4 +1,5 @@
 import { Item } from '../../../types/item'
+import { StarRating } from './StartRating'
 
 interface Props {
   selectedItem?: Item
@@ -26,8 +27,18 @@ const ITEM_OPTION_KEYS: { key: StatKey; label: string }[] = [
 
 export const ItemOption = ({ selectedItem }: Props) => {
   return (
-    <div className="flex flex-col items-center gap-6 p-6 bg-[#454545] rounded-xl shadow-md w-[500px]">
-      {selectedItem && <img src={selectedItem.item_icon} />}
+    <div className="flex flex-col items-center gap-6 p-6 bg-[#454545d0] rounded-xl shadow-md w-[600px]">
+      {selectedItem?.starforce && Number(selectedItem.starforce) !== 0 && (
+        <StarRating rating={Number(selectedItem?.starforce)} />
+      )}
+      {selectedItem && (
+        <div className="w-20 h-20 p-4 flex justify-center items-center bg-gray-200 border-gray-400 rounded-md overflow-hidden border-2">
+          <img
+            src={selectedItem.item_icon}
+            className="w-full"
+          />
+        </div>
+      )}
 
       {ITEM_OPTION_KEYS.map(({ key, label }) => {
         const total = Number(selectedItem?.item_total_option?.[key] ?? 0)
@@ -45,11 +56,13 @@ export const ItemOption = ({ selectedItem }: Props) => {
             className="flex gap-2"
             key={key}>
             <p className="font-semibold text-[#66ffff]">{label}</p>
-            <p className="text-[#66ffff]">+ {total !== 0 ? total : ''}</p>
-            <p className="text-[#ffffff]">{base !== 0 ? base : ''}</p>
-            <p className="text-[#ccff00]">{add !== 0 ? add : ''}</p>
-            <p className="text-[#aaaaff]">{etc !== 0 ? etc : ''}</p>
-            <p className="text-[#ffcc00]">{star !== 0 ? star : ''}</p>
+            {total !== 0 && <p className="text-[#66ffff]">+ {total}</p>}
+            <span className="text-[#ffffff]"> (</span>
+            {base !== 0 && <p className="text-[#ffffff]">{base}</p>}
+            {add !== 0 && <p className="text-[#ccff00]">{add}</p>}
+            {etc !== 0 && <p className="text-[#aaaaff]">{etc}</p>}
+            {star !== 0 && <p className="text-[#ffcc00]">{star}</p>}
+            <span className="text-[#ffffff]">)</span>
           </div>
         )
       })}

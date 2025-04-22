@@ -40,7 +40,7 @@ const ItemInventory = ({ inventory, characterImg, onSelected }: Props) => {
   const extraSlots = ['포켓 아이템', '뱃지']
 
   return (
-    <div className="flex flex-col items-center gap-6 p-6 bg-[#f8f8f8] rounded-xl shadow-md w-full max-w-[600px]">
+    <div className="flex flex-col items-center justify-center gap-6 p-4 bg-[#f8f8f8] rounded-xl shadow-md w-full">
       <div className="flex justify-between w-full">
         {/* 왼쪽 5행 2열 */}
         <div className="grid grid-rows-5 grid-cols-2 gap-2">

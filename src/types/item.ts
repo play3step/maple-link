@@ -8,6 +8,8 @@ export interface Item {
 
   item_name: string
 
+  starforce: string
+
   item_total_option: StatBlock
   item_base_option: StatBlock
   item_add_option: StatBlock //추옵

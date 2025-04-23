@@ -3,9 +3,9 @@ import {
   CharacterAbility,
   CharacterBasic,
   CharacterStats,
-  HyperStat,
-  Inventory
+  HyperStat
 } from '../../types/character'
+import { Inventory } from '../../types/item'
 
 export const fetchCharacterStat = async () => {
   const response = await nexonApi.get<CharacterStats>(

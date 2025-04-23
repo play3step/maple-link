@@ -4,7 +4,7 @@ import Title from '../common/Title'
 import { CharacterListItem } from '../Guild/CharacterListItem'
 import ModalLayout from './ModalLayout'
 import { useState } from 'react'
-import { Dropdown } from '../common/DropDown'
+import { Dropdown } from '../common/Dropdown'
 
 interface Props {
   member: Member

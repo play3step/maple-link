@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
-import { Inventory } from '../../types/character'
+
 import { fetchCharacterItem } from '../../apis/Character/characterController'
+import { Inventory } from '../../types/item'
 
 export const useInventory = () => {
   const { data: inventory, isLoading: inventoryLoading } = useQuery<Inventory>({

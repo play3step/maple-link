@@ -3,7 +3,8 @@ import {
   CharacterAbility,
   CharacterBasic,
   CharacterStats,
-  HyperStat
+  HyperStat,
+  Inventory
 } from '../../types/character'
 
 export const fetchCharacterStat = async () => {
@@ -45,6 +46,18 @@ export const fetchCharacterHyperStat = async () => {
 export const fetchCharacterBasic = async () => {
   const response = await nexonApi.get<CharacterBasic>(
     '/maplestory/v1/character/basic',
+    {
+      params: {
+        ocid: import.meta.env.VITE_ocid
+      }
+    }
+  )
+  return response.data
+}
+
+export const fetchCharacterItem = async () => {
+  const response = await nexonApi.get<Inventory>(
+    '/maplestory/v1/character/item-equipment',
     {
       params: {
         ocid: import.meta.env.VITE_ocid

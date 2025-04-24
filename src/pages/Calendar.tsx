@@ -1,7 +1,10 @@
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
+import { useNexonNotice } from '../hooks/Calendar/useNexonNotice'
 
 const Calendar = () => {
+  const { events } = useNexonNotice()
+
   return (
     <div className="p-4 bg-white rounded-lg shadow-md">
       <FullCalendar
@@ -13,10 +16,8 @@ const Calendar = () => {
           center: 'title',
           right: 'today'
         }}
-        events={[
-          { title: '길드 모임', date: '2025-05-01' },
-          { title: '보스 트라이', date: '2025-05-03' }
-        ]}
+        events={events}
+        dayMaxEventRows={3}
       />
     </div>
   )

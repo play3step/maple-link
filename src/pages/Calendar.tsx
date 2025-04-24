@@ -1,24 +1,29 @@
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
+import koLocale from '@fullcalendar/core/locales/ko'
+import interactionPlugin from '@fullcalendar/interaction'
 import { useNexonNotice } from '../hooks/Calendar/useNexonNotice'
-// import { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
+import { useModalStore } from '../store/modalStore'
+import { EventListModal } from '../components/modal/EventListModal'
 
 const Calendar = () => {
   const { events } = useNexonNotice()
 
-  // const [selectedDate, setSelectedDate] = useState<string | null>(null)
+  const [selectedDate, setSelectedDate] = useState<string | null>(null)
 
-  // const selectEvent = useMemo(() => {
-  //   if (!selectedDate) return []
-  //   return events.filter(e => e.start === selectedDate) ?? []
-  // }, [selectedDate, events])
+  const selectEvent = useMemo(() => {
+    if (!selectedDate) return []
+    return events.filter(e => e.start === selectedDate) ?? []
+  }, [selectedDate, events])
 
-  // console.log(selectEvent)
+  const { activeModal, openModal } = useModalStore()
 
   return (
     <div className="p-4 bg-white rounded-lg shadow-md">
       <FullCalendar
-        plugins={[dayGridPlugin]}
+        plugins={[dayGridPlugin, interactionPlugin]}
+        locale={koLocale}
         initialView="dayGridMonth"
         height="auto"
         headerToolbar={{
@@ -27,14 +32,16 @@ const Calendar = () => {
           right: 'today'
         }}
         events={events}
-        dayMaxEventRows={3}
-        eventClick={info => {
-          info.jsEvent.preventDefault()
-          if (info.event.url) {
-            window.open(info.event.url, '_blank')
-          }
+        eventClick={async info => {
+          await setSelectedDate(info.event.startStr)
+          openModal('eventList')
+        }}
+        dateClick={async info => {
+          await setSelectedDate(info.dateStr)
+          openModal('eventList')
         }}
       />
+      {activeModal === 'eventList' && selectEvent && <EventListModal />}
     </div>
   )
 }

@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useModalStore } from '../../store/modalStore'
 import { Size } from '../../types'
 import Button from '../common/Button'
@@ -10,6 +11,20 @@ interface ModalLayoutProps {
 
 const ModalLayout = ({ children, onSubmit, size }: ModalLayoutProps) => {
   const { closeModal } = useModalStore()
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        closeModal()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [closeModal])
+
   return (
     <div
       className="fixed top-0 left-0 w-screen h-screen bg-[rgba(0,0,0,0.5)] flex justify-center items-center z-50"

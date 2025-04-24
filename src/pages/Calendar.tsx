@@ -24,6 +24,12 @@ const Calendar = () => {
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         locale={koLocale}
+        dayCellClassNames={() => [
+          'hover:ring-2',
+          'hover:ring-red-400',
+          'rounded-md',
+          'transition'
+        ]}
         initialView="dayGridMonth"
         height="auto"
         headerToolbar={{
@@ -41,7 +47,9 @@ const Calendar = () => {
           openModal('eventList')
         }}
       />
-      {activeModal === 'eventList' && selectEvent && <EventListModal />}
+      {activeModal === 'eventList' && selectEvent && (
+        <EventListModal list={selectEvent} />
+      )}
     </div>
   )
 }

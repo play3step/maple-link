@@ -8,3 +8,10 @@ export interface Notice {
   title: string
   url: string
 }
+
+export interface CalendarType {
+  title: string
+  start: string
+  color: string
+  url: string
+}

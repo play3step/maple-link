@@ -14,4 +14,5 @@ export interface CalendarType {
   start: string
   color: string
   nexonUrl: string
+  type: string
 }

@@ -20,13 +20,15 @@ export const useNexonNotice = () => {
           title: `[시작] ${v.title}`,
           start: formatDateYMD(v.date_event_start),
           color: '#4caf50',
-          nexonUrl: v.url
+          nexonUrl: v.url,
+          type: 'nexon'
         },
         {
           title: `[종료] ${v.title}`,
           start: formatDateYMD(v.date_event_end),
           color: '#ff6f61',
-          nexonUrl: v.url
+          nexonUrl: v.url,
+          type: 'nexon'
         }
       ]) ?? []
     )

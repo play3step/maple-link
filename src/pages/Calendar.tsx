@@ -37,6 +37,7 @@ const Calendar = () => {
           center: 'title',
           right: 'today'
         }}
+        dayMaxEventRows={4}
         events={events}
         eventClick={async info => {
           await setSelectedDate(info.event.startStr)
@@ -47,8 +48,11 @@ const Calendar = () => {
           openModal('eventList')
         }}
       />
-      {activeModal === 'eventList' && selectEvent && (
-        <EventListModal list={selectEvent} />
+      {activeModal === 'eventList' && selectEvent && selectedDate && (
+        <EventListModal
+          list={selectEvent}
+          selectedDate={selectedDate}
+        />
       )}
     </div>
   )

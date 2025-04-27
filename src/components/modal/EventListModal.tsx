@@ -5,23 +5,43 @@ import Title from '../common/Title'
 import ModalLayout from './ModalLayout'
 import nexonIcon from '../../assets/nexon.webp'
 import noteIcon from '../../assets/note.png'
+import { useState } from 'react'
 
 interface Props {
   list: CalendarType[]
   selectedDate: string
+  createUserNotice: ({ title, start, color, type }: CalendarType) => void
 }
 
-export const EventListModal = ({ selectedDate, list }: Props) => {
+export const EventListModal = ({
+  selectedDate,
+  list,
+  createUserNotice
+}: Props) => {
+  const [inputValue, setInputValue] = useState<string>('')
+
+  const handleSubmit = () => {
+    if (inputValue.trim()) {
+      createUserNotice({
+        title: inputValue,
+        start: selectedDate,
+        color: '#90CAF9',
+        type: 'user'
+      })
+      setInputValue('')
+    }
+  }
+
   return (
     <ModalLayout size="medium">
       <div className="h-full flex items-center justify-between flex-col gap-2">
         <Title size="medium">{selectedDate} 일정</Title>
-        <div className=" w-full flex flex-col gap-3 text-smal items-center">
+        <div className=" w-full p-5 flex flex-col gap-3 text-smal items-center overflow-auto max-h-96">
           {list.length !== 0 ? (
             list.map(v =>
               v.type === 'nexon' ? (
                 <div
-                  className=" w-1/2 flex gap-4 items-center p-2 rounded-md text-white min-h-[48px]"
+                  className=" w-1/2 flex gap-4 items-center p-2 rounded-md text-white min-h-[48px] shadow-md"
                   style={{ backgroundColor: v.color }}>
                   <img
                     src={nexonIcon}
@@ -36,7 +56,9 @@ export const EventListModal = ({ selectedDate, list }: Props) => {
                   </p>
                 </div>
               ) : (
-                <div className="flex gap-4 items-center">
+                <div
+                  className=" w-1/2 flex gap-4 items-center p-2 rounded-md text-white min-h-[48px] shadow-md"
+                  style={{ backgroundColor: v.color }}>
                   <img
                     src={noteIcon}
                     className="w-8"
@@ -57,10 +79,15 @@ export const EventListModal = ({ selectedDate, list }: Props) => {
         </div>
 
         <div className="flex gap-2">
-          <InputText />
+          <InputText
+            value={inputValue}
+            onChange={e => setInputValue(e.target.value)}
+            placeholder="일정을 입력하세요."
+          />
           <Button
             size="small"
-            scheme="outlined">
+            scheme="outlined"
+            onClick={handleSubmit}>
             둥록
           </Button>
         </div>

@@ -13,6 +13,6 @@ export interface CalendarType {
   title: string
   start: string
   color: string
-  nexonUrl: string
+  nexonUrl?: string
   type: string
 }

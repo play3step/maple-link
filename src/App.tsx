@@ -7,6 +7,7 @@ import { ProtectedRoute } from './components/layout/ProtectedRoute'
 import Signup from './pages/Signup'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Calendar from './pages/Calendar'
+import { ApiGuide } from './pages/apiGuide'
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,14 @@ const router = createBrowserRouter([
     element: (
       <Layout hide>
         <Home />
+      </Layout>
+    )
+  },
+  {
+    path: '/apiGuide',
+    element: (
+      <Layout hide>
+        <ApiGuide />
       </Layout>
     )
   },

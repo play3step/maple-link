@@ -6,6 +6,7 @@ import Character from './pages/Character'
 import { ProtectedRoute } from './components/layout/ProtectedRoute'
 import Signup from './pages/Signup'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import Calendar from './pages/Calendar'
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,16 @@ const router = createBrowserRouter([
       <ProtectedRoute>
         <Layout>
           <Signup />
+        </Layout>
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: '/calendar',
+    element: (
+      <ProtectedRoute>
+        <Layout>
+          <Calendar />
         </Layout>
       </ProtectedRoute>
     )

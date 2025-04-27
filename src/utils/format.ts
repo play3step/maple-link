@@ -39,3 +39,7 @@ export const formatKoreanNumber = (number: number): string => {
 export const formatDate = (date: string) => {
   return dayjs(date).format('YYYY. MM. DD')
 }
+
+export const formatDateYMD = (date: string) => {
+  return dayjs(date).format('YYYY-MM-DD')
+}

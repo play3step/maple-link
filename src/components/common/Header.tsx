@@ -28,7 +28,8 @@ function Header() {
           </Button>
           <Button
             scheme="subtle"
-            size="small">
+            size="small"
+            onClick={() => nav('/calendar')}>
             캘린더
           </Button>
           <Button

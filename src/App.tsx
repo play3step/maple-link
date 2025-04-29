@@ -8,7 +8,7 @@ import Signup from './pages/Signup'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Calendar from './pages/Calendar'
 import { ApiGuide } from './pages/ApiGuide'
-import { Faq } from './pages/FAQ'
+import { Faq } from './pages/Faq'
 
 const router = createBrowserRouter([
   {

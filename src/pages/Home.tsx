@@ -28,7 +28,11 @@ const Home = () => {
       <p>메이플스토리의 길드관리와 다양한 정보를 기록하고 관리합니다.</p>
       <SocialAuthButton onClick={onSubmit}>Google</SocialAuthButton>
       <p>주요 기능 소개</p>
-      <p>API 키 발급 안내</p>
+      <p
+        onClick={() => nav('/apiGuide')}
+        className=" cursor-pointer hover:text-primary">
+        API 키 발급 안내
+      </p>
       <p>자주 묻는 질문 (FAQ)</p>
     </h1>
   )

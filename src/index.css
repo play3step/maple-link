@@ -1,6 +1,10 @@
+@import 'swiper/css';
+@import 'swiper/css/navigation';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 
 *{
     box-sizing: border-box;

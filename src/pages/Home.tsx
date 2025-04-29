@@ -14,9 +14,7 @@ const Home = () => {
 
   useEffect(() => {
     if (isloggedIn) {
-      loadUserInfo().then(v =>
-        v?.nexonApiKey ? nav('/character') : nav('/signup')
-      )
+      loadUserInfo().then(v => (v?.nexonApiKey ? nav('/character') : nav('/')))
     }
   }, [isloggedIn, nav])
 

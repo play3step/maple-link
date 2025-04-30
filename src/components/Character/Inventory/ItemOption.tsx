@@ -26,75 +26,80 @@ const ITEM_OPTION_KEYS: { key: StatKey; label: string }[] = [
 ]
 
 export const ItemOption = ({ selectedItem }: Props) => {
+  if (!selectedItem) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full w-full p-4 text-gray-500">
+        <p>아이템을 선택해주세요</p>
+      </div>
+    )
+  }
+
   return (
-    <div className="flex flex-col items-baseline gap-5 p-6 bg-[#454545d0] rounded-xl shadow-md w-[600px]">
+    <div className="flex flex-col p-4 bg-[#333333] rounded-lg shadow-md w-full">
       {selectedItem?.starforce && Number(selectedItem.starforce) !== 0 && (
-        <StarRating rating={Number(selectedItem?.starforce)} />
-      )}
-      {selectedItem && (
-        <div className="w-20 h-20 p-4 flex justify-center items-center bg-gray-200 border-gray-400 rounded-md overflow-hidden border-2 self-center">
-          <img
-            src={selectedItem.item_icon}
-            className="w-full"
-          />
+        <div className="mb-2">
+          <StarRating rating={Number(selectedItem.starforce)} />
         </div>
       )}
 
-      <div className="flex flex-col gap-1.5">
+      <p className="text-white font-bold text-lg mb-3 text-center">
+        {selectedItem.item_name}
+      </p>
+
+      <div className="w-16 h-16 p-1 flex justify-center items-center bg-gray-200 border-gray-400 rounded-md overflow-hidden border-2 mx-auto mb-4">
+        <img
+          src={selectedItem.item_icon}
+          className="w-full"
+          alt={selectedItem.item_name}
+        />
+      </div>
+
+      <div className="grid grid-cols-2 gap-x-2 gap-y-1 text-sm">
         {ITEM_OPTION_KEYS.map(({ key, label }) => {
           const total = Number(selectedItem?.item_total_option?.[key] ?? 0)
-          const base = Number(selectedItem?.item_base_option?.[key] ?? 0)
-          const add = Number(selectedItem?.item_add_option?.[key] ?? 0)
-          const etc = Number(selectedItem?.item_etc_option?.[key] ?? 0)
-          const star = Number(selectedItem?.item_starforce_option?.[key] ?? 0)
 
-          if (
-            total === 0 &&
-            base === 0 &&
-            add === 0 &&
-            etc === 0 &&
-            star === 0
-          ) {
-            return null
-          }
+          if (total === 0) return null
           const isPercent = label.includes('%')
 
           return (
             <div
-              className="flex gap-x-1.5"
+              className="flex justify-between"
               key={key}>
-              <p className="font-semibold text-[#66ffff]">{label}</p>
-              {total !== 0 && <p className="text-[#66ffff]">+ {total}</p>}
-              <span className="text-[#ffffff]"> (</span>
-              {base !== 0 && <p className="text-[#ffffff]">{base}</p>}
-              {add !== 0 && <p className="text-[#ccff00]">{add}</p>}
-              {etc !== 0 && <p className="text-[#aaaaff]">{etc}</p>}
-              {star !== 0 && <p className="text-[#ffcc00]">{star}</p>}
-              <span className="text-[#ffffff]">){isPercent && '%'}</span>
+              <p className="font-medium text-[#66ffff]">{label}</p>
+              <p className="text-white">
+                {total}
+                {isPercent && '%'}
+              </p>
             </div>
           )
         })}
       </div>
+
       {selectedItem?.potential_option_grade && (
-        <div className="text-[#ffffff] flex flex-col gap-0.5">
+        <div className="mt-3 pt-3 border-t border-gray-600">
           <p
-            className={`${selectedItem.potential_option_grade === '레어' ? 'text-[#22bbff]' : selectedItem.potential_option_grade === '에픽' ? 'text-[#aa11ee]' : selectedItem.potential_option_grade === '유니크' ? 'text-[#ffbb00]' : 'text-[#77ee00]'}`}>
+            className={`${selectedItem.potential_option_grade === '레어' ? 'text-[#22bbff]' : selectedItem.potential_option_grade === '에픽' ? 'text-[#aa11ee]' : selectedItem.potential_option_grade === '유니크' ? 'text-[#ffbb00]' : 'text-[#77ee00]'} font-semibold`}>
             잠재옵션
           </p>
-          <p>{selectedItem.potential_option_1}</p>
-          <p>{selectedItem.potential_option_2}</p>
-          <p>{selectedItem.potential_option_3}</p>
+          <ul className="list-disc list-inside text-sm text-gray-200 mt-1">
+            <li>{selectedItem.potential_option_1}</li>
+            <li>{selectedItem.potential_option_2}</li>
+            <li>{selectedItem.potential_option_3}</li>
+          </ul>
         </div>
       )}
+
       {selectedItem?.additional_potential_option_grade && (
-        <div className="text-[#ffffff] flex flex-col gap-0.5">
+        <div className="mt-3 pt-3 border-t border-gray-600">
           <p
-            className={`${selectedItem.additional_potential_option_grade === '레어' ? 'text-[#22bbff]' : selectedItem.additional_potential_option_grade === '에픽' ? 'text-[#aa11ee]' : selectedItem.additional_potential_option_grade === '유니크' ? 'text-[#ffbb00]' : 'text-[#77ee00]'}`}>
+            className={`${selectedItem.additional_potential_option_grade === '레어' ? 'text-[#22bbff]' : selectedItem.additional_potential_option_grade === '에픽' ? 'text-[#aa11ee]' : selectedItem.additional_potential_option_grade === '유니크' ? 'text-[#ffbb00]' : 'text-[#77ee00]'} font-semibold`}>
             에디셔널 잠재옵션
           </p>
-          <p>{selectedItem.additional_potential_option_1}</p>
-          <p>{selectedItem.additional_potential_option_2}</p>
-          <p>{selectedItem.additional_potential_option_3}</p>
+          <ul className="list-disc list-inside text-sm text-gray-200 mt-1">
+            <li>{selectedItem.additional_potential_option_1}</li>
+            <li>{selectedItem.additional_potential_option_2}</li>
+            <li>{selectedItem.additional_potential_option_3}</li>
+          </ul>
         </div>
       )}
     </div>

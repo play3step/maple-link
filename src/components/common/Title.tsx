@@ -4,9 +4,10 @@ interface Props {
   children: React.ReactNode
   size: Size
   color?: ColorKey
+  className?: string
 }
 
-const Title = ({ children, size, color }: Props) => {
+const Title = ({ children, size, color, className = '' }: Props) => {
   return (
     <h1
       className={`${
@@ -23,6 +24,7 @@ const Title = ({ children, size, color }: Props) => {
             ? 'text-secondary'
             : 'text-text'
       }
+      ${className}
     `}>
       {children}
     </h1>

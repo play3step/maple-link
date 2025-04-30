@@ -6,13 +6,24 @@ interface Props {
 
 export const HyperStatTable = ({ hyperStat }: Props) => {
   return (
-    <div className="group relative w-full rounded-lg p-3 overflow-y-auto hover:bg-gray-100 transition-colors duration-300">
-      <div className="flex justify-between">
-        <p>{hyperStat.stat_type}</p>
-        <p>Lv. {hyperStat.stat_level}</p>
+    <div className="flex flex-col w-full">
+      <div className="flex justify-between items-center mb-1">
+        <p className="font-medium text-gray-800">{hyperStat.stat_type}</p>
+        <p className="bg-blue-100 px-2 py-0.5 rounded-md text-blue-700 font-bold">
+          Lv. {hyperStat.stat_level}
+        </p>
       </div>
-      <div className="absolute inset-0 flex items-center justify-center bg-gray-100 bg-opacity-100 text-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        {hyperStat.stat_increase ?? 'X'}
+      <div className="text-sm text-gray-600">
+        {hyperStat.stat_increase ? (
+          <span>
+            증가량:{' '}
+            <span className="text-green-600 font-medium">
+              {hyperStat.stat_increase}
+            </span>
+          </span>
+        ) : (
+          <span className="text-gray-500">효과 없음</span>
+        )}
       </div>
     </div>
   )

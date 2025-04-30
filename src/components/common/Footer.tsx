@@ -1,9 +1,30 @@
+import Logo from '../../assets/logo.png'
+
 function Footer() {
   return (
-    <div className="w-full max-w-[1440px] mx-auto  px-4 py-5 border-t border-black flex flex-col justify-center items-center">
-      <p className="md:text-lg text-sm">copyright, 2025, Maple Link</p>
-      <p className="md:text-lg text-sm">by 루나@단뱅</p>
-    </div>
+    <footer className="w-full max-w-[1440px] mx-auto px-6 py-6 border-t border-blue-100 bg-white/80 backdrop-blur-sm flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div className="flex items-center gap-2">
+        <img
+          src={Logo}
+          alt="Maple Link"
+          className="w-6 h-6"
+        />
+        <p className="text-sm font-medium text-gray-700">© 2025 Maple Link</p>
+      </div>
+      <div className="flex flex-col sm:flex-row items-center gap-4">
+        <a
+          href="#"
+          className="text-sm text-gray-600 hover:text-blue-600 transition-all">
+          이용약관
+        </a>
+        <a
+          href="#"
+          className="text-sm text-gray-600 hover:text-blue-600 transition-all">
+          개인정보처리방침
+        </a>
+        <p className="text-sm text-gray-500">by 루나@단뱅</p>
+      </div>
+    </footer>
   )
 }
 

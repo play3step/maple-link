@@ -128,28 +128,65 @@ export const StatContainer = ({ Stats }: Props) => {
   ]
 
   return (
-    <div className="w-[617px] h-[628px] border border-black rounded-lg flex flex-col gap-2 px-3.5 py-2">
+    <div className="w-full h-full flex flex-col gap-3 bg-white rounded-lg p-4 shadow-sm">
       {/* 전투력 */}
-      <div className="w-full h-[46px] border border-black rounded-md flex justify-center items-center gap-3">
-        <p>전투력</p>
-        <p className="font-semibold">
+      <div className="w-full py-3 border border-gray-200 rounded-md flex justify-center items-center gap-3 bg-blue-50">
+        <p className="text-gray-700">전투력</p>
+        <p className="font-semibold text-lg text-blue-700">
           {formatKoreanNumber(Number(getStatValue(stats, '전투력')))}
         </p>
       </div>
 
-      {/* 기본 스탯 */}
-      <div className="w-full h-[107px] border border-black rounded-md px-3 py-2 flex justify-center items-center">
-        <StatTable rows={basicRows} />
-      </div>
+      {/* 스탯 스크롤 영역 */}
+      <div className="flex-1 overflow-y-auto custom-scrollbar">
+        <div className="space-y-4">
+          {/* 기본 스탯 */}
+          <div className="w-full border border-gray-200 rounded-md p-4 bg-white">
+            <h3 className="font-medium text-gray-700 mb-3 border-b pb-1 text-center">
+              기본 스탯
+            </h3>
+            <div className="grid grid-cols-2 gap-4">
+              {basicRows.map((row, index) => (
+                <div
+                  key={index}
+                  className="flex flex-col gap-1">
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium text-gray-700">
+                      {row.left.label}:
+                    </span>
+                    <span className="text-blue-600 font-semibold">
+                      {row.left.value}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium text-gray-700">
+                      {row.right.label}:
+                    </span>
+                    <span className="text-blue-600 font-semibold">
+                      {row.right.value}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
 
-      {/* 공격/데미지 스탯 */}
-      <div className="w-full h-[251px] border border-black rounded-md px-3 py-2 flex justify-center items-center">
-        <StatTable rows={attackRows} />
-      </div>
+          {/* 공격/데미지 스탯 */}
+          <div className="w-full border border-gray-200 rounded-md p-3 bg-white">
+            <h3 className="font-medium text-gray-700 mb-2 border-b pb-1">
+              공격/데미지 스탯
+            </h3>
+            <StatTable rows={attackRows} />
+          </div>
 
-      {/* 추가 스탯 */}
-      <div className="w-full h-[120px] border border-black rounded-md px-3 py-2 flex justify-center items-center">
-        <StatTable rows={additionalRows} />
+          {/* 추가 스탯 */}
+          <div className="w-full border border-gray-200 rounded-md p-3 bg-white">
+            <h3 className="font-medium text-gray-700 mb-2 border-b pb-1">
+              추가 스탯
+            </h3>
+            <StatTable rows={additionalRows} />
+          </div>
+        </div>
       </div>
     </div>
   )

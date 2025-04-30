@@ -40,10 +40,10 @@ const ItemInventory = ({ inventory, characterImg, onSelected }: Props) => {
   const extraSlots = ['포켓 아이템', '뱃지']
 
   return (
-    <div className="flex flex-col items-center justify-center gap-6 p-4 bg-[#f8f8f8] rounded-xl shadow-md w-full">
+    <div className="flex flex-col items-center gap-3 bg-gray-50 rounded-lg border border-gray-200 p-2">
       <div className="flex justify-between w-full">
         {/* 왼쪽 5행 2열 */}
-        <div className="grid grid-rows-5 grid-cols-2 gap-2">
+        <div className="grid grid-rows-5 grid-cols-2 gap-1.5">
           {leftSlots.map(slot => (
             <Slot
               key={slot}
@@ -54,11 +54,14 @@ const ItemInventory = ({ inventory, characterImg, onSelected }: Props) => {
         </div>
 
         {/* 가운데 캐릭터 + 아래 슬롯 3개 */}
-        <div className="flex flex-col justify-end items-center px-4 ">
-          <div className="w-40 h-40 mb-2 flex justify-center items-center">
-            <img src={characterImg} />
+        <div className="flex flex-col justify-end items-center px-2">
+          <div className="w-32 h-32 mb-1 flex justify-center items-center bg-white rounded-md p-1 border border-gray-200">
+            <img
+              src={characterImg}
+              className="max-h-full object-contain"
+            />
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-1.5">
             {bottomSlots.map(slot => (
               <Slot
                 key={slot}
@@ -70,7 +73,7 @@ const ItemInventory = ({ inventory, characterImg, onSelected }: Props) => {
         </div>
 
         {/* 오른쪽 5행 2열 */}
-        <div className="grid grid-rows-5 grid-cols-2 gap-2">
+        <div className="grid grid-rows-5 grid-cols-2 gap-1.5">
           {rightSlots.map(slot => (
             <Slot
               key={slot}
@@ -82,7 +85,7 @@ const ItemInventory = ({ inventory, characterImg, onSelected }: Props) => {
       </div>
 
       {/* 아래 포켓, 벳지 */}
-      <div className="flex gap-4">
+      <div className="flex gap-3 justify-center">
         {extraSlots.map(slot => (
           <Slot
             key={slot}

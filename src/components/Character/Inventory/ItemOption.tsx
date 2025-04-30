@@ -37,7 +37,7 @@ export const ItemOption = ({ selectedItem }: Props) => {
   return (
     <div className="flex flex-col p-4 bg-[#333333] rounded-lg shadow-md w-full">
       {selectedItem?.starforce && Number(selectedItem.starforce) !== 0 && (
-        <div className="mb-2">
+        <div className="mb-2 flex justify-center">
           <StarRating rating={Number(selectedItem.starforce)} />
         </div>
       )}
@@ -54,22 +54,37 @@ export const ItemOption = ({ selectedItem }: Props) => {
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-x-2 gap-y-1 text-sm">
+      <div className="flex flex-col gap-1.5">
         {ITEM_OPTION_KEYS.map(({ key, label }) => {
           const total = Number(selectedItem?.item_total_option?.[key] ?? 0)
+          const base = Number(selectedItem?.item_base_option?.[key] ?? 0)
+          const add = Number(selectedItem?.item_add_option?.[key] ?? 0)
+          const etc = Number(selectedItem?.item_etc_option?.[key] ?? 0)
+          const star = Number(selectedItem?.item_starforce_option?.[key] ?? 0)
 
-          if (total === 0) return null
+          if (
+            total === 0 &&
+            base === 0 &&
+            add === 0 &&
+            etc === 0 &&
+            star === 0
+          ) {
+            return null
+          }
           const isPercent = label.includes('%')
 
           return (
             <div
-              className="flex justify-between"
+              className="flex items-center gap-x-1.5"
               key={key}>
-              <p className="font-medium text-[#66ffff]">{label}</p>
-              <p className="text-white">
-                {total}
-                {isPercent && '%'}
-              </p>
+              <span className="font-medium text-[#66ffff]">{label}</span>
+              <span className="text-[#66ffff]">+{total}</span>
+              <span className="text-white">(</span>
+              {base !== 0 && <span className="text-white">{base}</span>}
+              {add !== 0 && <span className="text-[#ccff00]">+{add}</span>}
+              {etc !== 0 && <span className="text-[#aaaaff]">+{etc}</span>}
+              {star !== 0 && <span className="text-[#ffcc00]">+{star}</span>}
+              <span className="text-white">){isPercent && '%'}</span>
             </div>
           )
         })}

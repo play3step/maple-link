@@ -1,16 +1,13 @@
 import { useNavigate } from 'react-router-dom'
 import SocialAuthButton from '../components/common/SocialAuthButton'
-
 import { useAuth } from '../hooks/useAuth'
 import { useAuthStore } from '../store/authStore'
 import { useEffect } from 'react'
-import Title from '../components/common/Title'
 import Logo from '../assets/logo.png'
 
 const Home = () => {
   const { userLogin, loadUserInfo } = useAuth()
   const { isloggedIn } = useAuthStore()
-
   const nav = useNavigate()
 
   useEffect(() => {
@@ -19,86 +16,133 @@ const Home = () => {
     }
   }, [isloggedIn, nav])
 
-  const onSubmit = () => {
-    userLogin()
-  }
-
   return (
-    <div className="flex flex-col items-center justify-start gap-10 py-6 sm:py-10">
-      <div className="flex flex-col items-center gap-4">
-        <div className="flex items-center gap-3 animate-pulse">
-          <img
-            src={Logo}
-            className="w-14 h-14 drop-shadow-md"
-            alt="MapleLink Logo"
-          />
-          <Title
-            size="large"
-            className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 font-bold">
-            메이플 링크
-          </Title>
+    <div className="h-[100vh] bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 text-slate-800 relative overflow-hidden flex flex-col">
+      {/* Background Effects */}
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute top-0 -left-4 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-blob"></div>
+        <div className="absolute top-0 -right-4 w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-blob animation-delay-4000"></div>
+      </div>
+
+      <div className="container mx-auto px-4 flex flex-col h-full relative z-10">
+        {/* Navigation */}
+        <nav className="flex justify-end py-4">
+          <button
+            onClick={() => nav('/apiGuide')}
+            className="text-slate-600 hover:text-blue-600 mr-8 transition-colors font-medium cursor-pointer">
+            API 가이드
+          </button>
+          <button
+            onClick={() => nav('/faq')}
+            className="text-slate-600 hover:text-blue-600 transition-colors font-medium cursor-pointer">
+            FAQ
+          </button>
+        </nav>
+
+        {/* Hero Section */}
+        <div className="flex-1 flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16">
+          <div className="flex-1 text-center lg:text-left max-w-xl">
+            <div className="flex items-center justify-center lg:justify-start mb-6 gap-4">
+              <img
+                src={Logo}
+                className="w-12 h-12 lg:w-14 lg:h-14 object-contain animate-float"
+                alt="MapleLink Logo"
+              />
+              <h1 className="text-3xl lg:text-5xl font-black bg-gradient-to-r from-blue-600 to-indigo-500 bg-clip-text text-transparent">
+                MapleLink
+              </h1>
+            </div>
+
+            <h2 className="text-xl lg:text-2xl font-bold mb-4 text-slate-700">
+              메이플스토리를 더 스마트하게
+            </h2>
+
+            <p className="text-base lg:text-lg text-slate-600 mb-6">
+              길드 관리, 캐릭터 관리, 일정 관리까지
+              <br />
+              <span className="font-semibold">MapleLink</span>로 한 번에
+              해결하세요
+            </p>
+
+            <SocialAuthButton
+              onClick={userLogin}
+              className="inline-flex items-center px-6 py-2.5 text-base font-medium text-white bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl shadow-lg hover:shadow-blue-500/25 hover:from-blue-400 hover:to-indigo-400 transform hover:translate-y-[-2px] transition-all duration-300 group">
+              Google로 시작하기
+            </SocialAuthButton>
+          </div>
+
+          {/* Feature Cards */}
+          <div className="flex-1 grid grid-cols-1 gap-4 max-w-lg w-full">
+            <div className="group">
+              <div className="bg-white/80 backdrop-blur-lg p-5 rounded-2xl border border-slate-200 hover:border-blue-400/50 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/10">
+                <div className="flex items-start space-x-4">
+                  <div className="p-2.5 bg-blue-100 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                    <span className="text-xl">🎯</span>
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold mb-1.5 text-slate-800">
+                      길드 & 캐릭터 관리
+                    </h3>
+                    <p className="text-slate-600 text-sm leading-relaxed">
+                      모든 캐릭터 정보를 한눈에 확인하고,
+                      <br />
+                      길드원들과 실시간으로 공유하세요.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="group">
+              <div className="bg-white/80 backdrop-blur-lg p-5 rounded-2xl border border-slate-200 hover:border-indigo-400/50 transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-500/10">
+                <div className="flex items-start space-x-4">
+                  <div className="p-2.5 bg-indigo-100 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                    <span className="text-xl">📅</span>
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold mb-1.5 text-slate-800">
+                      일정 & 이벤트
+                    </h3>
+                    <p className="text-slate-600 text-sm leading-relaxed">
+                      보스 레이드, 이벤트 일정을
+                      <br />
+                      놓치지 않도록 관리해드립니다.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <p className="text-center text-gray-700 max-w-lg leading-relaxed font-medium">
-          메이플스토리의 길드 관리와 일정 관리를 한 곳에서!
-          <br />
-          부캐 정리, 이벤트 추적까지{' '}
-          <span className="text-blue-600 font-semibold">MapleLink</span>에서
-          간편하게.
-        </p>
       </div>
 
-      <div className="w-full max-w-3xl grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 space-y-3 border border-blue-100 transition-all duration-300 hover:translate-y-[-8px] hover:shadow-xl">
-          <div className="text-blue-600 text-2xl mb-2">🎯</div>
-          <p className="text-xl font-bold mb-2 text-gray-800">
-            길드 & 길드원 관리
-          </p>
-          <p className="text-gray-700">누구의 부캐인지 헷갈리셨나요?</p>
-          <p className="text-gray-700">
-            MapleLink에서 캐릭터 정보를 체계적으로 관리하세요!
-          </p>
-        </div>
-
-        <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 space-y-3 border border-blue-100 transition-all duration-300 hover:translate-y-[-8px] hover:shadow-xl">
-          <div className="text-blue-600 text-2xl mb-2">📅</div>
-          <p className="text-xl font-bold mb-2 text-gray-800">
-            이벤트 & 일정 관리
-          </p>
-          <p className="text-gray-700">
-            파티보스 스케줄과 이벤트 기간 놓치지 마세요.
-          </p>
-          <p className="text-gray-700">
-            MapleLink에서 기록하고 확인할 수 있어요!
-          </p>
-        </div>
-      </div>
-
-      <div className="w-full max-w-sm bg-white/90 backdrop-blur-sm shadow-xl rounded-2xl px-8 py-8 flex flex-col items-center gap-4 border border-blue-100 hover:shadow-2xl transition-all">
-        <p className="text-xl font-bold text-center text-gray-800">
-          Google 계정으로 시작하기
-        </p>
-        <p className="text-gray-600 text-center">
-          메이플 링크를 사용하려면 로그인이 필요해요.
-        </p>
-        <SocialAuthButton
-          onClick={onSubmit}
-          className="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium shadow-md hover:shadow-lg transition-all duration-300">
-          Google 로그인
-        </SocialAuthButton>
-      </div>
-
-      <div className="flex flex-col items-center gap-3">
-        <button
-          onClick={() => nav('/apiGuide')}
-          className="text-blue-600 hover:text-blue-800 hover:underline font-medium flex items-center gap-1 transition-all">
-          <span className="text-lg">🔑</span> API 키 발급 안내
-        </button>
-        <button
-          className="text-gray-500 hover:text-gray-800 hover:underline transition-all font-medium"
-          onClick={() => nav('faq')}>
-          자주 묻는 질문 (FAQ)
-        </button>
-      </div>
+      {/* Add custom animation keyframes in a style tag */}
+      <style>{`
+        @keyframes blob {
+          0% { transform: translate(0px, 0px) scale(1); }
+          33% { transform: translate(30px, -50px) scale(1.1); }
+          66% { transform: translate(-20px, 20px) scale(0.9); }
+          100% { transform: translate(0px, 0px) scale(1); }
+        }
+        @keyframes float {
+          0% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
+          100% { transform: translateY(0px); }
+        }
+        .animate-blob {
+          animation: blob 7s infinite;
+        }
+        .animate-float {
+          animation: float 3s ease-in-out infinite;
+        }
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+        .animation-delay-4000 {
+          animation-delay: 4s;
+        }
+      `}</style>
     </div>
   )
 }

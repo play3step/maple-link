@@ -12,7 +12,9 @@ const Home = () => {
 
   useEffect(() => {
     if (isloggedIn) {
-      loadUserInfo().then(v => (v?.nexonApiKey ? nav('/character') : nav('/')))
+      loadUserInfo().then(v =>
+        v?.nexonApiKey ? nav('/character') : nav('/character')
+      )
     }
   }, [isloggedIn, nav])
 
@@ -41,7 +43,7 @@ const Home = () => {
         </nav>
 
         {/* Hero Section */}
-        <div className="lg:flex-1 flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16">
+        <div className="flex-1 flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16">
           <div className="flex-1 text-center lg:text-left max-w-xl">
             <div className="flex items-center justify-center lg:justify-start mb-6 gap-4">
               <img

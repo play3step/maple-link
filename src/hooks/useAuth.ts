@@ -5,7 +5,7 @@ import { fetchUserInfo } from '../apis/User/userController'
 import { useNavigate } from 'react-router-dom'
 
 export const useAuth = () => {
-  const { storeLogin, storeLoggout } = useAuthStore()
+  const { storeLogin, storeLogout } = useAuthStore()
   const nav = useNavigate()
 
   const userLogin = async () => {
@@ -13,8 +13,13 @@ export const useAuth = () => {
       const provider = new GoogleAuthProvider()
       const result = await signInWithPopup(authService, provider)
       const token = await result.user.getIdToken()
-      if (token) {
+
+      console.log(token)
+      console.log(result.user.uid)
+
+      if (token && result.user.uid) {
         storeLogin(token, result.user.uid)
+        fetchUserInfo(result.user.uid)
       }
     } catch (error) {
       console.log(error)
@@ -24,23 +29,11 @@ export const useAuth = () => {
   const userLogout = () => {
     signOut(authService)
       .then(() => {
-        storeLoggout()
+        storeLogout()
         nav('/')
       })
       .catch(error => console.error(error))
   }
 
-  const loadUserInfo = async () => {
-    const uid = localStorage.getItem('uid')
-    if (uid) {
-      try {
-        const userInfo = await fetchUserInfo(uid)
-        return userInfo
-      } catch (error) {
-        console.error('Fetch user info error:', error)
-      }
-    }
-  }
-
-  return { userLogin, userLogout, loadUserInfo }
+  return { userLogin, userLogout }
 }

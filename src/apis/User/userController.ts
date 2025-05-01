@@ -11,7 +11,6 @@ export const fetchUserInfo = async (uid: string) => {
       uid: uid
     })
     setUserInfo(response.data)
-    return response.data
   } catch (error) {
     console.error('Error fetching user info:', error)
     throw error

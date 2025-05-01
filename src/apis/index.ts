@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getToken } from '../store/authStore'
+import { useAuthStore } from '../store/authStore'
 export const API_KEY = import.meta.env.VITE_TEST_URL
 export const Nexon_KEY = import.meta.env.VITE_SERVER_URL
 export const Nexon = 'https://open.api.nexon.com'
@@ -11,7 +11,7 @@ export const basicApi = axios.create({
   timeout: DEFAULT_TIMEOUT,
   headers: {
     'Content-Type': 'application/json;charset=utf-8',
-    Authorization: getToken() ? `Bearer ${getToken()}` : ''
+    Authorization: `Bearer ${useAuthStore.getState().token}`
   }
 })
 

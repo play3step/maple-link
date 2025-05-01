@@ -6,17 +6,15 @@ import { useEffect } from 'react'
 import Logo from '../assets/logo.png'
 
 const Home = () => {
-  const { userLogin, loadUserInfo } = useAuth()
-  const { isloggedIn } = useAuthStore()
+  const { userLogin } = useAuth()
+  const { isLoggedIn } = useAuthStore()
   const nav = useNavigate()
 
   useEffect(() => {
-    if (isloggedIn) {
-      loadUserInfo().then(v =>
-        v?.nexonApiKey ? nav('/character') : nav('/character')
-      )
+    if (isLoggedIn) {
+      nav('/character')
     }
-  }, [isloggedIn, nav])
+  }, [isLoggedIn, nav])
 
   return (
     <div className="h-[100vh] bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 text-slate-800 relative overflow-hidden flex flex-col">
@@ -43,7 +41,7 @@ const Home = () => {
         </nav>
 
         {/* Hero Section */}
-        <div className="flex-1 flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16">
+        <div className="lg:flex-1 flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16">
           <div className="flex-1 text-center lg:text-left max-w-xl">
             <div className="flex items-center justify-center lg:justify-start mb-6 gap-4">
               <img

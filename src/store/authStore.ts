@@ -1,40 +1,21 @@
 import { create } from 'zustand'
 
 interface StoreState {
-  isloggedIn: boolean
+  token: string | null
+  uid: string | null
+  isLoggedIn: boolean
   storeLogin: (token: string, uid: string) => void
-  storeLoggout: () => void
-}
-
-export const getToken = () => localStorage.getItem('token')
-export const getUid = () => localStorage.getItem('uid')
-
-const setToken = (token: string) => {
-  localStorage.setItem('token', token)
-}
-
-const setUid = (uid: string) => {
-  localStorage.setItem('uid', uid)
-}
-
-export const removeToken = () => {
-  localStorage.removeItem('token')
-}
-
-export const removeUid = () => {
-  localStorage.removeItem('uid')
+  storeLogout: () => void
 }
 
 export const useAuthStore = create<StoreState>(set => ({
-  isloggedIn: getToken() && getUid() ? true : false,
+  token: null,
+  uid: null,
+  isLoggedIn: false,
   storeLogin: (token: string, uid: string) => {
-    set({ isloggedIn: true })
-    setToken(token)
-    setUid(uid)
+    set({ token, uid, isLoggedIn: true })
   },
-  storeLoggout: () => {
-    set({ isloggedIn: false })
-    removeToken()
-    removeUid()
+  storeLogout: () => {
+    set({ token: null, uid: null, isLoggedIn: false })
   }
 }))

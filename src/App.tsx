@@ -59,7 +59,7 @@ const router = createBrowserRouter([
     path: '/signup',
     element: (
       <ProtectedRoute>
-        <Layout>
+        <Layout hide>
           <Signup />
         </Layout>
       </ProtectedRoute>

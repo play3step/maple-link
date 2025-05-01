@@ -1,5 +1,8 @@
 export interface Inventory {
   item_equipment: Item[]
+  item_equipment_preset_1: Item[]
+  item_equipment_preset_2: Item[]
+  item_equipment_preset_3: Item[]
 }
 
 export interface Item {

@@ -1,15 +1,15 @@
-import { Inventory, Item } from '../../../types/item'
+import { Item } from '../../../types/item'
 import { Slot } from './Slot'
 
 interface Props {
-  inventory: Inventory
+  inventory: Item[]
   characterImg: string
   onSelected: (item: Item | undefined) => void
 }
 
 const ItemInventory = ({ inventory, characterImg, onSelected }: Props) => {
   const slotMap = Object.fromEntries(
-    inventory.item_equipment.map(item => [item.item_equipment_slot, item])
+    inventory.map(item => [item.item_equipment_slot, item])
   )
 
   const leftSlots = [

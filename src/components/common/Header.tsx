@@ -52,12 +52,12 @@ function Header() {
             className="hover:text-blue-600 font-medium transition-all">
             캘린더
           </Button>
-          <Button
+          {/* <Button
             scheme="subtle"
             size="small"
             className="hover:text-blue-600 font-medium transition-all">
             회의
-          </Button>
+          </Button> */}
           <Button
             scheme="subtle"
             size="small"

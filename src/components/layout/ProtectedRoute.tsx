@@ -26,5 +26,9 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     return <Navigate to="/character" />
   }
 
+  if (!isLoggedIn && location.pathname === '/signup') {
+    return <Navigate to="/" />
+  }
+
   return children
 }

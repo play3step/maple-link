@@ -7,12 +7,11 @@ import { useMemo, useState } from 'react'
 import { useModalStore } from '../store/modalStore'
 import { EventListModal } from '../components/modal/EventListModal'
 import { useUserNotice } from '../hooks/Calendar/useUserNotice'
+import { EventContentArg } from '@fullcalendar/core'
 
 const Calendar = () => {
   const { data, createUserNotice } = useUserNotice()
-
   const { events } = useNexonNotice()
-
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
 
   const totalEvent = useMemo(() => {
@@ -26,26 +25,57 @@ const Calendar = () => {
 
   const { activeModal, openModal } = useModalStore()
 
+  const renderEventContent = (eventInfo: EventContentArg) => {
+    const isNexonEvent = eventInfo.event.extendedProps.type === 'nexon'
+    const isStartEvent = eventInfo.event.title.includes('[시작]')
+
+    return (
+      <div
+        className={`
+        flex items-center gap-2 px-2 py-1 rounded-md w-full
+        ${
+          isNexonEvent
+            ? isStartEvent
+              ? 'bg-emerald-500 text-white'
+              : 'bg-red-500 text-white'
+            : 'bg-white border border-blue-300 text-slate-700'
+        }
+      `}>
+        {isNexonEvent && (
+          <span
+            className={`
+            w-2 h-2 rounded-full
+            ${isStartEvent ? 'bg-emerald-200' : 'bg-red-200'}
+          `}
+          />
+        )}
+        <p className="text-sm truncate">{eventInfo.event.title}</p>
+      </div>
+    )
+  }
+
   return (
     <div className="p-4 bg-white rounded-lg shadow-md">
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         locale={koLocale}
         key={totalEvent.length}
+        eventContent={renderEventContent}
         dayCellClassNames={() => [
           'hover:ring-2',
-          'hover:ring-red-400',
+          'hover:ring-blue-400',
           'rounded-md',
           'transition'
         ]}
+        eventClassNames={() => ['px-1', 'py-0.5']}
         initialView="dayGridMonth"
-        height="auto"
+        height={650}
+        dayMaxEvents={3}
         headerToolbar={{
           left: 'prev,next',
           center: 'title',
           right: 'today'
         }}
-        // dayMaxEventRows={4}
         events={totalEvent}
         eventClick={async info => {
           await setSelectedDate(info.event.startStr)

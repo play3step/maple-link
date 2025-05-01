@@ -5,26 +5,36 @@ import { addUserInfo } from '../apis/User/userController'
 import Title from '../components/common/Title'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
+import { useUserStore } from '../store/userStore'
 
 const Signup = () => {
   const [apikey, setApikey] = useState<string>('')
   const [isLoading, setIsLoading] = useState(false)
   const nav = useNavigate()
   const { userLogout } = useAuth()
+  const { userInfo } = useUserStore()
+
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
     if (!apikey.trim()) return
 
     setIsLoading(true)
     try {
-      await addUserInfo(apikey)
-      nav('/character')
+      const result = await addUserInfo(apikey)
+      if (result?.generatedApiKey) {
+        nav('/character')
+      }
     } catch (error) {
       console.error('API 키 등록 실패:', error)
     } finally {
       setIsLoading(false)
     }
+  }
+
+  // API 키가 이미 있으면 캐릭터 페이지로 리다이렉트
+  if (userInfo?.nexonApiKey) {
+    nav('/character')
+    return null
   }
 
   return (

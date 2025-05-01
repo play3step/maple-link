@@ -10,9 +10,16 @@ export const basicApi = axios.create({
   baseURL: API_KEY,
   timeout: DEFAULT_TIMEOUT,
   headers: {
-    'Content-Type': 'application/json;charset=utf-8',
-    Authorization: `Bearer ${useAuthStore.getState().token}`
+    'Content-Type': 'application/json;charset=utf-8'
   }
+})
+
+basicApi.interceptors.request.use(config => {
+  const token = useAuthStore.getState().token
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config
 })
 
 export const nexonApi = axios.create({

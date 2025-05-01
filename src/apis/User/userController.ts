@@ -3,14 +3,14 @@ import { useUserStore } from '../../store/userStore'
 
 import { User } from '../../types/auth'
 
-const { setUserInfo, updateUserInfo } = useUserStore.getState()
-
 export const fetchUserInfo = async (uid: string) => {
   try {
+    const { setUserInfo } = useUserStore.getState()
     const response = await basicApi.post<User>(`/api/user`, {
       uid: uid
     })
     setUserInfo(response.data)
+    return response.data
   } catch (error) {
     console.error('Error fetching user info:', error)
     throw error
@@ -19,12 +19,20 @@ export const fetchUserInfo = async (uid: string) => {
 
 export const addUserInfo = async (apiKey: string) => {
   try {
-    const { data: result } = await basicApi.post(`/api/user/apikey`, {
+    const { setUserInfo } = useUserStore.getState()
+    const response = await basicApi.post(`/api/user/apikey`, {
       apiKey: apiKey
     })
 
-    updateUserInfo({ nexonApiKey: result.generatedApiKey })
+    if (response.data) {
+      setUserInfo({
+        ...response.data,
+        nexonApiKey: response.data.generatedApiKey
+      })
+    }
+
+    return response.data
   } catch (error) {
-    console.error(error)
+    console.error('API 키 등록 실패:', error)
   }
 }

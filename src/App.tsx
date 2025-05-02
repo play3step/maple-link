@@ -11,7 +11,7 @@ import { PrivacyPolicy } from './pages/PrivacyPolicy'
 import { ApiGuide } from './pages/ApiGuide'
 import { Faq } from './pages/Faq'
 import { RoomList } from './pages/RoomList'
-
+import Room from './pages/Room'
 import { GuildPromotion } from './pages/GuildPromotion'
 const router = createBrowserRouter([
   {
@@ -59,7 +59,7 @@ const router = createBrowserRouter([
     )
   },
   {
-    path: '/roomList',
+    path: '/rooms',
     element: (
       <ProtectedRoute>
         <Layout>
@@ -69,7 +69,17 @@ const router = createBrowserRouter([
     )
   },
   {
-    path: '/guildPromotion',
+    path: '/room/:id',
+    element: (
+      <ProtectedRoute>
+        <Layout>
+          <Room />
+        </Layout>
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: '/promotion',
     element: (
       <ProtectedRoute>
         <Layout>

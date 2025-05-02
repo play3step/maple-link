@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom'
+import { useLocation, useSearchParams } from 'react-router-dom'
 import { QUERYSTRING } from '../../constants/querystring'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import {
@@ -10,10 +10,17 @@ import { Guild, MemberData } from '../../types/guild'
 export const useGuildMember = () => {
   const queryClient = useQueryClient()
   const { search } = useLocation()
+  const [searchParams, setSearchParams] = useSearchParams()
   const params = new URLSearchParams(search)
 
   const view = params.get(QUERYSTRING.VIEW) || '내기록'
   const guildName = params.get(QUERYSTRING.GUILD)
+
+  const setView = (newView: string) => {
+    const newParams = new URLSearchParams(searchParams)
+    newParams.set(QUERYSTRING.VIEW, newView)
+    setSearchParams(newParams)
+  }
 
   const guildList = queryClient.getQueryData<Guild[]>(['guilds'])
 
@@ -53,5 +60,5 @@ export const useGuildMember = () => {
         }
       : undefined
 
-  return { nexonMembers, recordedMembers, selectMember, view }
+  return { nexonMembers, recordedMembers, selectMember, view, setView }
 }

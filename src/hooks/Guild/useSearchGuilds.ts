@@ -28,9 +28,12 @@ export const useSearchGuilds = () => {
   const createGuild = async (worldName: string, guildName: string) => {
     try {
       if (!worldName || !guildName) return
-      await addGuildList({ world_name: worldName, guild_name: guildName })
-    } catch (error) {
-      console.error('길드 생성 에러:', error)
+      return await addGuildList({
+        world_name: worldName,
+        guild_name: guildName
+      })
+    } catch {
+      return alert('존재하지 않는 길드입니다.')
     }
   }
 

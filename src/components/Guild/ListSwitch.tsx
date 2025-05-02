@@ -1,42 +1,39 @@
-import { useEffect, useState } from 'react'
-import Button from '../common/Button'
-import { useSearchParams } from 'react-router-dom'
-import { QUERYSTRING } from '../../constants/querystring'
+import { useGuildMember } from '../../hooks/Guild/useGuildMember'
+import { IoPersonOutline, IoDocumentTextOutline } from 'react-icons/io5'
 
 export const ListSwitch = () => {
-  const [selected, setSelected] = useState('길드정보')
-  const [searchParams, setSearchParams] = useSearchParams()
-  const handleSwitch = (value: string) => {
-    const newSearchParams = new URLSearchParams(searchParams)
-    if (value === null) {
-      newSearchParams.delete(QUERYSTRING.VIEW)
-    } else {
-      newSearchParams.set(QUERYSTRING.VIEW, value)
-    }
-    setSearchParams(newSearchParams)
-    setSelected(value)
-  }
-
-  useEffect(() => {
-    if (!searchParams.get(QUERYSTRING.VIEW)) {
-      handleSwitch('길드정보')
-    }
-  }, [searchParams])
+  const { view, setView } = useGuildMember()
 
   return (
-    <div className="flex gap-2">
-      <Button
-        onClick={() => handleSwitch('길드정보')}
-        size="small"
-        scheme={selected === '길드정보' ? 'solid' : 'outlined'}>
-        길드 정보
-      </Button>
-      <Button
-        onClick={() => handleSwitch('내기록')}
-        size="small"
-        scheme={selected === '내기록' ? 'solid' : 'outlined'}>
-        내 기록
-      </Button>
+    <div className="bg-gray-100 p-1 rounded-lg flex gap-1">
+      <button
+        onClick={() => setView('길드정보')}
+        className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all ${
+          view === '길드정보'
+            ? 'bg-white text-blue-600 shadow-sm'
+            : 'text-gray-600 hover:text-gray-900'
+        }`}>
+        <IoPersonOutline
+          className={`text-lg ${
+            view === '길드정보' ? 'text-blue-600' : 'text-gray-500'
+          }`}
+        />
+        <span className="text-sm font-medium">길드정보</span>
+      </button>
+      <button
+        onClick={() => setView('내기록')}
+        className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all ${
+          view === '내기록'
+            ? 'bg-white text-blue-600 shadow-sm'
+            : 'text-gray-600 hover:text-gray-900'
+        }`}>
+        <IoDocumentTextOutline
+          className={`text-lg ${
+            view === '내기록' ? 'text-blue-600' : 'text-gray-500'
+          }`}
+        />
+        <span className="text-sm font-medium">내기록</span>
+      </button>
     </div>
   )
 }

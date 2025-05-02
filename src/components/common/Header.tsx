@@ -41,7 +41,7 @@ function Header() {
           <Button
             scheme="subtle"
             size="small"
-            onClick={() => nav('/roomList')}
+            onClick={() => nav('/rooms')}
             className="hover:text-blue-600 font-medium transition-all">
             길드관리
           </Button>
@@ -55,7 +55,7 @@ function Header() {
           <Button
             scheme="subtle"
             size="small"
-            onClick={() => nav('/guildPromotion')}
+            onClick={() => nav('/promotion')}
             className="hover:text-blue-600 font-medium transition-all">
             길드 홍보
           </Button>
@@ -124,7 +124,7 @@ function Header() {
             scheme="subtle"
             size="small"
             onClick={() => {
-              nav('/roomList')
+              nav('/rooms')
               setMobileMenuOpen(false)
             }}
             className="w-full text-left py-2 hover:bg-blue-50 rounded-lg">
@@ -144,7 +144,7 @@ function Header() {
             scheme="subtle"
             size="small"
             onClick={() => {
-              nav('/guildPromotion')
+              nav('/promotion')
               setMobileMenuOpen(false)
             }}
             className="w-full text-left py-2 hover:bg-blue-50 rounded-lg">

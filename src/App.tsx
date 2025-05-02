@@ -10,7 +10,8 @@ import Calendar from './pages/Calendar'
 
 import { ApiGuide } from './pages/ApiGuide'
 import { Faq } from './pages/Faq'
-import { GuildList } from './pages/GuildList'
+import { RoomList } from './pages/RoomList'
+
 import { GuildPromotion } from './pages/GuildPromotion'
 const router = createBrowserRouter([
   {
@@ -48,11 +49,11 @@ const router = createBrowserRouter([
     )
   },
   {
-    path: '/guildList',
+    path: '/roomList',
     element: (
       <ProtectedRoute>
         <Layout>
-          <GuildList />
+          <RoomList />
         </Layout>
       </ProtectedRoute>
     )

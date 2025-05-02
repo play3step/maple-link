@@ -41,7 +41,7 @@ function Header() {
           <Button
             scheme="subtle"
             size="small"
-            onClick={() => nav('/guildList')}
+            onClick={() => nav('/roomList')}
             className="hover:text-blue-600 font-medium transition-all">
             길드관리
           </Button>

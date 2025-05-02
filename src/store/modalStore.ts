@@ -6,6 +6,7 @@ export type ModalType =
   | 'detailMember'
   | 'eventList'
   | 'createPromotion'
+  | 'createRoom'
   | null
 
 interface StoreState {

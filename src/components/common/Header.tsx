@@ -124,7 +124,7 @@ function Header() {
             scheme="subtle"
             size="small"
             onClick={() => {
-              nav('/guild')
+              nav('/roomList')
               setMobileMenuOpen(false)
             }}
             className="w-full text-left py-2 hover:bg-blue-50 rounded-lg">

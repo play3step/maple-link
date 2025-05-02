@@ -1,4 +1,5 @@
 import Logo from '../../assets/logo.png'
+import { Link } from 'react-router-dom'
 
 function Footer() {
   return (
@@ -13,15 +14,15 @@ function Footer() {
       </div>
       <div className="flex flex-col sm:flex-row items-center gap-4">
         <a
-          href="#"
+          href="mailto:danbi5190@gmail.com"
           className="text-sm text-gray-600 hover:text-blue-600 transition-all">
-          이용약관
+          문의하기 : danbi5190@gmail.com
         </a>
-        <a
-          href="#"
+        <Link
+          to="/privacy"
           className="text-sm text-gray-600 hover:text-blue-600 transition-all">
           개인정보처리방침
-        </a>
+        </Link>
         <p className="text-sm text-gray-500">by 루나@단뱅</p>
       </div>
     </footer>

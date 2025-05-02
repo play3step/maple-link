@@ -7,7 +7,7 @@ import { ProtectedRoute } from './components/layout/ProtectedRoute'
 import Signup from './pages/Signup'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Calendar from './pages/Calendar'
-
+import { PrivacyPolicy } from './pages/PrivacyPolicy'
 import { ApiGuide } from './pages/ApiGuide'
 import { Faq } from './pages/Faq'
 import { RoomList } from './pages/RoomList'
@@ -36,6 +36,16 @@ const router = createBrowserRouter([
       <Layout hide>
         <Faq />
       </Layout>
+    )
+  },
+  {
+    path: '/privacy',
+    element: (
+      <ProtectedRoute>
+        <Layout>
+          <PrivacyPolicy />
+        </Layout>
+      </ProtectedRoute>
     )
   },
   {

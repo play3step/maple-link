@@ -143,6 +143,17 @@ function Header() {
           <Button
             scheme="subtle"
             size="small"
+            onClick={() => {
+              nav('/guildPromotion')
+              setMobileMenuOpen(false)
+            }}
+            className="w-full text-left py-2 hover:bg-blue-50 rounded-lg">
+            길드 홍보
+          </Button>
+
+          <Button
+            scheme="subtle"
+            size="small"
             className="w-full text-left py-2 hover:bg-blue-50 rounded-lg">
             회의
           </Button>

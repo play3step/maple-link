@@ -41,7 +41,7 @@ function Header() {
           <Button
             scheme="subtle"
             size="small"
-            onClick={() => nav('/guild')}
+            onClick={() => nav('/guildList')}
             className="hover:text-blue-600 font-medium transition-all">
             길드관리
           </Button>
@@ -52,12 +52,20 @@ function Header() {
             className="hover:text-blue-600 font-medium transition-all">
             캘린더
           </Button>
-          {/* <Button
+          <Button
+            scheme="subtle"
+            size="small"
+            onClick={() => nav('/guildPromotion')}
+            className="hover:text-blue-600 font-medium transition-all">
+            길드 홍보
+          </Button>
+          <Button
             scheme="subtle"
             size="small"
             className="hover:text-blue-600 font-medium transition-all">
             회의
-          </Button> */}
+          </Button>
+
           <Button
             scheme="subtle"
             size="small"

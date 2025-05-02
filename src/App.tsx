@@ -1,15 +1,17 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Home from './pages/Home'
-import Guild from './pages/Guild'
+
 import Layout from './components/layout/Layout'
 import Character from './pages/Character'
 import { ProtectedRoute } from './components/layout/ProtectedRoute'
 import Signup from './pages/Signup'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Calendar from './pages/Calendar'
+
 import { ApiGuide } from './pages/ApiGuide'
 import { Faq } from './pages/Faq'
-
+import { GuildList } from './pages/GuildList'
+import { GuildPromotion } from './pages/GuildPromotion'
 const router = createBrowserRouter([
   {
     path: '/',
@@ -46,11 +48,21 @@ const router = createBrowserRouter([
     )
   },
   {
-    path: '/guild',
+    path: '/guildList',
     element: (
       <ProtectedRoute>
         <Layout>
-          <Guild />
+          <GuildList />
+        </Layout>
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: '/guildPromotion',
+    element: (
+      <ProtectedRoute>
+        <Layout>
+          <GuildPromotion />
         </Layout>
       </ProtectedRoute>
     )

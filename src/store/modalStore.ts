@@ -7,6 +7,7 @@ export type ModalType =
   | 'eventList'
   | 'createPromotion'
   | 'createRoom'
+  | 'addCharacter'
   | null
 
 interface StoreState {

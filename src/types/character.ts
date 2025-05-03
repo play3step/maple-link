@@ -49,3 +49,11 @@ export interface CharacterBasic {
   character_image: string
   character_date_create: string
 }
+
+export interface CharacterSearch {
+  character_name: string
+  world_name: string
+  character_class: string
+  character_level: string
+  character_image: string
+}

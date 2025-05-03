@@ -5,7 +5,7 @@ import { IoSearch, IoClose } from 'react-icons/io5'
 import { Loading } from '../common/Loading'
 import { searchCharacter } from '../../apis/Character/characterController'
 import { CharacterSearch } from '../../types/character'
-
+import { addGuildMember } from '../../apis/Guild/guildController'
 export const AddCharacterModal = () => {
   const { closeModal } = useModalStore()
   const [searchName, setSearchName] = useState('')
@@ -14,7 +14,8 @@ export const AddCharacterModal = () => {
   const [selectedCharacter, setSelectedCharacter] =
     useState<CharacterSearch | null>(null)
 
-  const handleSearch = async () => {
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault()
     if (!searchName.trim()) return
     setIsLoading(true)
     try {
@@ -38,9 +39,11 @@ export const AddCharacterModal = () => {
     }
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    handleSearch()
+  const handleAddCharacter = () => {
+    if (selectedCharacter) {
+      addGuildMember(selectedCharacter.character_name, 1)
+      closeModal()
+    }
   }
 
   return (
@@ -62,7 +65,7 @@ export const AddCharacterModal = () => {
         </div>
 
         <form
-          onSubmit={handleSubmit}
+          onSubmit={handleSearch}
           className="mb-6">
           <div className="relative">
             <input
@@ -132,9 +135,7 @@ export const AddCharacterModal = () => {
           <button
             type="button"
             disabled={!selectedCharacter}
-            onClick={() => {
-              closeModal()
-            }}
+            onClick={handleAddCharacter}
             className="flex-1 px-4 py-2.5 bg-blue-500 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-600">
             추가하기
           </button>

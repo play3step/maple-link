@@ -44,3 +44,27 @@ export const fetchDetectGuildMembers = async (guildId: number) => {
   )
   return response.data
 }
+
+//길드 멤버 기록 추가
+export const addGuildMember = async (
+  characterName: string,
+  guildId: number
+) => {
+  const response = await basicApi.post(`/api/guild-member/${guildId}`, {
+    characterName
+  })
+  return response.data.message
+}
+
+//길드 멤버 기록 삭제
+export const deleteGuildMember = async (
+  characterName: string,
+  guildId: number
+) => {
+  const response = await basicApi.delete(`/api/guild-member/${guildId}`, {
+    params: {
+      characterName: characterName
+    }
+  })
+  return response.data.message
+}

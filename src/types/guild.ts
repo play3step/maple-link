@@ -32,14 +32,15 @@ export interface SearchGuild {
 }
 
 export interface NexonMembers {
-  guildId: string
+  guildId: number
   guildName: string
-  worldName?: string
   guildMasterName?: string
   memberDetailResponse?: Member[]
 }
 
 export interface RecordedMembers {
+  guildId: number
+  guildName: string
   addMembers: Member[]
 }
 
@@ -47,6 +48,7 @@ export interface MemberData {
   guildId?: string
   members: Member[]
   masterName?: string
+  guildName?: string
 }
 
 export interface Member {

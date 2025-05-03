@@ -76,6 +76,7 @@ const Room = () => {
                 <MemberContainer
                   members={selectMember?.members}
                   masterName={selectMember?.masterName}
+                  guildName={selectMember?.guildName}
                   onSelect={handleMemberSelect}
                 />
               ) : guildList.length > 0 && view === '내기록' ? (

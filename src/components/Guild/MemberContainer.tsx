@@ -4,12 +4,14 @@ interface MemberContainerProps {
   members?: Member[]
   masterName?: string
   onSelect?: (member: Member) => void
+  guildName?: string
 }
 
 export const MemberContainer = ({
   members,
   masterName,
-  onSelect
+  onSelect,
+  guildName
 }: MemberContainerProps) => {
   if (!members) return null
 
@@ -18,7 +20,7 @@ export const MemberContainer = ({
       {masterName && (
         <div className="p-4 bg-gradient-to-r from-blue-500 to-blue-600">
           <h2 className="text-white text-lg font-semibold">
-            길드마스터: {masterName}
+            길드: {guildName}
           </h2>
         </div>
       )}

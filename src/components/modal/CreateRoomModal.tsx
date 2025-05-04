@@ -8,7 +8,7 @@ export const CreateRoomModal = () => {
   const [guildName, setGuildName] = useState('')
   const [guildWorld, setGuildWorld] = useState('')
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (!roomNameRef.current?.value) {
       alert('방 이름을 입력해주세요')
       return
@@ -17,7 +17,9 @@ export const CreateRoomModal = () => {
       alert('길드를 선택해주세요')
       return
     }
-    createRoom(roomNameRef.current?.value, guildName, guildWorld)
+    await createRoom(roomNameRef.current?.value, guildName, guildWorld)
+
+    alert('관리방이 생성되었습니다')
   }
 
   return (

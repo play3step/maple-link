@@ -1,8 +1,9 @@
 import { createRoomList, getRoomList } from '../../apis/Guild/roomController'
-import { Rooms } from '../../types/Rooms'
+import { Room } from '../../types/Rooms'
 import { useState, useEffect } from 'react'
+
 export const useRoom = () => {
-  const [roomList, setRoomList] = useState<Rooms>()
+  const [roomList, setRoomList] = useState<Room[]>([])
 
   const fetchRoomList = async () => {
     const response = await getRoomList()
@@ -17,6 +18,7 @@ export const useRoom = () => {
     guildWorld: string
   ) => {
     await createRoomList(groupName, guildName, guildWorld)
+    fetchRoomList()
   }
 
   useEffect(() => {

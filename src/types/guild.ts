@@ -44,13 +44,6 @@ export interface RecordedMembers {
   addMembers: Member[]
 }
 
-export interface MemberData {
-  guildId?: string
-  members: Member[]
-  masterName?: string
-  guildName?: string
-}
-
 export interface Member {
   imagePath: string
   job: string

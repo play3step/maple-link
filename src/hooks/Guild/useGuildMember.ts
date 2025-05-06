@@ -1,11 +1,8 @@
 import { useLocation, useSearchParams } from 'react-router-dom'
 import { QUERYSTRING } from '../../constants/querystring'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import {
-  fetchNexonGuildMembers,
-  fetchRecordedGuildMembers
-} from '../../apis/Guild/guildController'
-import { Guild, MemberData } from '../../types/guild'
+import { fetchNexonGuildMembers } from '../../apis/Guild/guildController'
+import { Guild, NexonMembers } from '../../types/guild'
 
 export const useGuildMember = () => {
   const queryClient = useQueryClient()
@@ -25,7 +22,7 @@ export const useGuildMember = () => {
   const guildList = queryClient.getQueryData<Guild[]>(['guilds'])
 
   const isRecorded = view === '내기록'
-  const isNexon = view === '길드정보'
+  // const isNexon = view === '길드정보'
 
   //nexon 멤버 조회
   const { data: nexonMembers } = useQuery({
@@ -35,49 +32,36 @@ export const useGuildMember = () => {
         guildList?.map(v => fetchNexonGuildMembers(Number(v.guildId))) || []
       ),
     staleTime: 1000 * 60 * 10,
-    enabled: isNexon
-  })
-
-  //내 기록 멤버 조회
-  const { data: recordedMembers } = useQuery({
-    queryKey: ['recordedMembers', 'recorded', params],
-    queryFn: () =>
-      Promise.all(
-        guildList?.map(v => fetchRecordedGuildMembers(Number(v.guildId))) || []
-      ),
-    staleTime: 1000 * 60 * 10,
     enabled: isRecorded
   })
 
-  //선택된 멤버 조회
-  const selectMember: MemberData | undefined = isRecorded
-    ? recordedMembers?.find(v => v.guildName === guildName)
+  // //내 기록 멤버 조회
+  // const { data: recordedMembers } = useQuery({
+  //   queryKey: ['recordedMembers', 'recorded', params],
+  //   queryFn: () =>
+  //     Promise.all(
+  //       guildList?.map(v => fetchRecordedGuildMembers(Number(v.guildId))) || []
+  //     ),
+  //   staleTime: 1000 * 60 * 10,
+  //   enabled: isRecorded
+  // })
+
+  // 선택된 길드
+  const selectMember: NexonMembers | undefined = isRecorded
+    ? nexonMembers?.find(v => v.guildName === guildName)
       ? {
-          guildId: recordedMembers
-            .find(v => v.guildName === guildName)
-            ?.guildId?.toString(),
-          members:
-            recordedMembers.find(v => v.guildName === guildName)?.addMembers ??
-            [],
-          guildName:
-            recordedMembers.find(v => v.guildName === guildName)?.guildName ??
-            ''
-        }
-      : undefined
-    : nexonMembers?.find(v => v.guildName === guildName)
-      ? {
-          guildId: nexonMembers
-            .find(v => v.guildName === guildName)
-            ?.guildId?.toString(),
+          guildId:
+            nexonMembers.find(v => v.guildName === guildName)?.guildId ?? 0,
           guildName:
             nexonMembers.find(v => v.guildName === guildName)?.guildName ?? '',
-          members:
+          memberDetailResponse:
             nexonMembers.find(v => v.guildName === guildName)
               ?.memberDetailResponse ?? [],
-          masterName: nexonMembers.find(v => v.guildName === guildName)
+          guildMasterName: nexonMembers.find(v => v.guildName === guildName)
             ?.guildMasterName
         }
       : undefined
+    : undefined
 
-  return { nexonMembers, recordedMembers, selectMember, view, setView }
+  return { nexonMembers, selectMember, view, setView }
 }

@@ -72,22 +72,13 @@ const Room = () => {
 
           <div className="p-6">
             <div className="min-h-[600px]">
-              {guildList.length > 0 && view === '길드정보' ? (
+              {guildList.length > 0 && view === '내기록' ? (
                 <MemberContainer
-                  members={selectMember?.members}
-                  masterName={selectMember?.masterName}
+                  members={selectMember?.memberDetailResponse}
+                  masterName={selectMember?.guildMasterName}
                   guildName={selectMember?.guildName}
                   onSelect={handleMemberSelect}
                 />
-              ) : guildList.length > 0 && view === '내기록' ? (
-                selectMember && selectMember.members.length > 0 ? (
-                  <MemberContainer
-                    members={selectMember.members}
-                    onSelect={handleMemberSelect}
-                  />
-                ) : (
-                  <Empty text="등록된 길드원이 없습니다" />
-                )
               ) : (
                 <Empty text="길드를 선택해주세요" />
               )}

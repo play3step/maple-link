@@ -19,7 +19,7 @@ const Room = () => {
   const { activeModal, openModal } = useModalStore()
   const navigate = useNavigate()
   const { guildList } = useGuildsList()
-  const { nexonMembers, selectMember, view } = useGuildMember()
+  const { nexonMembers, selectMember } = useGuildMember()
   const [selectedMember, setSelectedMember] = useState<Member>()
 
   const showModal = (name: ModalType) => {
@@ -53,9 +53,7 @@ const Room = () => {
           </button>
           <div>
             <h1 className="text-2xl font-bold text-gray-900">길드 관리</h1>
-            <p className="text-sm text-gray-600 mt-1">
-              {view === '길드정보' ? '길드원 정보 관리' : '내 기록 관리'}
-            </p>
+            <p className="text-sm text-gray-600 mt-1">길드원 정보 관리</p>
           </div>
         </div>
 
@@ -72,7 +70,7 @@ const Room = () => {
 
           <div className="p-6">
             <div className="min-h-[600px]">
-              {guildList.length > 0 && view === '내기록' ? (
+              {guildList.length > 0 ? (
                 <MemberContainer
                   members={selectMember?.memberDetailResponse}
                   masterName={selectMember?.guildMasterName}

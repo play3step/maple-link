@@ -11,8 +11,8 @@ import { PiGameControllerDuotone } from 'react-icons/pi'
 
 interface Props {
   member: Member
-  guildList: Guild[]
-  guildInfo: NexonMembers[]
+  guildList?: Guild[]
+  memberList?: NexonMembers[]
 }
 
 export const DetailMemberModal = ({ member, guildList, guildInfo }: Props) => {

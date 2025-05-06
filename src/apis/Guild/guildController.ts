@@ -26,6 +26,7 @@ export const fetchNexonGuildMembers = async (guildId: number) => {
   const response = await basicApi.get<NexonMembers>(
     `/api/guilds/${guildId}/members`
   )
+
   return response.data
 }
 

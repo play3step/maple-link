@@ -21,8 +21,7 @@ export const useGuildMember = () => {
 
   const guildList = queryClient.getQueryData<Guild[]>(['guilds'])
 
-  const isRecorded = view === '내기록'
-  // const isNexon = view === '길드정보'
+  const isNexon = view === '길드정보'
 
   //nexon 멤버 조회
   const { data: nexonMembers } = useQuery({
@@ -32,7 +31,7 @@ export const useGuildMember = () => {
         guildList?.map(v => fetchNexonGuildMembers(Number(v.guildId))) || []
       ),
     staleTime: 1000 * 60 * 10,
-    enabled: isRecorded
+    enabled: isNexon
   })
 
   // //내 기록 멤버 조회
@@ -47,7 +46,7 @@ export const useGuildMember = () => {
   // })
 
   // 선택된 길드
-  const selectMember: NexonMembers | undefined = isRecorded
+  const selectMember: NexonMembers | undefined = isNexon
     ? nexonMembers?.find(v => v.guildName === guildName)
       ? {
           guildId:

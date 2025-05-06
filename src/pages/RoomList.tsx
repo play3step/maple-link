@@ -65,7 +65,7 @@ export const RoomList = () => {
 
               <div className="flex gap-3">
                 <button
-                  onClick={() => navigate(`/room/${room.mainGuild.guildId}`)}
+                  onClick={() => navigate(`/room/${room.adminId}`)}
                   className="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2.5 rounded-lg font-medium transition-colors text-sm">
                   관리방 입장
                 </button>

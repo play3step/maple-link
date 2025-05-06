@@ -91,8 +91,7 @@ const Room = () => {
       )}
       {activeModal === 'detailMember' && selectedMember && nexonMembers && (
         <DetailMemberModal
-          member={selectedMember}
-          guildList={guildList}
+          memberDetail={selectedMember}
           memberList={nexonMembers}
         />
       )}

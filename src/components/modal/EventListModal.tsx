@@ -1,4 +1,5 @@
 import { CalendarType } from '../../types/notice'
+import Button from '../common/Button'
 import InputText from '../common/InputText'
 import ModalLayout from './ModalLayout'
 import nexonIcon from '../../assets/nexon.webp'
@@ -49,7 +50,7 @@ export const EventListModal = ({
           size={24}
         />
       }
-      onSubmit={inputValue.trim() ? handleSubmit : undefined}>
+      showFooterButtons={false}>
       <div className="container mx-auto max-w-5xl">
         <div className="min-h-[calc(100vh-200px)] overflow-y-auto">
           {list.length > 0 ? (
@@ -123,17 +124,25 @@ export const EventListModal = ({
         </div>
 
         <div className="sticky bottom-0 bg-white pt-4 border-t border-slate-200">
-          <InputText
-            value={inputValue}
-            onChange={e => setInputValue(e.target.value)}
-            placeholder="새로운 일정을 입력하세요"
-            className="w-full"
-            onKeyDown={async e => {
-              if (e.key === 'Enter') {
-                await handleSubmit()
-              }
-            }}
-          />
+          <div className="flex gap-2">
+            <InputText
+              value={inputValue}
+              onChange={e => setInputValue(e.target.value)}
+              placeholder="새로운 일정을 입력하세요"
+              className="flex-1"
+              onKeyDown={async e => {
+                if (e.key === 'Enter') {
+                  await handleSubmit()
+                }
+              }}
+            />
+            <Button
+              size="small"
+              scheme="solid"
+              onClick={handleSubmit}>
+              추가
+            </Button>
+          </div>
         </div>
       </div>
     </ModalLayout>

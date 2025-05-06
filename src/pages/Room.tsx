@@ -87,7 +87,7 @@ const Room = () => {
 
       {activeModal === 'createGuild' && <CreateGuildModal />}
       {activeModal === 'detectMember' && (
-        <DetectMemberModal guildId={Number(selectMember?.guildId)} />
+        <DetectMemberModal guildId={selectMember?.guildId} />
       )}
       {activeModal === 'detailMember' && selectedMember && nexonMembers && (
         <DetailMemberModal

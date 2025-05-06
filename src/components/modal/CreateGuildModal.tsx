@@ -4,7 +4,8 @@ import { IoAdd } from 'react-icons/io5'
 import { useModalStore } from '../../store/modalStore'
 import { useSearchGuilds } from '../../hooks/Guild/useSearchGuilds'
 import { SelectGuildForm } from './SelectGuildForm'
-
+import { useParams } from 'react-router-dom'
+import { addGuildToRoom } from '../../apis/Guild/roomController'
 export const CreateGuildModal = () => {
   const { closeModal } = useModalStore()
   const [guildName, setGuildName] = useState('')
@@ -13,15 +14,18 @@ export const CreateGuildModal = () => {
 
   const { createGuild } = useSearchGuilds()
 
+  const { adminId } = useParams<{ adminId: string }>()
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     const res = await createGuild(guildWorld, guildName)
-    if (res) {
-      alert(res)
+    if (res.guildId && adminId) {
+      await addGuildToRoom(Number(adminId), res.guildId)
       setIsLoading(false)
       closeModal()
     } else {
+      alert(res.message)
       setIsLoading(false)
     }
   }

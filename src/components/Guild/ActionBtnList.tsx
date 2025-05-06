@@ -6,8 +6,8 @@ import { useEffect, useState, useRef } from 'react'
 import {
   IoAdd,
   IoGitCompare,
-  IoChevronDown,
-  IoPersonAdd
+  IoChevronDown
+  // IoPersonAdd
 } from 'react-icons/io5'
 
 interface Props {
@@ -75,9 +75,7 @@ export const ActionBtnList = ({ showModal, guildList }: Props) => {
                 onClick={() => setIsOpen(!isOpen)}
                 className="w-full flex items-center justify-between sm:justify-start gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700">
                 {selectedGuild ? (
-                  <span className="truncate">
-                    {selectedGuild.worldName} - {selectedGuild.guildName}
-                  </span>
+                  <span className="truncate">{selectedGuild.guildName}</span>
                 ) : (
                   <span>길드 선택</span>
                 )}
@@ -92,14 +90,14 @@ export const ActionBtnList = ({ showModal, guildList }: Props) => {
                 <div className="absolute left-0 mt-2 w-full sm:w-56 bg-white rounded-lg shadow-lg border border-gray-100 py-1 z-10">
                   {guildList.map(guild => (
                     <button
-                      key={`${guild.worldName}-${guild.guildName}`}
+                      key={`${guild.guildName}`}
                       onClick={() => {
                         handleSwitch(guild.guildName || '')
                         setSelectedGuild(guild)
                         setIsOpen(false)
                       }}
                       className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 truncate">
-                      {guild.worldName} - {guild.guildName}
+                      {guild.guildName}
                     </button>
                   ))}
                 </div>
@@ -107,13 +105,13 @@ export const ActionBtnList = ({ showModal, guildList }: Props) => {
             </div>
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
-              <button
+              {/* <button
                 onClick={() => showModal('addCharacter')}
                 className="flex items-center justify-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700"
                 title="캐릭터 추가">
                 <IoPersonAdd className="text-lg text-blue-500" />
                 <span className="sm:hidden md:inline">캐릭터 추가</span>
-              </button>
+              </button> */}
 
               <button
                 onClick={() => showModal('detectMember')}

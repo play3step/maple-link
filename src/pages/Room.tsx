@@ -13,7 +13,7 @@ import { useState } from 'react'
 import { Member } from '../types/guild'
 import { IoArrowBack } from 'react-icons/io5'
 import { useNavigate } from 'react-router-dom'
-import { AddCharacterModal } from '../components/modal/AddCharacterModal'
+// import { AddCharacterModal } from '../components/modal/AddCharacterModal'
 
 const Room = () => {
   const { activeModal, openModal } = useModalStore()
@@ -95,7 +95,7 @@ const Room = () => {
           memberList={nexonMembers}
         />
       )}
-      {activeModal === 'addCharacter' && <AddCharacterModal />}
+      {/* {activeModal === 'addCharacter' && <AddCharacterModal />} */}
     </div>
   )
 }

@@ -15,7 +15,7 @@ export const useGuildMember = () => {
 
   //nexon 멤버 조회
   const { data: nexonMembers } = useQuery({
-    queryKey: ['nexonMembers'],
+    queryKey: ['nexonMembers', guildName],
     queryFn: () =>
       Promise.all(
         guildList?.map(v => fetchNexonGuildMembers(Number(v.guildId))) || []

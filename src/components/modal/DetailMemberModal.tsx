@@ -1,21 +1,18 @@
 import { useState } from 'react'
-import { Guild, NexonMembers, Member } from '../../types/guild'
+import { Member } from '../../types/guild'
 import ModalLayout from './ModalLayout'
 import {
-  IoPersonCircleOutline,
   IoSettingsOutline,
-  IoSaveOutline
+  IoSaveOutline,
+  IoPersonCircleOutline
 } from 'react-icons/io5'
 import { MdOutlineDescription } from 'react-icons/md'
-import { PiGameControllerDuotone } from 'react-icons/pi'
 
 interface Props {
   member: Member
-  guildList?: Guild[]
-  memberList?: NexonMembers[]
 }
 
-export const DetailMemberModal = ({ member, guildList, guildInfo }: Props) => {
+export const DetailMemberModal = ({ member }: Props) => {
   const [isEditMode, setIsEditMode] = useState(false)
   const [description, setDescription] = useState('')
   const [selectedTab, setSelectedTab] = useState<'info' | 'alts' | 'notes'>(
@@ -84,22 +81,10 @@ export const DetailMemberModal = ({ member, guildList, guildInfo }: Props) => {
       case 'alts':
         return (
           <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <h4 className="text-lg font-semibold flex items-center gap-2">
-                <PiGameControllerDuotone className="text-blue-500" />
-                부캐릭터 목록
-              </h4>
-              {isEditMode && (
-                <button className="text-sm text-blue-500 hover:text-blue-600">
-                  + 부캐릭터 추가
-                </button>
-              )}
-            </div>
-            <div className="space-y-2">
-              <div className="text-gray-500 text-center py-8">
-                등록된 부캐릭터가 없습니다.
-              </div>
-            </div>
+            <h4 className="text-lg font-semibold">부캐릭터</h4>
+            <p className="text-gray-500 text-center py-8">
+              등록된 부캐릭터가 없습니다.
+            </p>
           </div>
         )
       case 'notes':
@@ -124,7 +109,11 @@ export const DetailMemberModal = ({ member, guildList, guildInfo }: Props) => {
   }
 
   return (
-    <ModalLayout size="small">
+    <ModalLayout
+      size="small"
+      title={member.name}
+      description={`${member.job} • Lv.${member.level}`}
+      onSubmit={isEditMode ? handleSave : undefined}>
       <div className="flex flex-col h-full">
         <div className="flex items-center justify-between mb-6">
           <div className="flex gap-4">
@@ -157,7 +146,7 @@ export const DetailMemberModal = ({ member, guildList, guildInfo }: Props) => {
             </button>
           </div>
           <button
-            onClick={() => (isEditMode ? handleSave() : setIsEditMode(true))}
+            onClick={() => setIsEditMode(!isEditMode)}
             className="flex items-center gap-1 text-sm text-gray-600 hover:text-blue-600 transition-colors">
             {isEditMode ? (
               <>

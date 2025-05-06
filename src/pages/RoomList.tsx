@@ -7,10 +7,10 @@ import { Loading } from '../components/common/Loading'
 
 export const RoomList = () => {
   const { openModal, activeModal } = useModalStore()
-  const { roomList } = useRoom()
+  const { rooms } = useRoom()
   const navigate = useNavigate()
 
-  if (!roomList) {
+  if (!rooms) {
     return (
       <div className="w-full h-screen flex items-center justify-center bg-gray-50">
         <Loading
@@ -36,7 +36,7 @@ export const RoomList = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-        {roomList.map(room => (
+        {rooms.map(room => (
           <div
             key={room.adminId}
             className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">

@@ -33,7 +33,7 @@ export const ActionBtnList = ({ showModal, guildList }: Props) => {
 
   useEffect(() => {
     if (!searchParams.get(QUERYSTRING.GUILD) && guildList.length > 0) {
-      handleSwitch(guildList[0].guildName)
+      handleSwitch(guildList[0].guildName || '')
       setSelectedGuild(guildList[0])
     } else {
       const currentGuild = guildList.find(
@@ -94,7 +94,7 @@ export const ActionBtnList = ({ showModal, guildList }: Props) => {
                     <button
                       key={`${guild.worldName}-${guild.guildName}`}
                       onClick={() => {
-                        handleSwitch(guild.guildName)
+                        handleSwitch(guild.guildName || '')
                         setSelectedGuild(guild)
                         setIsOpen(false)
                       }}

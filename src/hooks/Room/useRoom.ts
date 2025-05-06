@@ -1,14 +1,14 @@
 import { createRoomList, getRoomList } from '../../apis/Guild/roomController'
-import { Room } from '../../types/Rooms'
-import { useState, useEffect } from 'react'
-
+import { useEffect } from 'react'
+import { useRoomsStore } from '../../store/roomsStore'
+import { addGuildList } from '../../apis/Guild/guildController'
 export const useRoom = () => {
-  const [roomList, setRoomList] = useState<Room[]>([])
+  const { rooms, setRooms } = useRoomsStore()
 
   const fetchRoomList = async () => {
     const response = await getRoomList()
     if (response) {
-      setRoomList(response)
+      setRooms(response)
     }
   }
 
@@ -17,13 +17,22 @@ export const useRoom = () => {
     guildName: string,
     guildWorld: string
   ) => {
-    await createRoomList(groupName, guildName, guildWorld)
-    fetchRoomList()
+    const response = await addGuildList({
+      guild_name: guildName,
+      world_name: guildWorld
+    })
+    if (response.guildId) {
+      await createRoomList(groupName, response.guildId)
+      alert('관리방 생성 완료')
+      fetchRoomList()
+    } else {
+      alert(response.message)
+    }
   }
 
   useEffect(() => {
     fetchRoomList()
   }, [])
 
-  return { createRoom, roomList }
+  return { createRoom, rooms }
 }

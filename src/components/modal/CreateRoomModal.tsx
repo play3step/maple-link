@@ -2,13 +2,13 @@ import ModalLayout from './ModalLayout'
 import { useRoom } from '../../hooks/Room/useRoom'
 import { useRef, useState } from 'react'
 import { SelectGuildForm } from './SelectGuildForm'
-
+import { useModalStore } from '../../store/modalStore'
 export const CreateRoomModal = () => {
   const roomNameRef = useRef<HTMLInputElement>(null)
   const { createRoom } = useRoom()
   const [guildName, setGuildName] = useState('')
   const [guildWorld, setGuildWorld] = useState('')
-
+  const { closeModal } = useModalStore()
   const onSubmit = async () => {
     if (!roomNameRef.current?.value) {
       alert('방 이름을 입력해주세요')
@@ -19,8 +19,7 @@ export const CreateRoomModal = () => {
       return
     }
     await createRoom(roomNameRef.current?.value, guildName, guildWorld)
-
-    alert('관리방이 생성되었습니다')
+    closeModal()
   }
 
   return (

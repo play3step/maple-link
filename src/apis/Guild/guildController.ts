@@ -18,7 +18,7 @@ export const addGuildList = async (params: SearchGuild) => {
       world_name: params.world_name
     }
   })
-  return response.data.message
+  return response.data
 }
 
 //API 멤버

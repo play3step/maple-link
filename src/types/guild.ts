@@ -16,8 +16,9 @@ export type WorldName =
 
 export interface Guild {
   guildId?: number
-  worldName: WorldName
-  guildName: string
+  worldName?: WorldName
+  guildName?: string
+  message?: string
 }
 
 export interface WorldData {

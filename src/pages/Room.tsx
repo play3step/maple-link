@@ -13,6 +13,7 @@ import { useState } from 'react'
 import { Member } from '../types/guild'
 import { IoArrowBack } from 'react-icons/io5'
 import { useNavigate } from 'react-router-dom'
+import { useGuildDetect } from '../hooks/Guild/useGuildDetect'
 // import { AddCharacterModal } from '../components/modal/AddCharacterModal'
 
 const Room = () => {
@@ -22,6 +23,10 @@ const Room = () => {
   const { nexonMembers, selectMember } = useGuildMember()
   const [selectedMember, setSelectedMember] = useState<Member>()
   const { deleteGuild } = useGuildsList()
+
+  const { detectMember, reflectDetectMember } = useGuildDetect(
+    selectMember?.guildId
+  )
 
   const showModal = (name: ModalType) => {
     openModal(name)
@@ -93,7 +98,10 @@ const Room = () => {
 
       {activeModal === 'createGuild' && <CreateGuildModal />}
       {activeModal === 'detectMember' && (
-        <DetectMemberModal guildId={selectMember?.guildId} />
+        <DetectMemberModal
+          detectMember={detectMember}
+          reflectDetectMember={reflectDetectMember}
+        />
       )}
       {activeModal === 'detailMember' && selectedMember && nexonMembers && (
         <DetailMemberModal

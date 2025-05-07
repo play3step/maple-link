@@ -1,19 +1,33 @@
-import { useGuildDetect } from '../../hooks/Guild/useGuildDetect'
 import { IoPersonAddOutline, IoPersonRemoveOutline } from 'react-icons/io5'
 import ModalLayout from './ModalLayout'
 import { useModalStore } from '../../store/modalStore'
+import { useState } from 'react'
+import { Detect } from '../../types/guild'
 
 interface Props {
-  guildId?: number
+  detectMember?: Detect
+  reflectDetectMember?: () => void
 }
 
-export const DetectMemberModal = ({ guildId }: Props) => {
-  const { detectMember } = useGuildDetect(guildId)
+export const DetectMemberModal = ({
+  detectMember,
+  reflectDetectMember
+}: Props) => {
+  const [isApplying, setIsApplying] = useState(false)
   const { closeModal } = useModalStore()
 
-  const handleSubmit = () => {
-    // 변경사항 적용 로직
-    closeModal()
+  const handleApply = async () => {
+    if (!reflectDetectMember) return
+    setIsApplying(true)
+    try {
+      await reflectDetectMember()
+      alert('멤버 변경사항이 적용되었습니다.')
+      closeModal()
+    } catch {
+      alert('멤버 변경사항 적용 중 오류가 발생했습니다.')
+    } finally {
+      setIsApplying(false)
+    }
   }
 
   return (
@@ -21,7 +35,7 @@ export const DetectMemberModal = ({ guildId }: Props) => {
       size="medium"
       title="길드원 변경사항"
       description="넥슨 길드원 목록과 비교한 결과입니다"
-      onSubmit={handleSubmit}>
+      showFooterButtons={false}>
       <div className="flex gap-6">
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-4">
@@ -76,6 +90,21 @@ export const DetectMemberModal = ({ guildId }: Props) => {
             )}
           </div>
         </div>
+      </div>
+      <div className="flex justify-end pt-4">
+        <button
+          onClick={handleApply}
+          disabled={isApplying}
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+          {isApplying ? (
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 border-t-2 border-white rounded-full animate-spin" />
+              적용 중...
+            </div>
+          ) : (
+            '변경사항 적용하기'
+          )}
+        </button>
       </div>
     </ModalLayout>
   )

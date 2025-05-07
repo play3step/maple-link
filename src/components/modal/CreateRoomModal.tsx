@@ -3,12 +3,16 @@ import { useRoom } from '../../hooks/Room/useRoom'
 import { useRef, useState } from 'react'
 import { SelectGuildForm } from './SelectGuildForm'
 import { useModalStore } from '../../store/modalStore'
+import { IoAdd } from 'react-icons/io5'
+
 export const CreateRoomModal = () => {
   const roomNameRef = useRef<HTMLInputElement>(null)
   const { createRoom } = useRoom()
   const [guildName, setGuildName] = useState('')
   const [guildWorld, setGuildWorld] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const { closeModal } = useModalStore()
+
   const onSubmit = async () => {
     if (!roomNameRef.current?.value) {
       alert('방 이름을 입력해주세요')
@@ -18,16 +22,38 @@ export const CreateRoomModal = () => {
       alert('길드를 선택해주세요')
       return
     }
-    await createRoom(roomNameRef.current?.value, guildName, guildWorld)
-    closeModal()
+
+    setIsLoading(true)
+    try {
+      const result = await createRoom(
+        roomNameRef.current.value,
+        guildName,
+        guildWorld
+      )
+
+      if (result.status === 500) {
+        alert('존재하지 않는 길드입니다.')
+        return
+      }
+
+      if (result.guildId) {
+        alert('관리방이 성공적으로 생성되었습니다.')
+        closeModal()
+      } else if (result.message) {
+        alert(result.message)
+      }
+    } catch {
+      alert('관리방 생성 중 오류가 발생했습니다.')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
     <ModalLayout
       size="small"
       title="새 관리방 만들기"
-      description="메인 길드를 선택하여 관리방을 생성하세요"
-      onSubmit={onSubmit}>
+      description="메인 길드를 선택하여 관리방을 생성하세요">
       <div className="space-y-6">
         <input
           ref={roomNameRef}
@@ -43,6 +69,28 @@ export const CreateRoomModal = () => {
           guildWorld={guildWorld}
           setGuildWorld={setGuildWorld}
         />
+      </div>
+      <div className="flex gap-3 mt-6">
+        <button
+          type="button"
+          onClick={closeModal}
+          className="flex-1 px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition-colors">
+          취소
+        </button>
+        <button
+          type="submit"
+          onClick={onSubmit}
+          disabled={isLoading || !guildName || !guildWorld}
+          className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-500 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-600">
+          {isLoading ? (
+            <div className="w-5 h-5 border-t-2 border-white rounded-full animate-spin" />
+          ) : (
+            <>
+              <IoAdd className="text-lg" />
+              생성하기
+            </>
+          )}
+        </button>
       </div>
     </ModalLayout>
   )

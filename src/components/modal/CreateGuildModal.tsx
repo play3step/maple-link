@@ -6,26 +6,45 @@ import { useSearchGuilds } from '../../hooks/Guild/useSearchGuilds'
 import { SelectGuildForm } from './SelectGuildForm'
 import { useParams } from 'react-router-dom'
 import { addGuildToRoom } from '../../apis/Guild/roomController'
+
 export const CreateGuildModal = () => {
   const { closeModal } = useModalStore()
   const [guildName, setGuildName] = useState('')
   const [guildWorld, setGuildWorld] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-
   const { createGuild } = useSearchGuilds()
-
   const { adminId } = useParams<{ adminId: string }>()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!guildName.trim() || !guildWorld.trim()) {
+      alert('길드 정보를 모두 입력해주세요')
+      return
+    }
+
     setIsLoading(true)
-    const res = await createGuild(guildWorld, guildName)
-    if (res.guildId && adminId) {
-      await addGuildToRoom(Number(adminId), res.guildId)
-      setIsLoading(false)
-      closeModal()
-    } else {
-      alert(res.message)
+    try {
+      const res = await createGuild(guildWorld, guildName)
+
+      if (res.status === 500) {
+        alert('존재하지 않는 길드입니다.')
+        return
+      }
+
+      if (res.guildId && adminId) {
+        try {
+          await addGuildToRoom(Number(adminId), res.guildId)
+          alert('길드가 성공적으로 추가되었습니다.')
+          closeModal()
+        } catch {
+          alert('길드 추가 중 오류가 발생했습니다.')
+        }
+      } else if (res.message) {
+        alert(res.message)
+      }
+    } catch {
+      alert('길드 생성 중 오류가 발생했습니다.')
+    } finally {
       setIsLoading(false)
     }
   }

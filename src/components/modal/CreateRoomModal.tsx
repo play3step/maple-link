@@ -53,7 +53,8 @@ export const CreateRoomModal = () => {
     <ModalLayout
       size="small"
       title="새 관리방 만들기"
-      description="메인 길드를 선택하여 관리방을 생성하세요">
+      description="메인 길드를 선택하여 관리방을 생성하세요"
+      showFooterButtons={false}>
       <div className="space-y-6">
         <input
           ref={roomNameRef}

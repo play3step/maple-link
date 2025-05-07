@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { SearchGuild } from '../../types/guild'
 import { searchGuild as searchGuildApi } from '../../apis/Nexon/nexonController'
-import { addGuildList } from '../../apis/Guild/guildController'
+
 import { worldNames } from '../../data/worlds'
 
 export const useSearchGuilds = () => {
@@ -24,15 +24,5 @@ export const useSearchGuilds = () => {
     }
   }
 
-  // 길드 생성
-  const createGuild = async (worldName: string, guildName: string) => {
-    if (!worldName || !guildName) return
-    const response = await addGuildList({
-      world_name: worldName,
-      guild_name: guildName
-    })
-    return response
-  }
-
-  return { list, searchGuilds, createGuild }
+  return { list, searchGuilds }
 }

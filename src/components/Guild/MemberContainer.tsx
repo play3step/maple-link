@@ -1,27 +1,61 @@
 import { Member } from '../../types/guild'
+import { useState } from 'react'
+import { IoEllipsisVertical } from 'react-icons/io5'
 
 interface MemberContainerProps {
   members?: Member[]
   masterName?: string
   onSelect?: (member: Member) => void
   guildName?: string
+  onDeleteGuild?: () => void
 }
 
 export const MemberContainer = ({
   members,
   masterName,
   onSelect,
-  guildName
+  guildName,
+  onDeleteGuild
 }: MemberContainerProps) => {
+  const [showMenu, setShowMenu] = useState(false)
   if (!members) return null
+
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (confirm('정말로 이 길드를 삭제하시겠습니까?')) {
+      onDeleteGuild?.()
+    }
+    setShowMenu(false)
+  }
 
   return (
     <div className="w-full max-w-3xl mx-auto bg-white rounded-xl shadow-lg">
-      {masterName && (
-        <div className="p-4 bg-gradient-to-r from-blue-500 to-blue-600">
-          <h2 className="text-white text-lg font-semibold">
+      {guildName && (
+        <div className="p-4 bg-gradient-to-r from-blue-500 to-blue-600 relative">
+          <h2 className="text-white text-lg font-semibold pr-10">
             길드: {guildName}
           </h2>
+          {onDeleteGuild && (
+            <div className="absolute right-4 top-1/2 -translate-y-1/2">
+              <button
+                onClick={e => {
+                  e.stopPropagation()
+                  setShowMenu(!showMenu)
+                }}
+                className="text-white opacity-80 hover:opacity-100 transition-opacity p-1">
+                <IoEllipsisVertical className="text-xl" />
+              </button>
+              {showMenu && (
+                <div className="absolute right-0 mt-1 w-36 bg-white rounded-lg shadow-lg py-1 z-10">
+                  <button
+                    onClick={handleDelete}
+                    className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-50 transition-colors">
+                    길드 삭제
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
 

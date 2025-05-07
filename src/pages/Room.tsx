@@ -21,8 +21,7 @@ const Room = () => {
   const { guildList } = useGuildsList()
   const { nexonMembers, selectMember } = useGuildMember()
   const [selectedMember, setSelectedMember] = useState<Member>()
-
-  console.log(selectMember)
+  const { deleteGuild } = useGuildsList()
 
   const showModal = (name: ModalType) => {
     openModal(name)
@@ -78,6 +77,11 @@ const Room = () => {
                   masterName={selectMember?.guildMasterName}
                   guildName={selectMember?.guildName}
                   onSelect={handleMemberSelect}
+                  onDeleteGuild={
+                    selectMember?.guildId
+                      ? () => deleteGuild(selectMember.guildId)
+                      : undefined
+                  }
                 />
               ) : (
                 <Empty text="길드를 선택해주세요" />

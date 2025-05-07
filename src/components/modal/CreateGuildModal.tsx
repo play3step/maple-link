@@ -2,17 +2,17 @@ import { useState } from 'react'
 import ModalLayout from './ModalLayout'
 import { IoAdd } from 'react-icons/io5'
 import { useModalStore } from '../../store/modalStore'
-import { useSearchGuilds } from '../../hooks/Guild/useSearchGuilds'
 import { SelectGuildForm } from './SelectGuildForm'
 import { useParams } from 'react-router-dom'
 import { addGuildToRoom } from '../../apis/Guild/roomController'
+import { useGuildsList } from '../../hooks/Guild/useGuildsList'
 
 export const CreateGuildModal = () => {
   const { closeModal } = useModalStore()
   const [guildName, setGuildName] = useState('')
   const [guildWorld, setGuildWorld] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const { createGuild } = useSearchGuilds()
+  const { createGuild } = useGuildsList()
   const { adminId } = useParams<{ adminId: string }>()
 
   const handleSubmit = async (e: React.FormEvent) => {

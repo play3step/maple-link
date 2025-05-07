@@ -21,6 +21,11 @@ export const addGuildList = async (params: SearchGuild) => {
   return response.data
 }
 
+export const deleteGuildList = async (guildId: number) => {
+  const response = await basicApi.delete(`/api/guilds/${guildId}`)
+  return response.data
+}
+
 //API 멤버
 export const fetchNexonGuildMembers = async (guildId: number) => {
   const response = await basicApi.get<NexonMembers>(

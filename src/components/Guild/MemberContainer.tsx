@@ -30,7 +30,18 @@ export const MemberContainer = ({
           {members.map(member => (
             <div
               key={member.name}
-              onClick={() => onSelect?.(member)}
+              onClick={
+                member.type === '본캐'
+                  ? () => onSelect?.(member)
+                  : member.type === '부캐' && member.mainCharacterId
+                    ? () => {
+                        const mainChar = members.find(
+                          m => m.id === member.mainCharacterId
+                        )
+                        if (mainChar) onSelect?.(mainChar)
+                      }
+                    : undefined
+              }
               className="bg-gray-50 rounded-lg hover:bg-gray-100 transition-all duration-200 cursor-pointer group overflow-hidden border border-gray-100">
               <div className="flex items-center p-3 gap-3">
                 <img
@@ -50,11 +61,17 @@ export const MemberContainer = ({
                     {masterName && (
                       <span
                         className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                          member.name === masterName
-                            ? 'bg-yellow-100 text-yellow-700'
-                            : 'bg-blue-100 text-blue-700'
+                          member.type === '본캐'
+                            ? 'bg-blue-100 text-blue-700'
+                            : member.type === '부캐'
+                              ? 'bg-yellow-100 text-yellow-700'
+                              : 'bg-gray-100 text-gray-700'
                         }`}>
-                        {member.name === masterName ? '길드마스터' : '길드원'}
+                        {member.type === '본캐'
+                          ? '본캐'
+                          : member.type === '부캐'
+                            ? '부캐'
+                            : '미지정'}
                       </span>
                     )}
                   </div>

@@ -46,10 +46,13 @@ export interface RecordedMembers {
 }
 
 export interface Member {
+  id: number
   imagePath: string
   job: string
   level: string
   name: string
+  mainCharacterId?: number
+  type: '본캐' | '부캐' | null
 }
 
 export interface Detect {

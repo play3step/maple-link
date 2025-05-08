@@ -59,3 +59,10 @@ export interface Detect {
   toAdd: string[]
   toRemove: string[]
 }
+
+export interface DetectResult {
+  guildId: number
+  guildName: string
+  toAdd: string[]
+  toRemove: string[]
+}

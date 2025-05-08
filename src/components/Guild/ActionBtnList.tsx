@@ -13,9 +13,14 @@ import {
 interface Props {
   showModal: (name: ModalType) => void
   guildList: Guild[]
+  handleDetect: () => void
 }
 
-export const ActionBtnList = ({ showModal, guildList }: Props) => {
+export const ActionBtnList = ({
+  showModal,
+  guildList,
+  handleDetect
+}: Props) => {
   const [searchParams, setSearchParams] = useSearchParams()
   const [selectedGuild, setSelectedGuild] = useState<Guild | null>(null)
   const [isOpen, setIsOpen] = useState(false)
@@ -114,7 +119,10 @@ export const ActionBtnList = ({ showModal, guildList }: Props) => {
               </button> */}
 
               <button
-                onClick={() => showModal('detectMember')}
+                onClick={() => {
+                  handleDetect()
+                  showModal('detectMember')
+                }}
                 className="flex items-center justify-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700">
                 <IoGitCompare className="text-lg text-gray-500" />
                 <span className="sm:hidden md:inline">비교하기</span>

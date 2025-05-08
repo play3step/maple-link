@@ -24,10 +24,10 @@ const Room = () => {
   const [selectedMember, setSelectedMember] = useState<Member>()
   const { deleteGuild } = useGuildsList()
 
-  const { detectMember, reflectDetectMember } = useGuildDetect(
-    selectMember?.guildId
-  )
+  const { detectMembers, reflectDetectMember, handleDetect } =
+    useGuildDetect(guildList)
 
+  console.log(detectMembers)
   const showModal = (name: ModalType) => {
     openModal(name)
   }
@@ -69,6 +69,7 @@ const Room = () => {
               <ActionBtnList
                 showModal={showModal}
                 guildList={guildList}
+                handleDetect={handleDetect}
               />
               {guildList.length > 0 && <ListSwitch />}
             </div>
@@ -99,7 +100,7 @@ const Room = () => {
       {activeModal === 'createGuild' && <CreateGuildModal />}
       {activeModal === 'detectMember' && (
         <DetectMemberModal
-          detectMember={detectMember}
+          guildDetectList={detectMembers ?? []}
           reflectDetectMember={reflectDetectMember}
         />
       )}

@@ -27,7 +27,6 @@ const Room = () => {
   const { detectMembers, reflectDetectMember, handleDetect } =
     useGuildDetect(guildList)
 
-  console.log(detectMembers)
   const showModal = (name: ModalType) => {
     openModal(name)
   }

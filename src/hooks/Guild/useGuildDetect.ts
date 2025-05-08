@@ -5,6 +5,12 @@ import {
 } from '../../apis/Guild/guildController'
 import { DetectResult, Guild } from '../../types/guild'
 import { useState } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+
+type MutationParams = {
+  member: string
+  guildId: number
+}
 
 export const useGuildDetect = (guildList: Guild[]) => {
   const [detectMembers, setDetectMembers] = useState<DetectResult[]>([])
@@ -31,32 +37,34 @@ export const useGuildDetect = (guildList: Guild[]) => {
 
     setDetectMembers(results)
   }
+  const queryClient = useQueryClient()
+
+  const addMutation = useMutation<void, Error, MutationParams>({
+    mutationFn: ({ member, guildId }) => addGuildMember(member, guildId)
+  })
+
+  const removeMutation = useMutation<void, Error, MutationParams>({
+    mutationFn: ({ member, guildId }) => deleteGuildMember(member, guildId)
+  })
 
   const reflectDetectMember = async (targetGuildId: number) => {
-    const guildDetect = detectMembers?.find(
+    const guildDetect = detectMembers.find(
       guild => guild.guildId === targetGuildId
     )
     if (!guildDetect) return
 
-    const promises: Promise<void>[] = []
+    const addPromises = guildDetect.toAdd.map(member =>
+      addMutation.mutateAsync({ member, guildId: guildDetect.guildId })
+    )
 
-    if (guildDetect.toAdd) {
-      promises.push(
-        ...guildDetect.toAdd.map(member =>
-          addGuildMember(member, guildDetect.guildId)
-        )
-      )
-    }
+    const removePromises = guildDetect.toRemove.map(member =>
+      removeMutation.mutateAsync({ member, guildId: guildDetect.guildId })
+    )
 
-    if (guildDetect.toRemove) {
-      promises.push(
-        ...guildDetect.toRemove.map(member =>
-          deleteGuildMember(member, guildDetect.guildId)
-        )
-      )
-    }
+    await Promise.all([...addPromises, ...removePromises])
 
-    await Promise.all(promises)
+    // 멤버 데이터 최신화
+    queryClient.invalidateQueries({ queryKey: ['nexonMembers'] })
   }
 
   return { detectMembers, reflectDetectMember, handleDetect }

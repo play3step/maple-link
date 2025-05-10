@@ -10,14 +10,10 @@ export const SelectGuildForm = ({
   guildName,
   setGuildName,
   guildWorld,
-  setGuildWorld,
-  onSubmit
+  setGuildWorld
 }: SelectGuildFormProps) => {
   return (
-    <form
-      id="guildForm"
-      onSubmit={onSubmit}
-      className="space-y-6">
+    <div className="space-y-6">
       <div className="space-y-4">
         <div>
           <label
@@ -49,8 +45,8 @@ export const SelectGuildForm = ({
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
             required>
             <option value="">월드를 선택하세요</option>
-            <option value="리부트">리부트</option>
-            <option value="리부트2">리부트2</option>
+            <option value="에오스">에오스</option>
+            <option value="핼리오스">핼리오스</option>
             <option value="스카니아">스카니아</option>
             <option value="베라">베라</option>
             <option value="루나">루나</option>
@@ -66,6 +62,6 @@ export const SelectGuildForm = ({
           </select>
         </div>
       </div>
-    </form>
+    </div>
   )
 }

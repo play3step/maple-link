@@ -4,12 +4,12 @@ import { useNavigate } from 'react-router-dom'
 import { IoAdd, IoTrashOutline, IoPersonAddOutline } from 'react-icons/io5'
 import { useRoom } from '../hooks/Room/useRoom'
 import { Loading } from '../components/common/Loading'
-import { GuildManageModal } from '../components/Guild/GuildManageModal'
+import { GuildManageModal } from '../components/modal/GuildManageModal'
 import { useState } from 'react'
 import { Room } from '../types/Rooms'
 
 export const RoomList = () => {
-  const { openModal, activeModal, closeModal } = useModalStore()
+  const { openModal, activeModal } = useModalStore()
   const { rooms } = useRoom()
   const navigate = useNavigate()
 
@@ -90,13 +90,7 @@ export const RoomList = () => {
       </div>
       {activeModal === 'createRoom' && <CreateRoomModal />}
       {activeModal === 'guildManage' && (
-        <GuildManageModal
-          room={selectedRoom as Room}
-          onClose={() => {
-            setSelectedRoom(null)
-            closeModal()
-          }}
-        />
+        <GuildManageModal room={selectedRoom as Room} />
       )}
     </div>
   )

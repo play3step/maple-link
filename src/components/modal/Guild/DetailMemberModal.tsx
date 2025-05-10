@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { Member, NexonMembers } from '../../types/guild'
-import ModalLayout from './ModalLayout'
+import { Member, NexonMembers } from '../../../types/guild'
+import ModalLayout from '../ModalLayout'
 import {
   IoSettingsOutline,
   IoSaveOutline,

@@ -5,7 +5,7 @@ import interactionPlugin from '@fullcalendar/interaction'
 import { useNexonNotice } from '../hooks/Calendar/useNexonNotice'
 import { useMemo, useState } from 'react'
 import { useModalStore } from '../store/modalStore'
-import { EventListModal } from '../components/modal/EventListModal'
+import { EventListModal } from '../components/modal/Calendar/EventListModal'
 import { useUserNotice } from '../hooks/Calendar/useUserNotice'
 import { EventContentArg } from '@fullcalendar/core'
 

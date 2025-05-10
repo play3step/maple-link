@@ -1,20 +1,19 @@
-import { CreateGuildModal } from '../components/modal/CreateGuildModal'
+import { CreateGuildModal } from '../components/modal/Guild/CreateGuildModal'
 import { ModalType, useModalStore } from '../store/modalStore'
 import { useGuildsList } from '../hooks/Guild/useGuildsList'
 import { MemberContainer } from '../components/Guild/MemberContainer'
 import { ListSwitch } from '../components/Guild/ListSwitch'
 import { ActionBtnList } from '../components/Guild/ActionBtnList'
-import { DetectMemberModal } from '../components/modal/DetectMemberModal'
+import { DetectMemberModal } from '../components/modal/Guild/DetectMemberModal'
 import { useGuildMember } from '../hooks/Guild/useGuildMember'
 import { Empty } from '../components/common/Empty'
-import { DetailMemberModal } from '../components/modal/DetailMemberModal'
+import { DetailMemberModal } from '../components/modal/Guild/DetailMemberModal'
 import { Loading } from '../components/common/Loading'
 import { useState } from 'react'
 import { Member } from '../types/guild'
 import { IoArrowBack } from 'react-icons/io5'
 import { useNavigate } from 'react-router-dom'
 import { useGuildDetect } from '../hooks/Guild/useGuildDetect'
-// import { AddCharacterModal } from '../components/modal/AddCharacterModal'
 
 const Room = () => {
   const { activeModal, openModal } = useModalStore()
@@ -109,7 +108,6 @@ const Room = () => {
           memberList={nexonMembers}
         />
       )}
-      {/* {activeModal === 'addCharacter' && <AddCharacterModal />} */}
     </div>
   )
 }

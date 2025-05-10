@@ -1,9 +1,9 @@
 import { IoPersonAddOutline, IoPersonRemoveOutline } from 'react-icons/io5'
 import { IoChevronDown, IoChevronForward } from 'react-icons/io5'
-import ModalLayout from './ModalLayout'
-import { useModalStore } from '../../store/modalStore'
+import ModalLayout from '../ModalLayout'
+import { useModalStore } from '../../../store/modalStore'
 import { useState } from 'react'
-import { DetectResult } from '../../types/guild'
+import { DetectResult } from '../../../types/guild'
 
 interface Props {
   guildDetectList: DetectResult[]

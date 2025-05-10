@@ -1,6 +1,6 @@
-import { Room } from '../../types/Rooms'
-import InputText from '../common/InputText'
-import ModalLayout from './ModalLayout'
+import { Room } from '../../../types/Rooms'
+import InputText from '../../common/InputText'
+import ModalLayout from '../ModalLayout'
 interface GuildManageModalProps {
   room: Room
 }

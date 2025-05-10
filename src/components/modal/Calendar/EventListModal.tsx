@@ -1,8 +1,9 @@
-import { CalendarType } from '../../types/notice'
-import Button from '../common/Button'
-import InputText from '../common/InputText'
-import ModalLayout from './ModalLayout'
-import nexonIcon from '../../assets/nexon.webp'
+import { CalendarType } from '../../../types/notice'
+import Button from '../../common/Button'
+import InputText from '../../common/InputText'
+import ModalLayout from '../ModalLayout'
+import nexonIcon from '../../../assets/nexon.webp'
+
 import { useState } from 'react'
 import { IoCalendarOutline } from 'react-icons/io5'
 

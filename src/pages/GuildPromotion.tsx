@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { CreatePromotionModal } from '../components/modal/CreatePromotionModal'
+import { CreatePromotionModal } from '../components/modal/Promotion/CreatePromotionModal'
 import { useModalStore } from '../store/modalStore'
 
 interface Guild {

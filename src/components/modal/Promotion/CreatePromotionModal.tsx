@@ -1,4 +1,4 @@
-import ModalLayout from './ModalLayout'
+import ModalLayout from '../ModalLayout'
 
 export const CreatePromotionModal = () => {
   return (

@@ -1,10 +1,10 @@
 import { useModalStore } from '../store/modalStore'
-import { CreateRoomModal } from '../components/modal/CreateRoomModal'
+import { CreateRoomModal } from '../components/modal/Room/CreateRoomModal'
 import { useNavigate } from 'react-router-dom'
 import { IoAdd, IoTrashOutline, IoPersonAddOutline } from 'react-icons/io5'
 import { useRoom } from '../hooks/Room/useRoom'
 import { Loading } from '../components/common/Loading'
-import { GuildManageModal } from '../components/modal/GuildManageModal'
+import { GuildManageModal } from '../components/modal/Room/RoomManageModal'
 import { useState } from 'react'
 import { Room } from '../types/Rooms'
 

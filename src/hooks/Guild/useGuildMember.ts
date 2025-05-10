@@ -1,64 +1,42 @@
-import { useLocation, useSearchParams } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { QUERYSTRING } from '../../constants/querystring'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import {
-  fetchNexonGuildMembers,
-  fetchRecordedGuildMembers
-} from '../../apis/Guild/guildController'
-import { Guild, MemberData } from '../../types/guild'
-
+import { useQuery } from '@tanstack/react-query'
+import { fetchNexonGuildMembers } from '../../apis/Guild/guildController'
+import { NexonMembers } from '../../types/guild'
+import { useRoomsStore } from '../../store/roomsStore'
 export const useGuildMember = () => {
-  const queryClient = useQueryClient()
   const { search } = useLocation()
-  const [searchParams, setSearchParams] = useSearchParams()
   const params = new URLSearchParams(search)
+  const { guildList } = useRoomsStore()
 
-  const view = params.get(QUERYSTRING.VIEW) || '내기록'
   const guildName = params.get(QUERYSTRING.GUILD)
 
-  const setView = (newView: string) => {
-    const newParams = new URLSearchParams(searchParams)
-    newParams.set(QUERYSTRING.VIEW, newView)
-    setSearchParams(newParams)
-  }
-
-  const guildList = queryClient.getQueryData<Guild[]>(['guilds'])
-
-  const isRecorded = view === '내기록'
-  const isNexon = view === '길드정보'
-
+  //nexon 멤버 조회
   const { data: nexonMembers } = useQuery({
-    queryKey: ['nexonMembers', 'nexon', params],
+    queryKey: ['nexonMembers', guildList],
     queryFn: () =>
       Promise.all(
-        guildList?.map(v => fetchNexonGuildMembers(Number(v.guildId))) || []
+        guildList?.map(v => fetchNexonGuildMembers(v.guildId ?? 0)) || []
       ),
-    enabled: isNexon
+    staleTime: 1000 * 60 * 10
   })
 
-  const { data: recordedMembers } = useQuery({
-    queryKey: ['recordedMembers', 'recorded', params],
-    queryFn: () =>
-      Promise.all(
-        guildList?.map(v => fetchRecordedGuildMembers(Number(v.guildId))) || []
-      ),
-    enabled: isRecorded
-  })
-
-  const selectMember: MemberData | undefined = isRecorded
-    ? recordedMembers?.[0]
-      ? { members: recordedMembers[0].addMembers }
-      : undefined
-    : nexonMembers?.find(v => v.guildName === guildName)
+  // 선택된 길드
+  const selectMember: NexonMembers | undefined = nexonMembers
+    ? nexonMembers?.find(v => v.guildName === guildName)
       ? {
-          guildId: nexonMembers.find(v => v.guildName === guildName)?.guildId,
-          members:
+          guildId:
+            nexonMembers.find(v => v.guildName === guildName)?.guildId ?? 0,
+          guildName:
+            nexonMembers.find(v => v.guildName === guildName)?.guildName ?? '',
+          memberDetailResponse:
             nexonMembers.find(v => v.guildName === guildName)
               ?.memberDetailResponse ?? [],
-          masterName: nexonMembers.find(v => v.guildName === guildName)
+          guildMasterName: nexonMembers.find(v => v.guildName === guildName)
             ?.guildMasterName
         }
       : undefined
+    : undefined
 
-  return { nexonMembers, recordedMembers, selectMember, view, setView }
+  return { nexonMembers, selectMember }
 }

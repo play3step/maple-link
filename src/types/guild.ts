@@ -16,8 +16,9 @@ export type WorldName =
 
 export interface Guild {
   guildId?: number
-  worldName: WorldName
-  guildName: string
+  worldName?: WorldName
+  guildName?: string
+  message?: string
 }
 
 export interface WorldData {
@@ -32,31 +33,36 @@ export interface SearchGuild {
 }
 
 export interface NexonMembers {
-  guildId: string
+  guildId: number
   guildName: string
-  worldName?: string
   guildMasterName?: string
   memberDetailResponse?: Member[]
 }
 
 export interface RecordedMembers {
+  guildId: number
+  guildName: string
   addMembers: Member[]
 }
 
-export interface MemberData {
-  guildId?: string
-  members: Member[]
-  masterName?: string
-}
-
 export interface Member {
+  id: number
   imagePath: string
   job: string
   level: string
   name: string
+  mainCharacterId?: number
+  type: '본캐' | '부캐' | null
 }
 
 export interface Detect {
+  toAdd: string[]
+  toRemove: string[]
+}
+
+export interface DetectResult {
+  guildId: number
+  guildName: string
   toAdd: string[]
   toRemove: string[]
 }

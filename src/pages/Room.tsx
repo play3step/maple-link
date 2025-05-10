@@ -13,13 +13,19 @@ import { useState } from 'react'
 import { Member } from '../types/guild'
 import { IoArrowBack } from 'react-icons/io5'
 import { useNavigate } from 'react-router-dom'
+import { useGuildDetect } from '../hooks/Guild/useGuildDetect'
+// import { AddCharacterModal } from '../components/modal/AddCharacterModal'
 
 const Room = () => {
   const { activeModal, openModal } = useModalStore()
   const navigate = useNavigate()
   const { guildList } = useGuildsList()
-  const { nexonMembers, selectMember, view } = useGuildMember()
+  const { nexonMembers, selectMember } = useGuildMember()
   const [selectedMember, setSelectedMember] = useState<Member>()
+  const { deleteGuild } = useGuildsList()
+
+  const { detectMembers, reflectDetectMember, handleDetect } =
+    useGuildDetect(guildList)
 
   const showModal = (name: ModalType) => {
     openModal(name)
@@ -52,9 +58,7 @@ const Room = () => {
           </button>
           <div>
             <h1 className="text-2xl font-bold text-gray-900">길드 관리</h1>
-            <p className="text-sm text-gray-600 mt-1">
-              {view === '길드정보' ? '길드원 정보 관리' : '내 기록 관리'}
-            </p>
+            <p className="text-sm text-gray-600 mt-1">길드원 정보 관리</p>
           </div>
         </div>
 
@@ -64,6 +68,7 @@ const Room = () => {
               <ActionBtnList
                 showModal={showModal}
                 guildList={guildList}
+                handleDetect={handleDetect}
               />
               {guildList.length > 0 && <ListSwitch />}
             </div>
@@ -71,21 +76,18 @@ const Room = () => {
 
           <div className="p-6">
             <div className="min-h-[600px]">
-              {guildList.length > 0 && view === '길드정보' ? (
+              {guildList.length > 0 ? (
                 <MemberContainer
-                  members={selectMember?.members}
-                  masterName={selectMember?.masterName}
+                  members={selectMember?.memberDetailResponse}
+                  masterName={selectMember?.guildMasterName}
+                  guildName={selectMember?.guildName}
                   onSelect={handleMemberSelect}
+                  onDeleteGuild={
+                    selectMember?.guildId
+                      ? () => deleteGuild(selectMember.guildId)
+                      : undefined
+                  }
                 />
-              ) : guildList.length > 0 && view === '내기록' ? (
-                selectMember && selectMember.members.length > 0 ? (
-                  <MemberContainer
-                    members={selectMember.members}
-                    onSelect={handleMemberSelect}
-                  />
-                ) : (
-                  <Empty text="등록된 길드원이 없습니다" />
-                )
               ) : (
                 <Empty text="길드를 선택해주세요" />
               )}
@@ -96,15 +98,18 @@ const Room = () => {
 
       {activeModal === 'createGuild' && <CreateGuildModal />}
       {activeModal === 'detectMember' && (
-        <DetectMemberModal guildId={Number(selectMember?.guildId)} />
+        <DetectMemberModal
+          guildDetectList={detectMembers ?? []}
+          reflectDetectMember={reflectDetectMember}
+        />
       )}
       {activeModal === 'detailMember' && selectedMember && nexonMembers && (
         <DetailMemberModal
-          member={selectedMember}
-          guildList={guildList}
-          guildInfo={nexonMembers}
+          memberDetail={selectedMember}
+          memberList={nexonMembers}
         />
       )}
+      {/* {activeModal === 'addCharacter' && <AddCharacterModal />} */}
     </div>
   )
 }

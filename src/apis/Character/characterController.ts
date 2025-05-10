@@ -3,7 +3,8 @@ import {
   CharacterAbility,
   CharacterBasic,
   CharacterStats,
-  HyperStat
+  HyperStat,
+  CharacterSearch
 } from '../../types/character'
 import { Inventory } from '../../types/item'
 
@@ -61,6 +62,28 @@ export const fetchCharacterItem = async () => {
     {
       params: {
         ocid: import.meta.env.VITE_ocid
+      }
+    }
+  )
+  return response.data
+}
+
+export const searchCharacter = async (characterName: string) => {
+  const characterOcid = await nexonApi.get('/maplestory/v1/id', {
+    params: {
+      character_name: characterName
+    }
+  })
+
+  if (characterOcid.status === 400) {
+    return null
+  }
+
+  const response = await nexonApi.get<CharacterSearch>(
+    '/maplestory/v1/character/basic',
+    {
+      params: {
+        ocid: characterOcid.data.ocid
       }
     }
   )

@@ -2,14 +2,29 @@ import { useEffect } from 'react'
 import { useModalStore } from '../../store/modalStore'
 import { Size } from '../../types'
 import Button from '../common/Button'
+import { IoClose } from 'react-icons/io5'
 
 interface ModalLayoutProps {
   children: React.ReactNode
   onSubmit?: () => void
   size: Size
+  title?: string
+  description?: string
+  titleIcon?: React.ReactNode
+  showHeaderClose?: boolean
+  showFooterButtons?: boolean
 }
 
-const ModalLayout = ({ children, onSubmit, size }: ModalLayoutProps) => {
+const ModalLayout = ({
+  children,
+  onSubmit,
+  size,
+  title,
+  description,
+  titleIcon,
+  showHeaderClose = true,
+  showFooterButtons = true
+}: ModalLayoutProps) => {
   const { closeModal } = useModalStore()
 
   useEffect(() => {
@@ -42,26 +57,55 @@ const ModalLayout = ({ children, onSubmit, size }: ModalLayoutProps) => {
           bg-white max-h-[90vh] rounded-2xl shadow-xl overflow-hidden
         `}
         onClick={e => e.stopPropagation()}>
-        <div className="w-full h-full p-4 sm:p-5 flex flex-col gap-4">
-          <div className="flex-1 overflow-y-auto">{children}</div>
-          <div className="flex gap-2 justify-end pt-2 border-t border-gray-100">
-            {onSubmit && (
+        <div className="w-full h-full flex flex-col">
+          {(title || showHeaderClose) && (
+            <div className="flex items-center justify-between p-6 pb-0">
+              {title && (
+                <div className="flex items-center gap-2">
+                  {titleIcon}
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-900">
+                      {title}
+                    </h2>
+                    {description && (
+                      <p className="text-sm text-gray-600 mt-1">
+                        {description}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
+              {showHeaderClose && (
+                <button
+                  onClick={closeModal}
+                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors ml-auto"
+                  title="닫기">
+                  <IoClose className="text-xl text-gray-500" />
+                </button>
+              )}
+            </div>
+          )}
+          <div className="flex-1 overflow-y-auto p-6">{children}</div>
+          {showFooterButtons && (
+            <div className="flex gap-2 justify-end p-6 pt-4 border-t border-gray-100">
+              {onSubmit && (
+                <Button
+                  size="small"
+                  scheme="solid"
+                  onClick={onSubmit}
+                  className="px-4">
+                  확인
+                </Button>
+              )}
               <Button
                 size="small"
-                scheme="solid"
-                onClick={onSubmit}
+                scheme="outlined"
+                onClick={closeModal}
                 className="px-4">
-                확인
+                닫기
               </Button>
-            )}
-            <Button
-              size="small"
-              scheme="outlined"
-              onClick={closeModal}
-              className="px-4">
-              닫기
-            </Button>
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -1,10 +1,5 @@
 import { basicApi } from '..'
-import {
-  Detect,
-  NexonMembers,
-  RecordedMembers,
-  SearchGuild
-} from '../../types/guild'
+import { Detect, NexonMembers, SearchGuild } from '../../types/guild'
 
 export const fetchGuildList = async () => {
   const response = await basicApi.get('/api/guilds')
@@ -18,22 +13,20 @@ export const addGuildList = async (params: SearchGuild) => {
       world_name: params.world_name
     }
   })
-  return response.data.message
+  return response.data
 }
 
-//API 멤버
+export const deleteGuildList = async (guildId: number) => {
+  const response = await basicApi.delete(`/api/guilds/${guildId}`)
+  return response.data
+}
+
+//멤버 조회
 export const fetchNexonGuildMembers = async (guildId: number) => {
   const response = await basicApi.get<NexonMembers>(
     `/api/guilds/${guildId}/members`
   )
-  return response.data
-}
 
-//직접 기록한 멤버
-export const fetchRecordedGuildMembers = async (guildId: number) => {
-  const response = await basicApi.get<RecordedMembers>(
-    `/api/guild-member/add-list/${guildId}`
-  )
   return response.data
 }
 
@@ -43,4 +36,28 @@ export const fetchDetectGuildMembers = async (guildId: number) => {
     `/api/guild-member/detect/${guildId}`
   )
   return response.data
+}
+
+//길드 멤버 기록 추가
+export const addGuildMember = async (
+  characterName: string,
+  guildId: number
+) => {
+  const response = await basicApi.post(`/api/guild-member/${guildId}`, {
+    characterName
+  })
+  return response.data.message
+}
+
+//길드 멤버 기록 삭제
+export const deleteGuildMember = async (
+  characterName: string,
+  guildId: number
+) => {
+  const response = await basicApi.delete(`/api/guild-member/${guildId}`, {
+    params: {
+      characterName: characterName
+    }
+  })
+  return response.data.message
 }

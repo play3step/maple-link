@@ -8,6 +8,7 @@ export type ModalType =
   | 'createPromotion'
   | 'createRoom'
   | 'addCharacter'
+  | 'guildManage'
   | null
 
 interface StoreState {

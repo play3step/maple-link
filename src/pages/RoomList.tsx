@@ -4,11 +4,16 @@ import { useNavigate } from 'react-router-dom'
 import { IoAdd, IoTrashOutline, IoPersonAddOutline } from 'react-icons/io5'
 import { useRoom } from '../hooks/Room/useRoom'
 import { Loading } from '../components/common/Loading'
+import { GuildManageModal } from '../components/Guild/GuildManageModal'
+import { useState } from 'react'
+import { Room } from '../types/Rooms'
 
 export const RoomList = () => {
-  const { openModal, activeModal } = useModalStore()
+  const { openModal, activeModal, closeModal } = useModalStore()
   const { rooms } = useRoom()
   const navigate = useNavigate()
+
+  const [selectedRoom, setSelectedRoom] = useState<Room | null>(null)
 
   if (!rooms) {
     return (
@@ -46,11 +51,6 @@ export const RoomList = () => {
                   <h2 className="text-xl font-bold text-gray-900 mb-1">
                     {room.groupName}
                   </h2>
-                  <div className="flex items-center gap-2">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                      활성
-                    </span>
-                  </div>
                 </div>
               </div>
 
@@ -71,7 +71,11 @@ export const RoomList = () => {
                 </button>
                 <button
                   className="flex items-center justify-center w-10 h-10 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-lg transition-colors"
-                  title="관리자 추가">
+                  title="관리자 추가"
+                  onClick={() => {
+                    setSelectedRoom(room)
+                    openModal('guildManage')
+                  }}>
                   <IoPersonAddOutline className="text-xl" />
                 </button>
                 <button
@@ -85,6 +89,15 @@ export const RoomList = () => {
         ))}
       </div>
       {activeModal === 'createRoom' && <CreateRoomModal />}
+      {activeModal === 'guildManage' && (
+        <GuildManageModal
+          room={selectedRoom as Room}
+          onClose={() => {
+            setSelectedRoom(null)
+            closeModal()
+          }}
+        />
+      )}
     </div>
   )
 }

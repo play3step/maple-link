@@ -4,10 +4,13 @@ import { useQuery } from '@tanstack/react-query'
 import { fetchNexonGuildMembers } from '../../apis/Guild/guildController'
 import { NexonMembers } from '../../types/guild'
 import { useRoomsStore } from '../../store/roomsStore'
+import { guestGuilds } from '../../data/guest'
+import { useAuthStore } from '../../store/authStore'
 export const useGuildMember = () => {
   const { search } = useLocation()
   const params = new URLSearchParams(search)
   const { guildList } = useRoomsStore()
+  const { userType } = useAuthStore()
 
   const guildName = params.get(QUERYSTRING.GUILD)
 
@@ -18,7 +21,8 @@ export const useGuildMember = () => {
       Promise.all(
         guildList?.map(v => fetchNexonGuildMembers(v.guildId ?? 0)) || []
       ),
-    staleTime: 1000 * 60 * 10
+    staleTime: 1000 * 60 * 10,
+    enabled: userType !== 'guest'
   })
 
   // 선택된 길드
@@ -37,6 +41,13 @@ export const useGuildMember = () => {
         }
       : undefined
     : undefined
+
+  if (userType === 'guest') {
+    return {
+      nexonMembers: guestGuilds,
+      selectMember: guestGuilds.find(v => v.guildName === guildName)
+    }
+  }
 
   return { nexonMembers, selectMember }
 }

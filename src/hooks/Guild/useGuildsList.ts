@@ -3,10 +3,12 @@ import { useRoomsStore } from '../../store/roomsStore'
 import { Guild } from '../../types/guild'
 import { useEffect } from 'react'
 import { addGuildList, deleteGuildList } from '../../apis/Guild/guildController'
-
+import { useAuthStore } from '../../store/authStore'
 export const useGuildsList = () => {
   const { adminId } = useParams<{ adminId: string }>()
   const { guildList, rooms, setGuildList } = useRoomsStore()
+
+  const { userType } = useAuthStore()
 
   useEffect(() => {
     if (rooms && rooms.length > 0) {
@@ -38,6 +40,10 @@ export const useGuildsList = () => {
   // 길드 생성
   const createGuild = async (worldName: string, guildName: string) => {
     if (!worldName || !guildName) return
+    if (userType === 'guest') {
+      alert('게스트 유저는 길드 생성을 할 수 없습니다.')
+      return
+    }
     const response = await addGuildList({
       world_name: worldName,
       guild_name: guildName

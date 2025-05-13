@@ -4,10 +4,13 @@ import { useAuth } from '../hooks/useAuth'
 import { useAuthStore } from '../store/authStore'
 import { useEffect } from 'react'
 import Logo from '../assets/logo.png'
+import { useUserStore } from '../store/userStore'
+import { guest } from '../data/guest'
 
 const Home = () => {
   const { userLogin } = useAuth()
-  const { isLoggedIn } = useAuthStore()
+  const { isLoggedIn, storeLogin } = useAuthStore()
+  const { setCharacterUid } = useUserStore()
   const nav = useNavigate()
 
   useEffect(() => {
@@ -15,6 +18,11 @@ const Home = () => {
       nav('/character')
     }
   }, [isLoggedIn, nav])
+
+  const handleGuestLogin = () => {
+    storeLogin('', '', 'guest')
+    setCharacterUid(guest.characterUid)
+  }
 
   return (
     <div className="h-[100vh] bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 text-slate-800 relative overflow-hidden flex flex-col">
@@ -65,11 +73,19 @@ const Home = () => {
               해결하세요
             </p>
 
-            <SocialAuthButton
-              onClick={userLogin}
-              className="inline-flex items-center px-6 py-2.5 text-base font-medium text-white bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl shadow-lg hover:shadow-blue-500/25 hover:from-blue-400 hover:to-indigo-400 transform hover:translate-y-[-2px] transition-all duration-300 group">
-              Google로 시작하기
-            </SocialAuthButton>
+            <div className="flex flex-col gap-4">
+              <div
+                className="bg-gradient-to-r flex justify-center items-center from-blue-500 to-indigo-500 text-white px-4 py-2 rounded-full hover:from-blue-400 hover:to-indigo-400 transform hover:translate-y-[-2px] transition-all duration-300 group"
+                onClick={handleGuestLogin}>
+                체험하기
+              </div>
+
+              <SocialAuthButton
+                onClick={userLogin}
+                className="inline-flex items-center px-6 py-2.5 text-base font-medium text-white bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl shadow-lg hover:shadow-blue-500/25 hover:from-blue-400 hover:to-indigo-400 transform hover:translate-y-[-2px] transition-all duration-300 group">
+                Google로 시작하기
+              </SocialAuthButton>
+            </div>
           </div>
 
           {/* Feature Cards */}

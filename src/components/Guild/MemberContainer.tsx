@@ -1,9 +1,10 @@
-import { Member } from '../../types/guild'
+import { Member, NexonMembers } from '../../types/guild'
 import { useState } from 'react'
 import { IoEllipsisVertical } from 'react-icons/io5'
 
 interface MemberContainerProps {
   members?: Member[]
+  allMembers?: NexonMembers[]
   masterName?: string
   onSelect?: (member: Member) => void
   guildName?: string
@@ -15,7 +16,8 @@ export const MemberContainer = ({
   masterName,
   onSelect,
   guildName,
-  onDeleteGuild
+  onDeleteGuild,
+  allMembers
 }: MemberContainerProps) => {
   const [showMenu, setShowMenu] = useState(false)
   if (!members) return null
@@ -65,14 +67,17 @@ export const MemberContainer = ({
             <div
               key={member.name}
               onClick={
-                member.type === '본캐'
+                member.type === 'main'
                   ? () => onSelect?.(member)
-                  : member.type === '부캐' && member.mainCharacterId
+                  : member.type === 'sub' && member.mainCharacterInfo
                     ? () => {
-                        const mainChar = members.find(
-                          m => m.id === member.mainCharacterId
-                        )
-                        if (mainChar) onSelect?.(mainChar)
+                        const found = allMembers
+                          ?.flatMap(g => g.memberDetailResponse)
+                          .find(m => m?.id === member.mainCharacterInfo!.id)
+
+                        if (found) {
+                          onSelect?.(found)
+                        }
                       }
                     : undefined
               }
@@ -95,15 +100,15 @@ export const MemberContainer = ({
                     {masterName && (
                       <span
                         className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                          member.type === '본캐'
+                          member.type === 'main'
                             ? 'bg-blue-100 text-blue-700'
-                            : member.type === '부캐'
+                            : member.type === 'sub'
                               ? 'bg-yellow-100 text-yellow-700'
                               : 'bg-gray-100 text-gray-700'
                         }`}>
-                        {member.type === '본캐'
+                        {member.type === 'main'
                           ? '본캐'
-                          : member.type === '부캐'
+                          : member.type === 'sub'
                             ? '부캐'
                             : '미지정'}
                       </span>

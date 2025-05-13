@@ -3,11 +3,14 @@ import { useAuth } from '../../hooks/useAuth'
 import Button from './Button'
 import Logo from '../../assets/logo.png'
 import { useState } from 'react'
+import { useAuthStore } from '../../store/authStore'
 
 function Header() {
   const { userLogout } = useAuth()
   const nav = useNavigate()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  const { userType } = useAuthStore()
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen)
@@ -104,7 +107,7 @@ function Header() {
         scheme="outlined"
         onClick={userLogout}
         className="hidden md:block border-blue-500 text-blue-600 hover:bg-blue-50 transition-all">
-        로그아웃
+        {userType === 'guest' ? '체험 종료' : '로그아웃'}
       </Button>
 
       {/* Mobile menu */}
@@ -169,7 +172,7 @@ function Header() {
             scheme="outlined"
             onClick={userLogout}
             className="w-full text-center py-2 border-blue-500 text-blue-600">
-            로그아웃
+            {userType === 'guest' ? '체험 종료' : '로그아웃'}
           </Button>
         </div>
       )}

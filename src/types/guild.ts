@@ -51,8 +51,14 @@ export interface Member {
   job: string
   level: string
   name: string
-  mainCharacterId?: number
-  type: '본캐' | '부캐' | null
+  type: 'main' | 'sub' | null
+  mainCharacterInfo: {
+    id: number
+    name: string
+    level: string
+    job: string
+    imagePath: string
+  }
 }
 
 export interface Detect {

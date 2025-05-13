@@ -65,9 +65,9 @@ export const MemberContainer = ({
             <div
               key={member.name}
               onClick={
-                member.type === '본캐'
+                member.type === 'main'
                   ? () => onSelect?.(member)
-                  : member.type === '부캐' && member.mainCharacterId
+                  : member.type === 'sub' && member.mainCharacterId
                     ? () => {
                         const mainChar = members.find(
                           m => m.id === member.mainCharacterId
@@ -95,15 +95,15 @@ export const MemberContainer = ({
                     {masterName && (
                       <span
                         className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                          member.type === '본캐'
+                          member.type === 'main'
                             ? 'bg-blue-100 text-blue-700'
-                            : member.type === '부캐'
+                            : member.type === 'sub'
                               ? 'bg-yellow-100 text-yellow-700'
                               : 'bg-gray-100 text-gray-700'
                         }`}>
-                        {member.type === '본캐'
+                        {member.type === 'main'
                           ? '본캐'
-                          : member.type === '부캐'
+                          : member.type === 'sub'
                             ? '부캐'
                             : '미지정'}
                       </span>

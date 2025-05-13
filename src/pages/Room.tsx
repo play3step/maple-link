@@ -10,7 +10,7 @@ import { Empty } from '../components/common/Empty'
 import { DetailMemberModal } from '../components/modal/Guild/DetailMemberModal'
 import { Loading } from '../components/common/Loading'
 import { useState } from 'react'
-import { Member } from '../types/guild'
+import { Member, NexonMembers } from '../types/guild'
 import { IoArrowBack } from 'react-icons/io5'
 import { useNavigate } from 'react-router-dom'
 import { useGuildDetect } from '../hooks/Guild/useGuildDetect'
@@ -77,7 +77,7 @@ const Room = () => {
             <div className="min-h-[600px]">
               {guildList.length > 0 ? (
                 <MemberContainer
-                  members={selectMember?.memberDetailResponse}
+                  members={selectMember?.memberDetailResponse as Member[]}
                   masterName={selectMember?.guildMasterName}
                   guildName={selectMember?.guildName}
                   onSelect={handleMemberSelect}
@@ -105,7 +105,7 @@ const Room = () => {
       {activeModal === 'detailMember' && selectedMember && nexonMembers && (
         <DetailMemberModal
           memberDetail={selectedMember}
-          memberList={nexonMembers}
+          memberList={nexonMembers as NexonMembers[]}
         />
       )}
     </div>

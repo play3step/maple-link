@@ -52,7 +52,7 @@ export interface Member {
   level: string
   name: string
   mainCharacterId?: number
-  type: '본캐' | '부캐' | null
+  type: 'main' | 'sub' | null
 }
 
 export interface Detect {

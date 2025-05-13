@@ -88,7 +88,10 @@ export const EventListModal = ({
                                   ? 'text-emerald-900'
                                   : 'text-red-900'
                               }
-                            `}>
+                             cursor-pointer hover:underline`}
+                            onClick={() => {
+                              window.open(v.nexonUrl, '_blank')
+                            }}>
                             {v.title}
                           </span>
                         </div>

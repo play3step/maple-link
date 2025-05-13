@@ -78,6 +78,7 @@ const Room = () => {
               {guildList.length > 0 ? (
                 <MemberContainer
                   members={selectMember?.memberDetailResponse as Member[]}
+                  allMembers={nexonMembers as NexonMembers[]}
                   masterName={selectMember?.guildMasterName}
                   guildName={selectMember?.guildName}
                   onSelect={handleMemberSelect}

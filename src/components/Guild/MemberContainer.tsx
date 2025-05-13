@@ -1,9 +1,10 @@
-import { Member } from '../../types/guild'
+import { Member, NexonMembers } from '../../types/guild'
 import { useState } from 'react'
 import { IoEllipsisVertical } from 'react-icons/io5'
 
 interface MemberContainerProps {
   members?: Member[]
+  allMembers?: NexonMembers[]
   masterName?: string
   onSelect?: (member: Member) => void
   guildName?: string
@@ -15,7 +16,8 @@ export const MemberContainer = ({
   masterName,
   onSelect,
   guildName,
-  onDeleteGuild
+  onDeleteGuild,
+  allMembers
 }: MemberContainerProps) => {
   const [showMenu, setShowMenu] = useState(false)
   if (!members) return null
@@ -67,12 +69,15 @@ export const MemberContainer = ({
               onClick={
                 member.type === 'main'
                   ? () => onSelect?.(member)
-                  : member.type === 'sub' && member.mainCharacterId
+                  : member.type === 'sub' && member.mainCharacterInfo
                     ? () => {
-                        const mainChar = members.find(
-                          m => m.id === member.mainCharacterId
-                        )
-                        if (mainChar) onSelect?.(mainChar)
+                        const found = allMembers
+                          ?.flatMap(g => g.memberDetailResponse)
+                          .find(m => m?.id === member.mainCharacterInfo!.id)
+
+                        if (found) {
+                          onSelect?.(found)
+                        }
                       }
                     : undefined
               }

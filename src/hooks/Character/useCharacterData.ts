@@ -16,7 +16,6 @@ import { useUserStore } from '../../store/userStore'
 
 export const useCharacterData = () => {
   const { characterUid } = useUserStore()
-  console.log(characterUid)
 
   const { data: characterStats, isLoading: statsLoading } =
     useQuery<CharacterStats>({

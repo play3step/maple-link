@@ -6,6 +6,8 @@ import {
 import { DetectResult, Guild } from '../../types/guild'
 import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useAuthStore } from '../../store/authStore'
+import { guestDetect } from '../../data/guest'
 
 type MutationParams = {
   member: string
@@ -13,9 +15,16 @@ type MutationParams = {
 }
 
 export const useGuildDetect = (guildList: Guild[]) => {
+  const { userType } = useAuthStore()
   const [detectMembers, setDetectMembers] = useState<DetectResult[]>([])
+  const queryClient = useQueryClient()
 
   const handleDetect = async () => {
+    if (userType === 'guest') {
+      setDetectMembers(guestDetect)
+      return
+    }
+
     const guildIds = guildList
       .filter(guild => guild.guildId && guild.guildName)
       .map(guild => ({
@@ -37,7 +46,6 @@ export const useGuildDetect = (guildList: Guild[]) => {
 
     setDetectMembers(results)
   }
-  const queryClient = useQueryClient()
 
   const addMutation = useMutation<void, Error, MutationParams>({
     mutationFn: ({ member, guildId }) => addGuildMember(member, guildId)
@@ -52,6 +60,8 @@ export const useGuildDetect = (guildList: Guild[]) => {
       guild => guild.guildId === targetGuildId
     )
     if (!guildDetect) return
+
+    if (userType === 'guest') return
 
     const addPromises = guildDetect.toAdd.map(member =>
       addMutation.mutateAsync({ member, guildId: guildDetect.guildId })

@@ -22,9 +22,7 @@ const Room = () => {
   const { nexonMembers, selectMember } = useGuildMember()
   const [selectedMember, setSelectedMember] = useState<Member>()
   const { deleteGuild } = useGuildsList()
-  const main = guildList[0].guildName
-
-  console.log(guildList)
+  const main = guildList[0]?.guildName
 
   const { detectMembers, reflectDetectMember, handleDetect } =
     useGuildDetect(guildList)

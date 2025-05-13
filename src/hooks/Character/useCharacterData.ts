@@ -20,7 +20,7 @@ export const useCharacterData = () => {
 
   const { data: characterStats, isLoading: statsLoading } =
     useQuery<CharacterStats>({
-      queryKey: ['characterStats'],
+      queryKey: ['characterStats', characterUid],
       queryFn: characterUid
         ? () => fetchCharacterStat(characterUid)
         : undefined,
@@ -29,7 +29,7 @@ export const useCharacterData = () => {
 
   const { data: ability, isLoading: abilityLoading } =
     useQuery<CharacterAbility>({
-      queryKey: ['characterAbility'],
+      queryKey: ['characterAbility', characterUid],
       queryFn: characterUid
         ? () => fetchCharacterAbility(characterUid)
         : undefined,
@@ -37,7 +37,7 @@ export const useCharacterData = () => {
     })
 
   const { data: hyperStat, isLoading: hyperLoading } = useQuery<HyperStat>({
-    queryKey: ['characterHyperStat'],
+    queryKey: ['characterHyperStat', characterUid],
     queryFn: characterUid
       ? () => fetchCharacterHyperStat(characterUid)
       : undefined,
@@ -45,7 +45,7 @@ export const useCharacterData = () => {
   })
 
   const { data: basic, isLoading: basicLoading } = useQuery<CharacterBasic>({
-    queryKey: ['characterBasic'],
+    queryKey: ['characterBasic', characterUid],
     queryFn: characterUid ? () => fetchCharacterBasic(characterUid) : undefined,
     staleTime: 5 * 60 * 1000
   })

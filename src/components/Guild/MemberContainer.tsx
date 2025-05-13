@@ -9,6 +9,7 @@ interface MemberContainerProps {
   onSelect?: (member: Member) => void
   guildName?: string
   onDeleteGuild?: () => void
+  isMainGuild?: boolean
 }
 
 export const MemberContainer = ({
@@ -17,7 +18,8 @@ export const MemberContainer = ({
   onSelect,
   guildName,
   onDeleteGuild,
-  allMembers
+  allMembers,
+  isMainGuild
 }: MemberContainerProps) => {
   const [showMenu, setShowMenu] = useState(false)
   if (!members) return null
@@ -37,7 +39,7 @@ export const MemberContainer = ({
           <h2 className="text-white text-lg font-semibold pr-10">
             길드: {guildName}
           </h2>
-          {onDeleteGuild && (
+          {onDeleteGuild && !isMainGuild && (
             <div className="absolute right-4 top-1/2 -translate-y-1/2">
               <button
                 onClick={e => {
@@ -86,7 +88,7 @@ export const MemberContainer = ({
                 <img
                   src={member.imagePath}
                   alt={member.name}
-                  className="w-16 h-16 object-cover rounded-lg"
+                  className="w-24 h-24 object-cover rounded-lg"
                 />
                 <div className="flex-1 min-w-0">
                   <h3 className="text-base font-semibold text-gray-900 truncate group-hover:text-blue-600">

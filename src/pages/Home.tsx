@@ -65,11 +65,17 @@ const Home = () => {
               해결하세요
             </p>
 
-            <SocialAuthButton
-              onClick={userLogin}
-              className="inline-flex items-center px-6 py-2.5 text-base font-medium text-white bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl shadow-lg hover:shadow-blue-500/25 hover:from-blue-400 hover:to-indigo-400 transform hover:translate-y-[-2px] transition-all duration-300 group">
-              Google로 시작하기
-            </SocialAuthButton>
+            <div className="flex flex-col gap-4">
+              <div className="bg-gradient-to-r flex justify-center items-center from-blue-500 to-indigo-500 text-white px-4 py-2 rounded-full hover:from-blue-400 hover:to-indigo-400 transform hover:translate-y-[-2px] transition-all duration-300 group">
+                체험하기
+              </div>
+
+              <SocialAuthButton
+                onClick={userLogin}
+                className="inline-flex items-center px-6 py-2.5 text-base font-medium text-white bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl shadow-lg hover:shadow-blue-500/25 hover:from-blue-400 hover:to-indigo-400 transform hover:translate-y-[-2px] transition-all duration-300 group">
+                Google로 시작하기
+              </SocialAuthButton>
+            </div>
           </div>
 
           {/* Feature Cards */}

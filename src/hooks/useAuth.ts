@@ -17,7 +17,7 @@ export const useAuth = () => {
       console.log(token)
 
       if (token && result.user.uid) {
-        storeLogin(token, result.user.uid)
+        storeLogin(token, result.user.uid, 'member')
         fetchUserInfo(result.user.uid)
       }
     } catch (error) {

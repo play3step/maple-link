@@ -1,10 +1,13 @@
 import { create } from 'zustand'
 
+type UserType = 'member' | 'guest'
+
 interface StoreState {
   token: string | null
   uid: string | null
   isLoggedIn: boolean
-  storeLogin: (token: string, uid: string) => void
+  userType: UserType
+  storeLogin: (token: string, uid: string, userType: UserType) => void
   storeLogout: () => void
 }
 
@@ -12,10 +15,11 @@ export const useAuthStore = create<StoreState>(set => ({
   token: null,
   uid: null,
   isLoggedIn: false,
-  storeLogin: (token: string, uid: string) => {
-    set({ token, uid, isLoggedIn: true })
+  userType: 'guest',
+  storeLogin: (token: string, uid: string, userType: UserType) => {
+    set({ token, uid, isLoggedIn: true, userType })
   },
   storeLogout: () => {
-    set({ token: null, uid: null, isLoggedIn: false })
+    set({ token: null, uid: null, isLoggedIn: false, userType: 'guest' })
   }
 }))

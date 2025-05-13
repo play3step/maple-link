@@ -8,60 +8,60 @@ import {
 } from '../../types/character'
 import { Inventory } from '../../types/item'
 
-export const fetchCharacterStat = async () => {
+export const fetchCharacterStat = async (characterUid: string) => {
   const response = await nexonApi.get<CharacterStats>(
     '/maplestory/v1/character/stat',
     {
       params: {
-        ocid: import.meta.env.VITE_ocid
+        ocid: characterUid
       }
     }
   )
   return response.data
 }
 
-export const fetchCharacterAbility = async () => {
+export const fetchCharacterAbility = async (characterUid: string) => {
   const response = await nexonApi.get<CharacterAbility>(
     '/maplestory/v1/character/ability',
     {
       params: {
-        ocid: import.meta.env.VITE_ocid
+        ocid: characterUid
       }
     }
   )
   return response.data
 }
 
-export const fetchCharacterHyperStat = async () => {
+export const fetchCharacterHyperStat = async (characterUid: string) => {
   const response = await nexonApi.get<HyperStat>(
     '/maplestory/v1/character/hyper-stat',
     {
       params: {
-        ocid: import.meta.env.VITE_ocid
+        ocid: characterUid
       }
     }
   )
   return response.data
 }
 
-export const fetchCharacterBasic = async () => {
+export const fetchCharacterBasic = async (characterUid: string) => {
   const response = await nexonApi.get<CharacterBasic>(
     '/maplestory/v1/character/basic',
     {
       params: {
-        ocid: import.meta.env.VITE_ocid
+        ocid: characterUid
       }
     }
   )
   return response.data
 }
 
-export const fetchCharacterItem = async () => {
+export const fetchCharacterItem = async (characterUid: string) => {
   const response = await nexonApi.get<Inventory>(
     '/maplestory/v1/character/item-equipment',
     {
       params: {
-        ocid: import.meta.env.VITE_ocid
+        ocid: characterUid
       }
     }
   )

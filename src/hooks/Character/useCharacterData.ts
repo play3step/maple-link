@@ -15,33 +15,38 @@ import {
 import { useUserStore } from '../../store/userStore'
 
 export const useCharacterData = () => {
-  const { userInfo } = useUserStore()
-  const characterUid = userInfo?.characterUid
+  const { characterUid } = useUserStore()
   console.log(characterUid)
 
   const { data: characterStats, isLoading: statsLoading } =
     useQuery<CharacterStats>({
       queryKey: ['characterStats'],
-      queryFn: fetchCharacterStat,
+      queryFn: characterUid
+        ? () => fetchCharacterStat(characterUid)
+        : undefined,
       staleTime: 5 * 60 * 1000
     })
 
   const { data: ability, isLoading: abilityLoading } =
     useQuery<CharacterAbility>({
       queryKey: ['characterAbility'],
-      queryFn: fetchCharacterAbility,
+      queryFn: characterUid
+        ? () => fetchCharacterAbility(characterUid)
+        : undefined,
       staleTime: 5 * 60 * 1000
     })
 
   const { data: hyperStat, isLoading: hyperLoading } = useQuery<HyperStat>({
     queryKey: ['characterHyperStat'],
-    queryFn: fetchCharacterHyperStat,
+    queryFn: characterUid
+      ? () => fetchCharacterHyperStat(characterUid)
+      : undefined,
     staleTime: 5 * 60 * 1000
   })
 
   const { data: basic, isLoading: basicLoading } = useQuery<CharacterBasic>({
     queryKey: ['characterBasic'],
-    queryFn: fetchCharacterBasic,
+    queryFn: characterUid ? () => fetchCharacterBasic(characterUid) : undefined,
     staleTime: 5 * 60 * 1000
   })
 

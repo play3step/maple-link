@@ -12,7 +12,13 @@ import {
   HyperStat
 } from '../../types/character'
 
+import { useUserStore } from '../../store/userStore'
+
 export const useCharacterData = () => {
+  const { userInfo } = useUserStore()
+  const characterUid = userInfo?.characterUid
+  console.log(characterUid)
+
   const { data: characterStats, isLoading: statsLoading } =
     useQuery<CharacterStats>({
       queryKey: ['characterStats'],

@@ -5,12 +5,12 @@ import { User } from '../../types/auth'
 
 export const fetchUserInfo = async (uid: string) => {
   try {
-    const { setUserInfo } = useUserStore.getState()
+    const { setUserInfo, setUserUid } = useUserStore.getState()
     const response = await basicApi.post<User>(`/api/user`, {
       uid: uid
     })
     setUserInfo(response.data)
-    return response.data
+    setUserUid(uid)
   } catch (error) {
     console.error('Error fetching user info:', error)
     throw error
@@ -19,16 +19,13 @@ export const fetchUserInfo = async (uid: string) => {
 
 export const addUserInfo = async (apiKey: string) => {
   try {
-    const { setUserInfo } = useUserStore.getState()
+    const { userUid } = useUserStore.getState()
     const response = await basicApi.post(`/api/user/apikey`, {
       apiKey: apiKey
     })
 
-    if (response.data) {
-      setUserInfo({
-        ...response.data,
-        nexonApiKey: response.data.generatedApiKey
-      })
+    if (response.data && userUid) {
+      await fetchUserInfo(userUid)
     }
 
     return response.data

@@ -201,7 +201,7 @@ export const guestDetect = [
   {
     guildId: 9007199254740991,
     guildName: '노비맙단',
-    toAdd: ['세글자', '구독', '좋아요'],
+    toAdd: ['장뱅', '굴비', '평뱅'],
     toRemove: ['눼행', '녜휑']
   },
   {

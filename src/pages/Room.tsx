@@ -22,6 +22,9 @@ const Room = () => {
   const { nexonMembers, selectMember } = useGuildMember()
   const [selectedMember, setSelectedMember] = useState<Member>()
   const { deleteGuild } = useGuildsList()
+
+  const [searchCharacter, setSearchCharacter] = useState('')
+
   const main = guildList[0]?.guildName
 
   const { detectMembers, reflectDetectMember, handleDetect } =
@@ -34,6 +37,10 @@ const Room = () => {
   const handleMemberSelect = (member: Member) => {
     setSelectedMember(member)
     openModal('detailMember')
+  }
+
+  const handleSearchCharacter = (value: string) => {
+    setSearchCharacter(value)
   }
 
   if (!guildList)
@@ -84,6 +91,8 @@ const Room = () => {
                   guildName={selectMember?.guildName}
                   onSelect={handleMemberSelect}
                   isMainGuild={selectMember?.guildName === main}
+                  searchCharacter={searchCharacter}
+                  setSearchCharacter={handleSearchCharacter}
                   onDeleteGuild={
                     selectMember?.guildId
                       ? () => deleteGuild(selectMember.guildId)

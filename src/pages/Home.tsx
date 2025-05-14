@@ -73,9 +73,9 @@ const Home = () => {
               해결하세요
             </p>
 
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
               <div
-                className="bg-gradient-to-r flex justify-center items-center from-blue-500 to-indigo-500 text-white px-4 py-2 rounded-full hover:from-blue-400 hover:to-indigo-400 transform hover:translate-y-[-2px] transition-all duration-300 group"
+                className="bg-gradient-to-r flex justify-center items-center from-blue-500 to-indigo-500 text-white px-4 py-3 rounded-full hover:from-blue-400 hover:to-indigo-400 transform hover:translate-y-[-2px] transition-all duration-300 group"
                 onClick={handleGuestLogin}>
                 체험하기
               </div>

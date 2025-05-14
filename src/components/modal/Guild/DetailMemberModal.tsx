@@ -39,7 +39,7 @@ export const DetailMemberModal = ({ memberDetail, memberList }: Props) => {
               <img
                 src={memberDetail.imagePath}
                 alt={memberDetail.name}
-                className="w-24 h-24 rounded-lg object-cover"
+                className="w-32 h-32 rounded-lg object-cover"
               />
               <div>
                 <h3 className="text-xl font-bold text-gray-900">
@@ -102,9 +102,9 @@ export const DetailMemberModal = ({ memberDetail, memberList }: Props) => {
                   <img
                     src={alt?.imagePath}
                     alt={alt?.name}
-                    className="w-10 h-10 rounded object-cover"
+                    className="w-20 h-20 rounded object-cover"
                   />
-                  <div>
+                  <div className="flex flex-col gap-1">
                     <div className="text-sm font-medium text-blue-900">
                       {alt?.name} ({alt?.job}) Lv.{alt?.level}
                     </div>

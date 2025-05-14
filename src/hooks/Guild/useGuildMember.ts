@@ -25,6 +25,12 @@ export const useGuildMember = () => {
     enabled: userType !== 'guest'
   })
 
+  if (userType === 'guest') {
+    return {
+      nexonMembers: guestGuilds,
+      selectMember: guestGuilds.find(v => v.guildName === guildName)
+    }
+  }
   // 선택된 길드
   const selectMember: NexonMembers | undefined = nexonMembers
     ? nexonMembers?.find(v => v.guildName === guildName)
@@ -41,13 +47,6 @@ export const useGuildMember = () => {
         }
       : undefined
     : undefined
-
-  if (userType === 'guest') {
-    return {
-      nexonMembers: guestGuilds,
-      selectMember: guestGuilds.find(v => v.guildName === guildName)
-    }
-  }
 
   return { nexonMembers, selectMember }
 }

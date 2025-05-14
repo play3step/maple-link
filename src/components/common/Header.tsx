@@ -62,7 +62,7 @@ function Header() {
             className="hover:text-blue-600 font-medium transition-all">
             길드 홍보
           </Button>
-          <Button
+          {/* <Button
             scheme="subtle"
             size="small"
             className="hover:text-blue-600 font-medium transition-all">
@@ -74,7 +74,7 @@ function Header() {
             size="small"
             className="hover:text-blue-600 font-medium transition-all">
             공지사항
-          </Button>
+          </Button> */}
         </nav>
       </div>
 
@@ -154,7 +154,7 @@ function Header() {
             길드 홍보
           </Button>
 
-          <Button
+          {/* <Button
             scheme="subtle"
             size="small"
             className="w-full text-left py-2 hover:bg-blue-50 rounded-lg">
@@ -165,7 +165,7 @@ function Header() {
             size="small"
             className="w-full text-left py-2 hover:bg-blue-50 rounded-lg">
             공지사항
-          </Button>
+          </Button> */}
           <hr className="my-2 border-blue-100" />
           <Button
             size="small"

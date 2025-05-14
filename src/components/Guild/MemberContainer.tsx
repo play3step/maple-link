@@ -1,6 +1,6 @@
 import { Member, NexonMembers } from '../../types/guild'
 import { useState } from 'react'
-import { IoEllipsisVertical } from 'react-icons/io5'
+import { IoEllipsisVertical, IoSearchOutline } from 'react-icons/io5'
 
 interface MemberContainerProps {
   members?: Member[]
@@ -9,6 +9,9 @@ interface MemberContainerProps {
   onSelect?: (member: Member) => void
   guildName?: string
   onDeleteGuild?: () => void
+  isMainGuild?: boolean
+  searchCharacter?: string
+  setSearchCharacter?: (value: string) => void
 }
 
 export const MemberContainer = ({
@@ -17,7 +20,10 @@ export const MemberContainer = ({
   onSelect,
   guildName,
   onDeleteGuild,
-  allMembers
+  allMembers,
+  isMainGuild,
+  searchCharacter,
+  setSearchCharacter
 }: MemberContainerProps) => {
   const [showMenu, setShowMenu] = useState(false)
   if (!members) return null
@@ -30,6 +36,10 @@ export const MemberContainer = ({
     setShowMenu(false)
   }
 
+  const filteredMembers = members.filter(member =>
+    member.name.toLowerCase().includes(searchCharacter?.toLowerCase() || '')
+  )
+
   return (
     <div className="w-full max-w-3xl mx-auto bg-white rounded-xl shadow-lg">
       {guildName && (
@@ -37,8 +47,8 @@ export const MemberContainer = ({
           <h2 className="text-white text-lg font-semibold pr-10">
             길드: {guildName}
           </h2>
-          {onDeleteGuild && (
-            <div className="absolute right-4 top-1/2 -translate-y-1/2">
+          {onDeleteGuild && !isMainGuild && (
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 z-50">
               <button
                 onClick={e => {
                   e.stopPropagation()
@@ -62,8 +72,18 @@ export const MemberContainer = ({
       )}
 
       <div className="max-h-[calc(100vh-200px)] overflow-y-auto p-4">
+        <div className="relative mb-2">
+          <input
+            type="text"
+            value={searchCharacter}
+            onChange={e => setSearchCharacter?.(e.target.value)}
+            placeholder="캐릭터 이름으로 검색"
+            className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+          <IoSearchOutline className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {members.map(member => (
+          {filteredMembers.map(member => (
             <div
               key={member.name}
               onClick={
@@ -86,7 +106,7 @@ export const MemberContainer = ({
                 <img
                   src={member.imagePath}
                   alt={member.name}
-                  className="w-16 h-16 object-cover rounded-lg"
+                  className="w-24 h-24 object-cover rounded-lg"
                 />
                 <div className="flex-1 min-w-0">
                   <h3 className="text-base font-semibold text-gray-900 truncate group-hover:text-blue-600">

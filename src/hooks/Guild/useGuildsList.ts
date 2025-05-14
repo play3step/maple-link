@@ -62,7 +62,7 @@ export const useGuildsList = () => {
 
   // 길드 삭제
   const deleteGuild = async (guildId: number) => {
-    if (!guildId) return
+    if (!guildId || userType === 'guest') return
 
     try {
       await deleteGuildList(guildId)

@@ -196,3 +196,18 @@ export const guestGuilds = [
     ]
   }
 ]
+
+export const guestDetect = [
+  {
+    guildId: 9007199254740991,
+    guildName: '노비맙단',
+    toAdd: ['장뱅', '굴비', '평뱅'],
+    toRemove: ['눼행', '녜휑']
+  },
+  {
+    guildId: 9007199254740992,
+    guildName: '아르카나',
+    toAdd: ['여로', '츄츄', '레헬른', '모라스'],
+    toRemove: ['세르니움', '오디움', '도원경']
+  }
+]

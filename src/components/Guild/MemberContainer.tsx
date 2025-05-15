@@ -87,9 +87,9 @@ export const MemberContainer = ({
             <div
               key={member.name}
               onClick={
-                member.type === 'main'
+                member.type === '본캐'
                   ? () => onSelect?.(member)
-                  : member.type === 'sub' && member.mainCharacterInfo
+                  : member.type === '부캐' && member.mainCharacterInfo
                     ? () => {
                         const found = allMembers
                           ?.flatMap(g => g.memberDetailResponse)
@@ -120,15 +120,15 @@ export const MemberContainer = ({
                     {masterName && (
                       <span
                         className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                          member.type === 'main'
+                          member.type === '본캐'
                             ? 'bg-blue-100 text-blue-700'
-                            : member.type === 'sub'
+                            : member.type === '부캐'
                               ? 'bg-yellow-100 text-yellow-700'
                               : 'bg-gray-100 text-gray-700'
                         }`}>
-                        {member.type === 'main'
+                        {member.type === '본캐'
                           ? '본캐'
-                          : member.type === 'sub'
+                          : member.type === '부캐'
                             ? '부캐'
                             : '미지정'}
                       </span>

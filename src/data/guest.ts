@@ -8,6 +8,7 @@ import meonun from '../assets/character/meonun.png'
 import alseom from '../assets/character/alseom.png'
 import kkobchang from '../assets/character/kkobchang.png'
 import somul from '../assets/character/somul.png'
+import boyee from '../assets/character/boyee.png'
 
 export const guest = {
   name: 'Guest',
@@ -42,7 +43,7 @@ export const guestGuilds = [
         level: '286',
         job: '데몬어벤져',
         imagePath: danbaeng,
-        type: 'main',
+        type: '본캐',
         mainCharacterInfo: {
           id: 1,
           name: '단뱅',
@@ -57,7 +58,7 @@ export const guestGuilds = [
         level: '290',
         job: '듀얼블레이드',
         imagePath: nochil,
-        type: 'main',
+        type: '본캐',
         mainCharacterInfo: {
           id: 2,
           name: '노칠',
@@ -72,7 +73,7 @@ export const guestGuilds = [
         level: '290',
         job: '듀얼블레이드',
         imagePath: bigul,
-        type: 'main',
+        type: '본캐',
         mainCharacterInfo: {
           id: 3,
           name: '비굴',
@@ -87,7 +88,7 @@ export const guestGuilds = [
         level: '290',
         job: '아크메이지(불, 독)',
         imagePath: mabbak,
-        type: 'main',
+        type: '본캐',
         mainCharacterInfo: {
           id: 4,
           name: '맙빡',
@@ -102,7 +103,7 @@ export const guestGuilds = [
         level: '260',
         job: '섀도어',
         imagePath: moong,
-        type: 'sub',
+        type: '부캐',
         mainCharacterInfo: {
           id: 1,
           name: '단뱅',
@@ -117,7 +118,7 @@ export const guestGuilds = [
         level: '285',
         job: '제논',
         imagePath: bigulxenon,
-        type: 'sub',
+        type: '부캐',
         mainCharacterInfo: {
           id: 3,
           name: '비굴',
@@ -139,7 +140,7 @@ export const guestGuilds = [
         level: '281',
         job: '아크메이지(불, 독)',
         imagePath: meonun,
-        type: 'sub',
+        type: '부캐',
         mainCharacterInfo: {
           id: 2,
           name: '노칠',
@@ -154,7 +155,7 @@ export const guestGuilds = [
         level: '280',
         job: '캐논마스터',
         imagePath: alseom,
-        type: 'sub',
+        type: '부캐',
         mainCharacterInfo: {
           id: 2,
           name: '노칠',
@@ -163,13 +164,23 @@ export const guestGuilds = [
           imagePath: nochil
         }
       },
+
       {
         id: 9,
+        name: '음메보이',
+        level: '275',
+        job: '팔라딘',
+        imagePath: boyee,
+        type: '미지정',
+        mainCharacterInfo: {}
+      },
+      {
+        id: 10,
         name: '꼽챵',
         level: '285',
         job: '비숍',
         imagePath: kkobchang,
-        type: 'sub',
+        type: '부캐',
         mainCharacterInfo: {
           id: 4,
           name: '맙빡',
@@ -179,12 +190,12 @@ export const guestGuilds = [
         }
       },
       {
-        id: 10,
+        id: 11,
         name: '소물',
         level: '270',
         job: '팬텀',
         imagePath: somul,
-        type: 'sub',
+        type: '부캐',
         mainCharacterInfo: {
           id: 1,
           name: '단뱅',

@@ -21,6 +21,8 @@ const Room = () => {
   const { guildList } = useGuildsList()
   const { nexonMembers, selectMember } = useGuildMember()
   const [selectedMember, setSelectedMember] = useState<Member>()
+
+  console.log(selectMember)
   const { deleteGuild } = useGuildsList()
 
   const [searchCharacter, setSearchCharacter] = useState('')

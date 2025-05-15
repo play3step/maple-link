@@ -10,7 +10,7 @@ import { guest } from '../data/guest'
 const Home = () => {
   const { userLogin } = useAuth()
   const { isLoggedIn, storeLogin } = useAuthStore()
-  const { setCharacterUid } = useUserStore()
+  const { setUserInfo } = useUserStore()
   const nav = useNavigate()
 
   useEffect(() => {
@@ -21,7 +21,13 @@ const Home = () => {
 
   const handleGuestLogin = () => {
     storeLogin('', '', 'guest')
-    setCharacterUid(guest.characterUid)
+    setUserInfo({
+      id: 0,
+      firebaseId: '1',
+      name: 'guest',
+      email: 'danbi5190@gmail.com',
+      ocid: guest.ocid
+    })
   }
 
   return (

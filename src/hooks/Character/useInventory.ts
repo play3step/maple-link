@@ -4,11 +4,12 @@ import { fetchCharacterItem } from '../../apis/Character/characterController'
 import { Inventory } from '../../types/item'
 
 export const useInventory = () => {
-  const { characterUid } = useUserStore()
+  const { userInfo } = useUserStore()
   const { data: inventory, isLoading: inventoryLoading } = useQuery<Inventory>({
     queryKey: ['inventory'],
-    queryFn: characterUid ? () => fetchCharacterItem(characterUid) : undefined,
-    staleTime: 5 * 60 * 1000
+    queryFn: () => fetchCharacterItem(userInfo!.ocid!),
+    staleTime: 5 * 60 * 1000,
+    enabled: !!userInfo?.ocid
   })
 
   return { inventory, inventoryLoading }

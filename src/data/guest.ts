@@ -11,7 +11,7 @@ import somul from '../assets/character/somul.png'
 
 export const guest = {
   name: 'Guest',
-  characterUid: '64031ba7c53d4fa70eda2dca1509a594'
+  ocid: '64031ba7c53d4fa70eda2dca1509a594'
 }
 
 export const guestRoom = [

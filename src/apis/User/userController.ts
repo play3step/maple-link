@@ -5,14 +5,14 @@ import { User } from '../../types/auth'
 
 export const fetchUserInfo = async (uid: string) => {
   try {
-    const { setUserInfo, setUserUid, setCharacterUid } = useUserStore.getState()
+    const { setUserInfo } = useUserStore.getState()
     const response = await basicApi.post<User>(`/api/user`, {
       uid: uid
     })
     setUserInfo(response.data)
-    setUserUid(uid)
-    if (response.data.characterUid) {
-      setCharacterUid(response.data.characterUid)
+
+    if (response.data.ocid) {
+      setUserInfo(response.data)
     }
   } catch (error) {
     console.error('Error fetching user info:', error)

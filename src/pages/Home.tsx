@@ -80,11 +80,12 @@ const Home = () => {
             </p>
 
             <div className="flex flex-col gap-2">
-              <div
-                className="bg-gradient-to-r flex justify-center items-center from-blue-500 to-indigo-500 text-white px-4 py-3 rounded-full hover:from-blue-400 hover:to-indigo-400 transform hover:translate-y-[-2px] transition-all duration-300 group"
-                onClick={handleGuestLogin}>
+              <button
+                className="h-12 bg-gradient-to-r flex justify-center items-center from-blue-500 to-indigo-500 text-white px-4  rounded-full hover:from-blue-400 hover:to-indigo-400 transform hover:translate-y-[-2px] transition-all duration-300 group"
+                onClick={handleGuestLogin}
+                type="button">
                 체험하기
-              </div>
+              </button>
 
               <SocialAuthButton
                 onClick={userLogin}

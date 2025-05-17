@@ -10,7 +10,7 @@ interface MemberContainerProps {
   members?: Member[]
   allMembers?: NexonMembers[]
   masterName?: string
-  onSelect?: (member: Member) => void
+  onSelect?: (type: string, member: Member) => void
   guildName?: string
   onDeleteGuild?: () => void
   isMainGuild?: boolean
@@ -172,7 +172,7 @@ export const MemberContainer = ({
               key={member.name}
               onClick={
                 member.type === '본캐'
-                  ? () => onSelect?.(member)
+                  ? () => onSelect?.(member.type, member)
                   : member.type === '부캐' && member.mainCharacterInfo
                     ? () => {
                         const found = allMembers
@@ -180,10 +180,10 @@ export const MemberContainer = ({
                           .find(m => m?.id === member.mainCharacterInfo!.id)
 
                         if (found) {
-                          onSelect?.(found)
+                          onSelect?.(found.type, found)
                         }
                       }
-                    : undefined
+                    : () => onSelect?.(member.type, member)
               }
               className="bg-gray-50 rounded-lg hover:bg-gray-100 transition-all duration-200 cursor-pointer group overflow-hidden border border-gray-100">
               <div className="flex items-center p-3 gap-3">

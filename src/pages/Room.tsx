@@ -14,15 +14,21 @@ import { Member, NexonMembers } from '../types/guild'
 import { IoArrowBack } from 'react-icons/io5'
 import { useNavigate } from 'react-router-dom'
 import { useGuildDetect } from '../hooks/guild/useGuildDetect'
-
+import { findMainCharacter } from '../apis/character/characterController'
 const Room = () => {
   const { activeModal, openModal } = useModalStore()
   const navigate = useNavigate()
   const { guildList } = useGuildsList()
   const { nexonMembers, selectMember } = useGuildMember()
-  const [selectedMember, setSelectedMember] = useState<Member>()
 
-  console.log(selectMember)
+  const [selectedMember, setSelectedMember] = useState<{
+    type: string
+    member: Member | null
+  }>({
+    type: '',
+    member: null
+  })
+
   const { deleteGuild } = useGuildsList()
 
   const [searchCharacter, setSearchCharacter] = useState('')
@@ -36,9 +42,18 @@ const Room = () => {
     openModal(name)
   }
 
-  const handleMemberSelect = (member: Member) => {
-    setSelectedMember(member)
-    openModal('detailMember')
+  const handleMemberSelect = async (type: string, member: Member) => {
+    setSelectedMember({ type: type, member: member })
+    if (type !== '미지정') {
+      openModal('detailMember')
+    } else {
+      const res = await findMainCharacter(member.name)
+      console.log(
+        res.ranking[0].character_name,
+        res.ranking[0].class_name,
+        res.ranking[0].world_name
+      )
+    }
   }
 
   const handleSearchCharacter = (value: string) => {
@@ -116,12 +131,15 @@ const Room = () => {
           reflectDetectMember={reflectDetectMember}
         />
       )}
-      {activeModal === 'detailMember' && selectedMember && nexonMembers && (
-        <DetailMemberModal
-          memberDetail={selectedMember}
-          memberList={nexonMembers as NexonMembers[]}
-        />
-      )}
+      {activeModal === 'detailMember' &&
+        selectedMember &&
+        selectedMember.member &&
+        nexonMembers && (
+          <DetailMemberModal
+            memberDetail={selectedMember.member}
+            memberList={nexonMembers as NexonMembers[]}
+          />
+        )}
     </div>
   )
 }

@@ -68,24 +68,57 @@ export const fetchCharacterItem = async (characterUid: string) => {
   return response.data
 }
 
-export const searchCharacter = async (characterName: string) => {
-  const characterOcid = await nexonApi.get('/maplestory/v1/id', {
-    params: {
-      character_name: characterName
-    }
-  })
-
-  if (characterOcid.status === 400) {
+const getOcid = async (characterName: string) => {
+  try {
+    const response = await nexonApi.get('/maplestory/v1/id', {
+      params: { character_name: characterName }
+    })
+    return response.data.ocid ?? null
+  } catch {
     return null
   }
+}
+
+const getTodayDate = () => {
+  return new Date().toISOString().slice(0, 10)
+}
+
+// 캐릭터 기본 정보 조회
+export const searchCharacter = async (characterName: string) => {
+  const ocid = await getOcid(characterName)
+  if (!ocid) return null
 
   const response = await nexonApi.get<CharacterSearch>(
     '/maplestory/v1/character/basic',
     {
-      params: {
-        ocid: characterOcid.data.ocid
-      }
+      params: { ocid }
     }
   )
   return response.data
+}
+
+// 메인 캐릭터 조회
+export const findMainCharacter = async (characterName: string) => {
+  const ocid = await getOcid(characterName)
+  if (!ocid) return null
+
+  const { data: basicInfo } = await nexonApi.get<CharacterSearch>(
+    '/maplestory/v1/character/basic',
+    {
+      params: { ocid }
+    }
+  )
+
+  const { data: unionInfo } = await nexonApi.get(
+    '/maplestory/v1/ranking/union',
+    {
+      params: {
+        date: getTodayDate(),
+        ocid,
+        world_name: basicInfo.world_name
+      }
+    }
+  )
+
+  return unionInfo
 }

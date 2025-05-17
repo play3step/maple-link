@@ -8,6 +8,7 @@ interface UserState {
   setUserInfo: (info: User) => void
   setUserUid: (uid: string) => void
   updateUserInfo: (info: Partial<User>) => void
+  clearUserInfo: () => void
 }
 
 export const useUserStore = create<UserState>(set => ({
@@ -21,5 +22,5 @@ export const useUserStore = create<UserState>(set => ({
     set(state => ({
       userInfo: state.userInfo ? { ...state.userInfo, ...info } : null
     })),
-  clearUserInfo: () => set({ userInfo: null })
+  clearUserInfo: () => set({ userInfo: null, userUid: null })
 }))

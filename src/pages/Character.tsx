@@ -1,13 +1,13 @@
-import { StatContainer } from '../components/Character/StatContainer'
+import { StatContainer } from '../components/character/StatContainer'
 
-import { AbilitryContainer } from '../components/Character/AbilitryContainer'
-import { HyperStatContainer } from '../components/Character/HyperStatContainer'
+import { AbilitryContainer } from '../components/character/AbilitryContainer'
+import { HyperStatContainer } from '../components/character/HyperStatContainer'
 
-import { CharacterInfoContainer } from '../components/Character/CharacterInfoContainer'
-import { useCharacterData } from '../hooks/Character/useCharacterData'
-import { useInventory } from '../hooks/Character/useInventory'
+import { CharacterInfoContainer } from '../components/character/CharacterInfoContainer'
+import { useCharacterData } from '../hooks/character/useCharacterData'
+import { useInventory } from '../hooks/character/useInventory'
 
-import { InventoryContainer } from '../components/Character/Inventory/InventoryContainer'
+import { InventoryContainer } from '../components/character/inventory/InventoryContainer'
 import { useState } from 'react'
 
 const Character = () => {

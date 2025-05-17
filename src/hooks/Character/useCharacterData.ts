@@ -4,7 +4,7 @@ import {
   fetchCharacterBasic,
   fetchCharacterHyperStat,
   fetchCharacterStat
-} from '../../apis/Character/characterController'
+} from '../../apis/character/characterController'
 import {
   CharacterAbility,
   CharacterBasic,

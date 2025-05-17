@@ -31,7 +31,7 @@ const Home = () => {
   }
 
   return (
-    <div className="h-[100vh] bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 text-slate-800 relative overflow-hidden flex flex-col">
+    <div className="h-full bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 text-slate-800 relative overflow-hidden flex flex-col">
       {/* Background Effects */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute top-0 -left-4 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-blob"></div>

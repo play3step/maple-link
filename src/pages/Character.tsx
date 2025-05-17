@@ -33,7 +33,7 @@ const Character = () => {
   }
 
   return (
-    <div className="w-full flex flex-col gap-4 py-4">
+    <div className="w-full h-full flex flex-col gap-4 py-4">
       {/* 탭 버튼 */}
       <div className="flex justify-center mb-2">
         <div className="bg-white shadow-md rounded-lg p-1 flex">

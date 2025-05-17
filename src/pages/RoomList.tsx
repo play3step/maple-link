@@ -1,12 +1,12 @@
 import { useModalStore } from '../store/modalStore'
-import { CreateRoomModal } from '../components/modal/Room/CreateRoomModal'
+import { CreateRoomModal } from '../components/modal/room/CreateRoomModal'
 import { useNavigate } from 'react-router-dom'
 import { IoAdd, IoTrashOutline, IoPersonAddOutline } from 'react-icons/io5'
-import { useRoom } from '../hooks/Room/useRoom'
+import { useRoom } from '../hooks/room/useRoom'
 import { Loading } from '../components/common/Loading'
-import { GuildManageModal } from '../components/modal/Room/RoomManageModal'
+import { GuildManageModal } from '../components/modal/room/RoomManageModal'
 import { useState } from 'react'
-import { Room } from '../types/Rooms'
+import { Room } from '../types/rooms'
 
 export const RoomList = () => {
   const { openModal, activeModal } = useModalStore()

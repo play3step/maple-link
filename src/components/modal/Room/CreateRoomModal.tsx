@@ -1,5 +1,5 @@
 import ModalLayout from '../ModalLayout'
-import { useRoom } from '../../../hooks/Room/useRoom'
+import { useRoom } from '../../../hooks/room/useRoom'
 import { useRef, useState } from 'react'
 import { SelectGuildForm } from '../SelectGuildForm'
 import { useModalStore } from '../../../store/modalStore'

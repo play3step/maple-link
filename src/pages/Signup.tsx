@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import InputText from '../components/common/InputText'
 import Button from '../components/common/Button'
-import { addUserInfo } from '../apis/User/userController'
+import { addUserInfo } from '../apis/user/userController'
 import Title from '../components/common/Title'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'

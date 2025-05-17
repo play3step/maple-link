@@ -1,7 +1,7 @@
 import { useLocation } from 'react-router-dom'
 import { QUERYSTRING } from '../../constants/querystring'
 import { useQuery } from '@tanstack/react-query'
-import { fetchNexonGuildMembers } from '../../apis/Guild/guildController'
+import { fetchNexonGuildMembers } from '../../apis/guild/guildController'
 import { NexonMembers } from '../../types/guild'
 import { useRoomsStore } from '../../store/roomsStore'
 import { guestGuilds } from '../../data/guest'

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { fetchNoticeEvent } from '../../apis/Calendar/nexonNotice'
+import { fetchNoticeEvent } from '../../apis/calendar/nexonNotice'
 import { CalendarType, NoticeEvent } from '../../types/notice'
 
 import { formatDateYMD } from '../../utils/format'

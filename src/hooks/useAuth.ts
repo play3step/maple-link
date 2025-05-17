@@ -1,7 +1,7 @@
 import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
 import { useAuthStore } from '../store/authStore'
 import { authService } from '../firebase'
-import { fetchUserInfo } from '../apis/User/userController'
+import { fetchUserInfo } from '../apis/user/userController'
 import { useNavigate } from 'react-router-dom'
 
 export const useAuth = () => {

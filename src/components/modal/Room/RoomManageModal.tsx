@@ -1,4 +1,4 @@
-import { Room } from '../../../types/Rooms'
+import { Room } from '../../../types/rooms'
 import InputText from '../../common/InputText'
 import ModalLayout from '../ModalLayout'
 import { useAdmin } from '../../../hooks/room/useAdmin'

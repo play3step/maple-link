@@ -15,6 +15,8 @@ import { IoArrowBack } from 'react-icons/io5'
 import { useNavigate } from 'react-router-dom'
 import { useGuildDetect } from '../hooks/guild/useGuildDetect'
 import { findMainCharacter } from '../apis/character/characterController'
+import { AlertModal } from '../components/modal/common/AlertModal'
+
 const Room = () => {
   const { activeModal, openModal } = useModalStore()
   const navigate = useNavigate()
@@ -38,6 +40,14 @@ const Room = () => {
   const { detectMembers, reflectDetectMember, handleDetect } =
     useGuildDetect(guildList)
 
+  const [alertMessage, setAlertMessage] = useState<{
+    mainChar: string
+    subChar: string
+  }>({
+    mainChar: '',
+    subChar: ''
+  })
+
   const showModal = (name: ModalType) => {
     openModal(name)
   }
@@ -47,12 +57,21 @@ const Room = () => {
     if (type !== '미지정') {
       openModal('detailMember')
     } else {
-      const res = await findMainCharacter(member.name)
-      console.log(
-        res.ranking[0].character_name,
-        res.ranking[0].class_name,
-        res.ranking[0].world_name
-      )
+      try {
+        const res = await findMainCharacter(member.name)
+        const mainChar = res.ranking[0]
+        setAlertMessage({
+          mainChar: mainChar.character_name,
+          subChar: member.name
+        })
+        openModal('alert')
+      } catch {
+        setAlertMessage({
+          mainChar: member.name,
+          subChar: ''
+        })
+        openModal('alert')
+      }
     }
   }
 
@@ -140,6 +159,12 @@ const Room = () => {
             memberList={nexonMembers as NexonMembers[]}
           />
         )}
+      {activeModal === 'alert' && (
+        <AlertModal
+          mainChar={alertMessage.mainChar}
+          subChar={alertMessage.subChar}
+        />
+      )}
     </div>
   )
 }

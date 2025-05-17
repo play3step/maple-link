@@ -1,11 +1,16 @@
 import { Room } from '../../../types/Rooms'
 import InputText from '../../common/InputText'
 import ModalLayout from '../ModalLayout'
+import { useAdmin } from '../../../hooks/room/useAdmin'
+import { useState } from 'react'
 interface GuildManageModalProps {
   room: Room
 }
 
 export const GuildManageModal = ({ room }: GuildManageModalProps) => {
+  const { handleAddAdmin, handleRemoveAdmin } = useAdmin()
+  const [characterName, setCharacterName] = useState('')
+
   if (room.admins.length === 0) {
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -29,10 +34,14 @@ export const GuildManageModal = ({ room }: GuildManageModalProps) => {
               <InputText
                 placeholder="관리자 추가"
                 onChange={e => {
-                  console.log(e.target.value)
+                  setCharacterName(e.target.value)
                 }}
               />
-              <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+              <button
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                onClick={() => {
+                  handleAddAdmin(room.adminId, characterName)
+                }}>
                 관리자 추가
               </button>
             </div>
@@ -42,18 +51,22 @@ export const GuildManageModal = ({ room }: GuildManageModalProps) => {
               <div className="font-medium">닉네임</div>
               <div className="font-medium">권한</div>
             </div>
-            {room.admins.map(admin => (
+            {room.admins.map((admin, index) => (
               <div
                 key={admin}
-                className="grid grid-cols-2 gap-4 py-2 border-t">
+                className="grid grid-cols-2 gap-4 px-2 py-2 border-t items-center">
                 <div>{admin}</div>
 
                 <div className="flex space-x-2">
-                  <button
-                    onClick={() => {}}
-                    className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600">
-                    제거
-                  </button>
+                  {index !== 0 && (
+                    <button
+                      onClick={() => {
+                        handleRemoveAdmin(room.adminId, room.admins[index])
+                      }}
+                      className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600">
+                      제거
+                    </button>
+                  )}
                 </div>
               </div>
             ))}

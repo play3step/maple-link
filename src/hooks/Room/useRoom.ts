@@ -1,7 +1,7 @@
-import { createRoomList, getRoomList } from '../../apis/Guild/roomController'
+import { createRoomList, getRoomList } from '../../apis/guild/roomController'
 import { useEffect } from 'react'
 import { useRoomsStore } from '../../store/roomsStore'
-import { addGuildList } from '../../apis/Guild/guildController'
+import { addGuildList } from '../../apis/guild/guildController'
 import { useAuthStore } from '../../store/authStore'
 import { guestRoom } from '../../data/guest'
 export const useRoom = () => {

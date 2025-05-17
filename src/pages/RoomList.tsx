@@ -39,6 +39,11 @@ export const RoomList = () => {
           <IoAdd className="text-xl" />새 관리방
         </button>
       </div>
+      {rooms.length === 0 && (
+        <div className="h-screen flex items-center justify-center">
+          <p className="text-gray-600">관리방이 없습니다.</p>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         {rooms.map(room => (

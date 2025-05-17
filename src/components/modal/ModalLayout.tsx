@@ -49,7 +49,7 @@ const ModalLayout = ({
         className={`
           ${
             size === 'full'
-              ? 'w-full h-full'
+              ? 'w-[60%] h-full'
               : size === 'small'
                 ? 'sm:w-[90%] md:w-[472px]'
                 : 'sm:w-[90%] md:w-[80%] lg:w-[864px]'

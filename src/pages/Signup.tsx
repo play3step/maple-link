@@ -1,18 +1,18 @@
 import { useState } from 'react'
 import InputText from '../components/common/InputText'
 import Button from '../components/common/Button'
-import { addUserInfo } from '../apis/user/userController'
+import { addUserInfo, fetchUserInfo } from '../apis/user/userController'
 import Title from '../components/common/Title'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
-import { useUserStore } from '../store/userStore'
+import { useAuthStore } from '../store/authStore'
 
 const Signup = () => {
   const [apikey, setApikey] = useState<string>('')
   const [isLoading, setIsLoading] = useState(false)
   const nav = useNavigate()
   const { userLogout } = useAuth()
-  const { userInfo } = useUserStore()
+  const { uid } = useAuthStore()
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -21,20 +21,23 @@ const Signup = () => {
     setIsLoading(true)
     try {
       const result = await addUserInfo(apikey)
-      if (result?.generatedApiKey) {
+      console.log(result.generatedApiKey)
+
+      if (uid) {
+        await fetchUserInfo(uid)
+        alert('API 키 등록이 완료되었습니다.')
         nav('/character')
+      } else {
+        throw new Error('사용자 정보를 찾을 수 없습니다.')
       }
     } catch (error) {
       console.error('API 키 등록 실패:', error)
+      alert(
+        error instanceof Error ? error.message : 'API 키 등록에 실패했습니다.'
+      )
     } finally {
       setIsLoading(false)
     }
-  }
-
-  // API 키가 이미 있으면 캐릭터 페이지로 리다이렉트
-  if (userInfo?.nexonApiKey) {
-    nav('/character')
-    return null
   }
 
   return (

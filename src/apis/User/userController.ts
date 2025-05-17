@@ -10,10 +10,6 @@ export const fetchUserInfo = async (uid: string) => {
       uid: uid
     })
     setUserInfo(response.data)
-
-    if (response.data.ocid) {
-      setUserInfo(response.data)
-    }
   } catch (error) {
     console.error('Error fetching user info:', error)
     throw error
@@ -21,18 +17,8 @@ export const fetchUserInfo = async (uid: string) => {
 }
 
 export const addUserInfo = async (apiKey: string) => {
-  try {
-    const { userUid } = useUserStore.getState()
-    const response = await basicApi.post(`/api/user/apikey`, {
-      apiKey: apiKey
-    })
-
-    if (response.data && userUid) {
-      await fetchUserInfo(userUid)
-    }
-
-    return response.data
-  } catch (error) {
-    console.error('API 키 등록 실패:', error)
-  }
+  const response = await basicApi.post(`/api/user/apikey`, {
+    apiKey: apiKey
+  })
+  return response.data
 }

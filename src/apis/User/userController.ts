@@ -17,8 +17,22 @@ export const fetchUserInfo = async (uid: string) => {
 }
 
 export const addUserInfo = async (apiKey: string) => {
-  const response = await basicApi.post(`/api/user/apikey`, {
-    apiKey: apiKey
-  })
-  return response.data
+  try {
+    if (!apiKey || apiKey.trim().length < 10) {
+      throw new Error('유효하지 않은 API 키입니다.')
+    }
+
+    const response = await basicApi.post(`/api/user/apikey`, {
+      apiKey: apiKey.trim()
+    })
+
+    if (!response.data.generatedApiKey) {
+      throw new Error('API 키 등록에 실패했습니다.')
+    }
+
+    return response.data
+  } catch (error) {
+    console.error('API 키 등록 실패:', error)
+    throw error
+  }
 }

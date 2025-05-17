@@ -16,20 +16,27 @@ const Signup = () => {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (!apikey.trim()) return
+    if (!apikey.trim()) {
+      alert('API 키를 입력해주세요.')
+      return
+    }
+
+    if (!uid) {
+      alert('로그인이 필요합니다.')
+      nav('/')
+      return
+    }
 
     setIsLoading(true)
     try {
       const result = await addUserInfo(apikey)
-      console.log(result.generatedApiKey)
-
-      if (uid) {
-        await fetchUserInfo(uid)
-        alert('API 키 등록이 완료되었습니다.')
-        nav('/character')
-      } else {
-        throw new Error('사용자 정보를 찾을 수 없습니다.')
+      if (!result?.generatedApiKey) {
+        throw new Error('API 키 등록에 실패했습니다.')
       }
+
+      await fetchUserInfo(uid)
+      alert('API 키 등록이 완료되었습니다.')
+      nav('/character')
     } catch (error) {
       console.error('API 키 등록 실패:', error)
       alert(

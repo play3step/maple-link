@@ -7,10 +7,12 @@ import { Loading } from '../components/common/Loading'
 import { GuildManageModal } from '../components/modal/room/RoomManageModal'
 import { useState } from 'react'
 import { Room } from '../types/rooms'
+import { useRoomsStore } from '../store/roomsStore'
 
 export const RoomList = () => {
   const { openModal, activeModal } = useModalStore()
   const { rooms } = useRoom()
+  const { setGroupId } = useRoomsStore()
   const navigate = useNavigate()
 
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null)
@@ -79,7 +81,10 @@ export const RoomList = () => {
 
               <div className="flex gap-3">
                 <button
-                  onClick={() => navigate(`/room/${room.adminId}`)}
+                  onClick={() => {
+                    navigate(`/room/${room.groupName}`)
+                    setGroupId(room.adminId)
+                  }}
                   className="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2.5 rounded-lg font-medium transition-colors text-sm">
                   관리방 입장
                 </button>

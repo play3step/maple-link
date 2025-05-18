@@ -69,7 +69,7 @@ const router = createBrowserRouter([
     )
   },
   {
-    path: '/room/:adminId',
+    path: '/room/:groupName',
     element: (
       <ProtectedRoute>
         <Layout>

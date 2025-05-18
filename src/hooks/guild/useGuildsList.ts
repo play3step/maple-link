@@ -24,7 +24,7 @@ export const useGuildsList = () => {
 
         if (searchRoom.subGuild && searchRoom.subGuild.subGuildIds.length > 0) {
           const subGuilds = searchRoom.subGuild.subGuildIds.map(
-            (id: number, index: number) => ({
+            (id, index) => ({
               guildId: id,
               guildName: searchRoom.subGuild.names[index]
             })

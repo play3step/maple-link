@@ -6,8 +6,8 @@ import { useEffect, useState, useRef } from 'react'
 import {
   IoAdd,
   IoGitCompare,
-  IoChevronDown
-  // IoPersonAdd
+  IoChevronDown,
+  IoRefreshCircleOutline
 } from 'react-icons/io5'
 
 interface Props {
@@ -110,13 +110,12 @@ export const ActionBtnList = ({
             </div>
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
-              {/* <button
-                onClick={() => showModal('addCharacter')}
-                className="flex items-center justify-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700"
-                title="캐릭터 추가">
-                <IoPersonAdd className="text-lg text-blue-500" />
-                <span className="sm:hidden md:inline">캐릭터 추가</span>
-              </button> */}
+              <button
+                onClick={() => {}}
+                className="flex items-center justify-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700 group">
+                <IoRefreshCircleOutline className="text-lg text-blue-500 group-hover:rotate-180 transition-transform duration-500" />
+                <span className="sm:hidden md:inline">본/부캐 갱신</span>
+              </button>
 
               <button
                 onClick={() => {

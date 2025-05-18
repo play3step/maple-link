@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import SocialAuthButton from '../components/common/SocialAuthButton'
-import { useAuth } from '../hooks/useAuth'
+// import { useAuth } from '../hooks/useAuth'
 import { useAuthStore } from '../store/authStore'
 import { useEffect } from 'react'
 import Logo from '../assets/logo.png'
@@ -8,7 +8,7 @@ import { useUserStore } from '../store/userStore'
 import { guest } from '../data/guest'
 
 const Home = () => {
-  const { userLogin } = useAuth()
+  // const { userLogin } = useAuth()
   const { isLoggedIn, storeLogin } = useAuthStore()
   const { setUserInfo } = useUserStore()
   const nav = useNavigate()
@@ -88,7 +88,10 @@ const Home = () => {
               </button>
 
               <SocialAuthButton
-                onClick={userLogin}
+                // onClick={userLogin}
+                onClick={() => {
+                  console.log('clicked')
+                }}
                 className="inline-flex items-center px-6 py-2.5 text-base font-medium text-white bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl shadow-lg hover:shadow-blue-500/25 hover:from-blue-400 hover:to-indigo-400 transform hover:translate-y-[-2px] transition-all duration-300 group">
                 Google로 시작하기
               </SocialAuthButton>

@@ -51,7 +51,7 @@ export const GuildManageModal = ({ room }: GuildManageModalProps) => {
               <div className="font-medium">닉네임</div>
               <div className="font-medium">권한</div>
             </div>
-            {room.admins.map((admin: string, index: number) => (
+            {room.admins.map((admin, index) => (
               <div
                 key={admin}
                 className="grid grid-cols-2 gap-4 px-2 py-2 border-t items-center">

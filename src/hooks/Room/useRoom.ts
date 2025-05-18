@@ -45,23 +45,50 @@ export const useRoom = () => {
     }) => createRoomList(groupName, guildId)
   })
 
-  const handleCreateGuild = async (guildName: string, guildWorld: string) => {
+  const handleCreateRoom = async (
+    groupName: string,
+    guildName: string,
+    guildWorld: string
+  ) => {
     if (userType !== 'member') {
-      alert('사용할수 없는 기능입니다.')
-      return
+      return {
+        guildId: null,
+        message: '게스트는 관리방을 생성할 수 없습니다.'
+      }
     }
-    const res = await createGuildMutation.mutateAsync({
-      guildName,
-      guildWorld
-    })
-    if (res) {
+
+    try {
+      const res = await createGuildMutation.mutateAsync({
+        guildName,
+        guildWorld
+      })
+
+      if (!res.guildId) {
+        return {
+          guildId: null,
+          message: res.message
+        }
+      }
+
       await createRoomMutation.mutateAsync({
-        groupName: res.groupName,
+        groupName,
         guildId: res.guildId
       })
+
       queryClient.invalidateQueries({ queryKey: ['roomList', userType] })
+
+      return {
+        guildId: res.guildId,
+        message: '관리방 생성 성공'
+      }
+    } catch (error) {
+      console.error('관리방 생성 실패:', error)
+      return {
+        guildId: null,
+        message: '생성할수 없는 길드 입니다.'
+      }
     }
   }
 
-  return { handleCreateGuild, rooms }
+  return { handleCreateRoom, rooms }
 }

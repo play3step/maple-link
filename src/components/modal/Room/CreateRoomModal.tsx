@@ -7,7 +7,7 @@ import { IoAdd } from 'react-icons/io5'
 
 export const CreateRoomModal = () => {
   const roomNameRef = useRef<HTMLInputElement>(null)
-  const { createRoom } = useRoom()
+  const { handleCreateRoom } = useRoom()
   const [guildName, setGuildName] = useState('')
   const [guildWorld, setGuildWorld] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -24,29 +24,21 @@ export const CreateRoomModal = () => {
     }
 
     setIsLoading(true)
-    try {
-      const result = await createRoom(
-        roomNameRef.current.value,
-        guildName,
-        guildWorld
-      )
 
-      if (result.status === 500) {
-        alert('존재하지 않는 길드입니다.')
-        return
-      }
+    const result = await handleCreateRoom(
+      roomNameRef.current.value,
+      guildName,
+      guildWorld
+    )
 
-      if (result.guildId) {
-        alert('관리방이 성공적으로 생성되었습니다.')
-        closeModal()
-      } else if (result.message) {
-        alert(result.message)
-      }
-    } catch {
-      alert('관리방 생성 중 오류가 발생했습니다.')
-    } finally {
-      setIsLoading(false)
+    if (result.guildId) {
+      alert(result.message || '관리방이 성공적으로 생성되었습니다.')
+      closeModal()
+    } else {
+      alert(result.message || '관리방 생성에 실패했습니다.')
     }
+
+    setIsLoading(false)
   }
 
   return (

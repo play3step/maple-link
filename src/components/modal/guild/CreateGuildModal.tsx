@@ -3,9 +3,10 @@ import ModalLayout from '../ModalLayout'
 import { IoAdd } from 'react-icons/io5'
 import { useModalStore } from '../../../store/modalStore'
 import { SelectGuildForm } from '../SelectGuildForm'
-import { useParams } from 'react-router-dom'
+
 import { addGuildToRoom } from '../../../apis/guild/roomController'
 import { useGuildsList } from '../../../hooks/guild/useGuildsList'
+import { useRoomsStore } from '../../../store/roomsStore'
 
 export const CreateGuildModal = () => {
   const { closeModal } = useModalStore()
@@ -13,7 +14,7 @@ export const CreateGuildModal = () => {
   const [guildWorld, setGuildWorld] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const { createGuild } = useGuildsList()
-  const { adminId } = useParams<{ adminId: string }>()
+  const { groupId } = useRoomsStore()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -31,9 +32,9 @@ export const CreateGuildModal = () => {
         return
       }
 
-      if (res.guildId && adminId) {
+      if (res.guildId && groupId) {
         try {
-          await addGuildToRoom(Number(adminId), res.guildId)
+          await addGuildToRoom(Number(groupId), res.guildId)
           alert('길드가 성공적으로 추가되었습니다.')
           closeModal()
         } catch {

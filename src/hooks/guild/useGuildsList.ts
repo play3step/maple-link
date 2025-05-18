@@ -1,18 +1,16 @@
-import { useParams } from 'react-router-dom'
 import { useRoomsStore } from '../../store/roomsStore'
 import { Guild } from '../../types/guild'
 import { useEffect } from 'react'
 import { addGuildList, deleteGuildList } from '../../apis/guild/guildController'
 import { useAuthStore } from '../../store/authStore'
 export const useGuildsList = () => {
-  const { adminId } = useParams<{ adminId: string }>()
-  const { guildList, rooms, setGuildList } = useRoomsStore()
+  const { guildList, rooms, setGuildList, groupId } = useRoomsStore()
 
   const { userType } = useAuthStore()
 
   useEffect(() => {
     if (rooms && rooms.length > 0) {
-      const searchRoom = rooms.find(room => room.adminId === Number(adminId))
+      const searchRoom = rooms.find(room => room.adminId === groupId)
 
       if (searchRoom) {
         const guilds: Guild[] = []

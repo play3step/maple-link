@@ -91,8 +91,8 @@ const Room = () => {
 
   return (
     <div className="w-full min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 py-6">
-        <div className="flex items-center gap-4 mb-6">
+      <div className="max-w-7xl mx-auto px-4 py-5">
+        <div className="flex items-center gap-4 mb-5">
           <button
             onClick={() => navigate('/rooms')}
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors"

@@ -4,6 +4,7 @@ export type ModalType =
   | 'createGuild'
   | 'detectMember'
   | 'detailMember'
+  | 'alert'
   | 'eventList'
   | 'createPromotion'
   | 'createRoom'

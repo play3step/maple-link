@@ -22,7 +22,7 @@ export const DetailMemberModal = ({ memberDetail, memberList }: Props) => {
     memberList.flatMap(n =>
       n.memberDetailResponse
         ?.filter(
-          m => m.type === 'sub' && m.mainCharacterInfo?.id === memberDetail.id
+          m => m.type === '부캐' && m.mainCharacterInfo?.id === memberDetail.id
         )
         .map(m => ({
           ...m,

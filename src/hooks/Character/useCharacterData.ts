@@ -4,7 +4,7 @@ import {
   fetchCharacterBasic,
   fetchCharacterHyperStat,
   fetchCharacterStat
-} from '../../apis/Character/characterController'
+} from '../../apis/character/characterController'
 import {
   CharacterAbility,
   CharacterBasic,
@@ -15,37 +15,32 @@ import {
 import { useUserStore } from '../../store/userStore'
 
 export const useCharacterData = () => {
-  const { characterUid } = useUserStore()
+  const { userInfo } = useUserStore()
+  const ocid = userInfo?.ocid
 
   const { data: characterStats, isLoading: statsLoading } =
     useQuery<CharacterStats>({
-      queryKey: ['characterStats', characterUid],
-      queryFn: characterUid
-        ? () => fetchCharacterStat(characterUid)
-        : undefined,
+      queryKey: ['characterStats', ocid],
+      queryFn: ocid ? () => fetchCharacterStat(ocid) : undefined,
       staleTime: 5 * 60 * 1000
     })
 
   const { data: ability, isLoading: abilityLoading } =
     useQuery<CharacterAbility>({
-      queryKey: ['characterAbility', characterUid],
-      queryFn: characterUid
-        ? () => fetchCharacterAbility(characterUid)
-        : undefined,
+      queryKey: ['characterAbility', ocid],
+      queryFn: ocid ? () => fetchCharacterAbility(ocid) : undefined,
       staleTime: 5 * 60 * 1000
     })
 
   const { data: hyperStat, isLoading: hyperLoading } = useQuery<HyperStat>({
-    queryKey: ['characterHyperStat', characterUid],
-    queryFn: characterUid
-      ? () => fetchCharacterHyperStat(characterUid)
-      : undefined,
+    queryKey: ['characterHyperStat', ocid],
+    queryFn: ocid ? () => fetchCharacterHyperStat(ocid) : undefined,
     staleTime: 5 * 60 * 1000
   })
 
   const { data: basic, isLoading: basicLoading } = useQuery<CharacterBasic>({
-    queryKey: ['characterBasic', characterUid],
-    queryFn: characterUid ? () => fetchCharacterBasic(characterUid) : undefined,
+    queryKey: ['characterBasic', ocid],
+    queryFn: ocid ? () => fetchCharacterBasic(ocid) : undefined,
     staleTime: 5 * 60 * 1000
   })
 

@@ -46,7 +46,7 @@ export const ApiGuide = () => {
       description: '서비스 플랫폼 정보를 입력합니다.',
       details: [
         'WEB 선택',
-        '서비스 URL 입력 (https://maplelink.com)',
+        '서비스 URL 입력 (https://maplelink.co.kr)',
         '등록 버튼 클릭'
       ],
       image: t4

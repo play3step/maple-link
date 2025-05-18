@@ -1,7 +1,7 @@
 import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
 import { useAuthStore } from '../store/authStore'
 import { authService } from '../firebase'
-import { fetchUserInfo } from '../apis/User/userController'
+import { fetchUserInfo } from '../apis/user/userController'
 import { useNavigate } from 'react-router-dom'
 
 export const useAuth = () => {
@@ -15,7 +15,6 @@ export const useAuth = () => {
       const token = await result.user.getIdToken()
 
       console.log(token)
-
       if (token && result.user.uid) {
         storeLogin(token, result.user.uid, 'member')
         fetchUserInfo(result.user.uid)

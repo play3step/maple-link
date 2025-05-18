@@ -1,4 +1,4 @@
-import { Room } from '../types/Rooms'
+import { Room } from '../types/rooms'
 import { create } from 'zustand'
 import { Guild } from '../types/guild'
 interface RoomsStore {

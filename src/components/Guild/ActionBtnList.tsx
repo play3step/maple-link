@@ -6,8 +6,8 @@ import { useEffect, useState, useRef } from 'react'
 import {
   IoAdd,
   IoGitCompare,
-  IoChevronDown
-  // IoPersonAdd
+  IoChevronDown,
+  IoRefreshCircleOutline
 } from 'react-icons/io5'
 
 interface Props {
@@ -63,12 +63,20 @@ export const ActionBtnList = ({
 
   return (
     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-      <button
-        onClick={() => showModal('createGuild')}
-        className="w-full sm:w-auto flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm font-medium">
-        <IoAdd className="text-lg" />
-        길드 생성
-      </button>
+      <div className="relative group w-full sm:w-auto">
+        <button
+          onClick={() => showModal('createGuild')}
+          className="w-full sm:w-auto flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm font-medium">
+          <IoAdd className="text-lg" />
+          길드 생성
+        </button>
+        <div className="absolute left-0 -bottom-1 translate-y-full invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 z-20">
+          <div className="bg-gray-800 text-white text-base px-3 py-2 rounded-lg shadow-lg whitespace-nowrap">
+            ⚠️ 관리방 생성은 길드 마스터만 가능합니다.
+            <br /> 마스터가 아니라면, 마스터를 그룹에 초대해 생성해주세요.
+          </div>
+        </div>
+      </div>
 
       {guildList.length > 0 && (
         <>
@@ -110,23 +118,36 @@ export const ActionBtnList = ({
             </div>
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
-              {/* <button
-                onClick={() => showModal('addCharacter')}
-                className="flex items-center justify-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700"
-                title="캐릭터 추가">
-                <IoPersonAdd className="text-lg text-blue-500" />
-                <span className="sm:hidden md:inline">캐릭터 추가</span>
-              </button> */}
+              <div className="relative group">
+                <button
+                  onClick={() => {}}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700 group">
+                  <IoRefreshCircleOutline className="text-lg text-blue-500 group-hover:rotate-180 transition-transform duration-500" />
+                  <span className="sm:hidden md:inline">본/부캐 갱신</span>
+                </button>
+                <div className="absolute left-0 -bottom-1 translate-y-full invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 z-20">
+                  <div className="bg-gray-800 text-white text-base px-3 py-2 rounded-lg shadow-lg whitespace-nowrap">
+                    캐릭터의 본/부캐 정보를 새로고침합니다
+                  </div>
+                </div>
+              </div>
 
-              <button
-                onClick={() => {
-                  handleDetect()
-                  showModal('detectMember')
-                }}
-                className="flex items-center justify-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700">
-                <IoGitCompare className="text-lg text-gray-500" />
-                <span className="sm:hidden md:inline">비교하기</span>
-              </button>
+              <div className="relative group">
+                <button
+                  onClick={() => {
+                    handleDetect()
+                    showModal('detectMember')
+                  }}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700">
+                  <IoGitCompare className="text-lg text-gray-500" />
+                  <span className="sm:hidden md:inline">비교하기</span>
+                </button>
+                <div className="absolute left-0 -bottom-1 translate-y-full invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 z-20">
+                  <div className="bg-gray-800 text-white text-base px-3 py-2 rounded-lg shadow-lg whitespace-nowrap">
+                    기록된 길드원 정보를 게임 내 정보와 비교합니다.
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </>

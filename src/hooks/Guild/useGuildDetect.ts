@@ -1,8 +1,8 @@
-import { fetchDetectGuildMembers } from '../../apis/Guild/guildController'
+import { fetchDetectGuildMembers } from '../../apis/guild/guildController'
 import {
   addGuildMember,
   deleteGuildMember
-} from '../../apis/Guild/guildController'
+} from '../../apis/guild/guildController'
 import { DetectResult, Guild } from '../../types/guild'
 import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'

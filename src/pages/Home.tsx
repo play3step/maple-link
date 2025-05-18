@@ -10,7 +10,7 @@ import { guest } from '../data/guest'
 const Home = () => {
   const { userLogin } = useAuth()
   const { isLoggedIn, storeLogin } = useAuthStore()
-  const { setCharacterUid } = useUserStore()
+  const { setUserInfo } = useUserStore()
   const nav = useNavigate()
 
   useEffect(() => {
@@ -21,11 +21,17 @@ const Home = () => {
 
   const handleGuestLogin = () => {
     storeLogin('', '', 'guest')
-    setCharacterUid(guest.characterUid)
+    setUserInfo({
+      id: 0,
+      firebaseId: '1',
+      name: 'guest',
+      email: 'danbi5190@gmail.com',
+      ocid: guest.ocid
+    })
   }
 
   return (
-    <div className="h-[100vh] bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 text-slate-800 relative overflow-hidden flex flex-col">
+    <div className="h-full bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 text-slate-800 relative overflow-hidden flex flex-col">
       {/* Background Effects */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute top-0 -left-4 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-blob"></div>
@@ -74,11 +80,12 @@ const Home = () => {
             </p>
 
             <div className="flex flex-col gap-2">
-              <div
-                className="bg-gradient-to-r flex justify-center items-center from-blue-500 to-indigo-500 text-white px-4 py-3 rounded-full hover:from-blue-400 hover:to-indigo-400 transform hover:translate-y-[-2px] transition-all duration-300 group"
-                onClick={handleGuestLogin}>
+              <button
+                className="h-12 bg-gradient-to-r flex justify-center items-center from-blue-500 to-indigo-500 text-white px-4  rounded-full hover:from-blue-400 hover:to-indigo-400 transform hover:translate-y-[-2px] transition-all duration-300 group"
+                onClick={handleGuestLogin}
+                type="button">
                 체험하기
-              </div>
+              </button>
 
               <SocialAuthButton
                 onClick={userLogin}

@@ -7,7 +7,7 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 const SocialAuthButton = ({ children, onClick }: Props) => {
   return (
     <button
-      className="relative w-full h-14 rounded-full bg-gradient-to-r from-white via-gray-100 to-white border border-gray-300 text-gray-800 flex items-center justify-center px-4 transition-all duration-300 hover:shadow-md hover:-translate-y-1"
+      className="relative w-full h-12 rounded-full bg-gradient-to-r from-white via-gray-100 to-white border border-gray-300 text-gray-800 flex items-center justify-center px-4 transition-all duration-300 hover:shadow-md hover:-translate-y-1"
       onClick={onClick}>
       <img
         src={gogle}

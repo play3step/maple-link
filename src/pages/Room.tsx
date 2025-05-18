@@ -1,26 +1,36 @@
-import { CreateGuildModal } from '../components/modal/Guild/CreateGuildModal'
+import { CreateGuildModal } from '../components/modal/guild/CreateGuildModal'
 import { ModalType, useModalStore } from '../store/modalStore'
-import { useGuildsList } from '../hooks/Guild/useGuildsList'
-import { MemberContainer } from '../components/Guild/MemberContainer'
-import { ListSwitch } from '../components/Guild/ListSwitch'
-import { ActionBtnList } from '../components/Guild/ActionBtnList'
-import { DetectMemberModal } from '../components/modal/Guild/DetectMemberModal'
-import { useGuildMember } from '../hooks/Guild/useGuildMember'
+import { useGuildsList } from '../hooks/guild/useGuildsList'
+import { MemberContainer } from '../components/guild/MemberContainer'
+import { ListSwitch } from '../components/guild/ListSwitch'
+import { ActionBtnList } from '../components/guild/ActionBtnList'
+import { DetectMemberModal } from '../components/modal/guild/DetectMemberModal'
+import { useGuildMember } from '../hooks/guild/useGuildMember'
 import { Empty } from '../components/common/Empty'
-import { DetailMemberModal } from '../components/modal/Guild/DetailMemberModal'
+import { DetailMemberModal } from '../components/modal/guild/DetailMemberModal'
 import { Loading } from '../components/common/Loading'
 import { useState } from 'react'
 import { Member, NexonMembers } from '../types/guild'
 import { IoArrowBack } from 'react-icons/io5'
 import { useNavigate } from 'react-router-dom'
-import { useGuildDetect } from '../hooks/Guild/useGuildDetect'
+import { useGuildDetect } from '../hooks/guild/useGuildDetect'
+import { findMainCharacter } from '../apis/character/characterController'
+import { AlertModal } from '../components/modal/common/AlertModal'
 
 const Room = () => {
   const { activeModal, openModal } = useModalStore()
   const navigate = useNavigate()
   const { guildList } = useGuildsList()
   const { nexonMembers, selectMember } = useGuildMember()
-  const [selectedMember, setSelectedMember] = useState<Member>()
+
+  const [selectedMember, setSelectedMember] = useState<{
+    type: string
+    member: Member | null
+  }>({
+    type: '',
+    member: null
+  })
+
   const { deleteGuild } = useGuildsList()
 
   const [searchCharacter, setSearchCharacter] = useState('')
@@ -30,13 +40,39 @@ const Room = () => {
   const { detectMembers, reflectDetectMember, handleDetect } =
     useGuildDetect(guildList)
 
+  const [alertMessage, setAlertMessage] = useState<{
+    mainChar: string
+    subChar: string
+  }>({
+    mainChar: '',
+    subChar: ''
+  })
+
   const showModal = (name: ModalType) => {
     openModal(name)
   }
 
-  const handleMemberSelect = (member: Member) => {
-    setSelectedMember(member)
-    openModal('detailMember')
+  const handleMemberSelect = async (type: string, member: Member) => {
+    setSelectedMember({ type: type, member: member })
+    if (type !== '미지정') {
+      openModal('detailMember')
+    } else {
+      try {
+        const res = await findMainCharacter(member.name)
+        const mainChar = res.ranking[0]
+        setAlertMessage({
+          mainChar: mainChar.character_name,
+          subChar: member.name
+        })
+        openModal('alert')
+      } catch {
+        setAlertMessage({
+          mainChar: member.name,
+          subChar: ''
+        })
+        openModal('alert')
+      }
+    }
   }
 
   const handleSearchCharacter = (value: string) => {
@@ -55,8 +91,8 @@ const Room = () => {
 
   return (
     <div className="w-full min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 py-6">
-        <div className="flex items-center gap-4 mb-6">
+      <div className="max-w-7xl mx-auto px-4 py-5">
+        <div className="flex items-center gap-4 mb-5">
           <button
             onClick={() => navigate('/rooms')}
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -114,10 +150,19 @@ const Room = () => {
           reflectDetectMember={reflectDetectMember}
         />
       )}
-      {activeModal === 'detailMember' && selectedMember && nexonMembers && (
-        <DetailMemberModal
-          memberDetail={selectedMember}
-          memberList={nexonMembers as NexonMembers[]}
+      {activeModal === 'detailMember' &&
+        selectedMember &&
+        selectedMember.member &&
+        nexonMembers && (
+          <DetailMemberModal
+            memberDetail={selectedMember.member}
+            memberList={nexonMembers as NexonMembers[]}
+          />
+        )}
+      {activeModal === 'alert' && (
+        <AlertModal
+          mainChar={alertMessage.mainChar}
+          subChar={alertMessage.subChar}
         />
       )}
     </div>

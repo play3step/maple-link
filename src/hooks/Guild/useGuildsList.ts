@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom'
 import { useRoomsStore } from '../../store/roomsStore'
 import { Guild } from '../../types/guild'
 import { useEffect } from 'react'
-import { addGuildList, deleteGuildList } from '../../apis/Guild/guildController'
+import { addGuildList, deleteGuildList } from '../../apis/guild/guildController'
 import { useAuthStore } from '../../store/authStore'
 export const useGuildsList = () => {
   const { adminId } = useParams<{ adminId: string }>()

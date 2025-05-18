@@ -1,5 +1,5 @@
 import { basicApi } from '..'
-import { Room } from '../../types/Rooms'
+import { Room } from '../../types/rooms'
 
 export const createRoomList = async (groupName: string, guildId: number) => {
   const response = await basicApi.post('/api/group-admin', {
@@ -11,8 +11,12 @@ export const createRoomList = async (groupName: string, guildId: number) => {
 }
 
 export const getRoomList = async () => {
-  const response = await basicApi.get<Room[]>('/api/group-admin')
-  return response.data
+  try {
+    const response = await basicApi.get<Room[]>('/api/group-admin')
+    return response.data
+  } catch {
+    return []
+  }
 }
 
 export const addGuildToRoom = async (groupAdminId: number, guildId: number) => {

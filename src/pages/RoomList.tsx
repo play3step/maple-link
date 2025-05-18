@@ -1,12 +1,12 @@
 import { useModalStore } from '../store/modalStore'
-import { CreateRoomModal } from '../components/modal/Room/CreateRoomModal'
+import { CreateRoomModal } from '../components/modal/room/CreateRoomModal'
 import { useNavigate } from 'react-router-dom'
 import { IoAdd, IoTrashOutline, IoPersonAddOutline } from 'react-icons/io5'
-import { useRoom } from '../hooks/Room/useRoom'
+import { useRoom } from '../hooks/room/useRoom'
 import { Loading } from '../components/common/Loading'
-import { GuildManageModal } from '../components/modal/Room/RoomManageModal'
+import { GuildManageModal } from '../components/modal/room/RoomManageModal'
 import { useState } from 'react'
-import { Room } from '../types/Rooms'
+import { Room } from '../types/rooms'
 
 export const RoomList = () => {
   const { openModal, activeModal } = useModalStore()
@@ -33,12 +33,26 @@ export const RoomList = () => {
           <h1 className="text-3xl font-bold text-gray-900">길드 관리 홈</h1>
           <p className="text-gray-600 mt-2">관리중인 길드방 목록입니다</p>
         </div>
-        <button
-          onClick={() => openModal('createRoom')}
-          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200 shadow-md hover:shadow-lg">
-          <IoAdd className="text-xl" />새 관리방
-        </button>
+        <div className="relative group">
+          <button
+            onClick={() => openModal('createRoom')}
+            className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200 shadow-md hover:shadow-lg">
+            <IoAdd className="text-xl" />새 관리방
+          </button>
+          <div className="absolute right-0 -bottom-1 translate-y-full invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 z-20">
+            <div className="bg-gray-800 text-white text-base px-3 py-2 rounded-lg shadow-lg whitespace-nowrap">
+              ⚠️ 관리방 생성은 길드 마스터만 가능합니다.
+              <br /> 마스터가 아니라면, 해당 마스터가 생성후 그룹에 초대해
+              주세요.
+            </div>
+          </div>
+        </div>
       </div>
+      {rooms.length === 0 && (
+        <div className="h-screen flex items-center justify-center">
+          <p className="text-gray-600">관리방이 없습니다.</p>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         {rooms.map(room => (

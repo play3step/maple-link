@@ -8,7 +8,7 @@ interface ProtectedRouteProps {
 
 export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const { isLoggedIn, userType } = useAuthStore()
-  const { userInfo, clearUserInfo } = useUserStore()
+  const { userInfo } = useUserStore()
   const location = useLocation()
   const { userLogout } = useAuth()
 
@@ -16,7 +16,6 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 
   // 1. 로그인도 안 됐는데 루트가 아닌 경로 접근 시
   if (!isLoggedIn && path !== '/') {
-    clearUserInfo()
     userLogout()
     return <Navigate to="/" />
   }

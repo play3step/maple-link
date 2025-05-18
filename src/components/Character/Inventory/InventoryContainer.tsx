@@ -25,10 +25,10 @@ export const InventoryContainer = ({ inventory, characterImg }: Props) => {
 
   return (
     <div className="w-full flex flex-col lg:flex-row gap-4">
-      <div className="lg:w-3/5 bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden flex flex-col">
+      <div className="lg:w-3/5 bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden flex flex-col h-[600px]">
         <div className="flex justify-between items-center p-3 border-b bg-white">
           <h3 className="text-lg font-medium text-gray-800">캐릭터 장비</h3>
-          <div className="flex justify-center gap-2 mb-3">
+          <div className="flex justify-center gap-2">
             {[1, 2, 3].map(num => (
               <button
                 key={num}
@@ -43,7 +43,7 @@ export const InventoryContainer = ({ inventory, characterImg }: Props) => {
             ))}
           </div>
         </div>
-        <div className="p-3 flex-1 overflow-auto bg-white">
+        <div className="flex-1 overflow-auto p-4 bg-white">
           <ItemInventory
             inventory={preset}
             characterImg={characterImg}
@@ -52,7 +52,7 @@ export const InventoryContainer = ({ inventory, characterImg }: Props) => {
         </div>
       </div>
 
-      <div className="lg:w-2/5 bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden flex flex-col">
+      <div className="lg:w-2/5 bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden flex flex-col min-h-[400px] max-h-[800px]">
         <div className="p-3 border-b bg-white">
           <h3 className="text-lg font-medium text-gray-800">
             아이템 상세 정보

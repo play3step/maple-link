@@ -4,5 +4,5 @@ export interface User {
   name: string
   email: string
   nexonApiKey?: string
-  characterUid?: string
+  ocid?: string
 }

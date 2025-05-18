@@ -1,0 +1,94 @@
+import { createRoomList, getRoomList } from '../../apis/guild/roomController'
+import { useEffect } from 'react'
+import { useRoomsStore } from '../../store/roomsStore'
+import { addGuildList } from '../../apis/guild/guildController'
+import { useAuthStore } from '../../store/authStore'
+import { guestRoom } from '../../data/guest'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+
+export const useRoom = () => {
+  const { rooms, setRooms } = useRoomsStore()
+  const { userType } = useAuthStore()
+  const queryClient = useQueryClient()
+
+  const { data: roomList } = useQuery({
+    queryKey: ['roomList', userType],
+    queryFn: () => getRoomList(),
+    enabled: userType === 'member'
+  })
+
+  useEffect(() => {
+    if (userType === 'guest') {
+      setRooms(guestRoom)
+    } else if (roomList) {
+      setRooms(roomList)
+    }
+  }, [roomList, userType, setRooms])
+
+  const createGuildMutation = useMutation({
+    mutationFn: ({
+      guildName,
+      guildWorld
+    }: {
+      guildName: string
+      guildWorld: string
+    }) => addGuildList({ guild_name: guildName, world_name: guildWorld })
+  })
+
+  const createRoomMutation = useMutation({
+    mutationFn: ({
+      groupName,
+      guildId
+    }: {
+      groupName: string
+      guildId: number
+    }) => createRoomList(groupName, guildId)
+  })
+
+  const handleCreateRoom = async (
+    groupName: string,
+    guildName: string,
+    guildWorld: string
+  ) => {
+    if (userType !== 'member') {
+      return {
+        guildId: null,
+        message: '게스트는 관리방을 생성할 수 없습니다.'
+      }
+    }
+
+    try {
+      const res = await createGuildMutation.mutateAsync({
+        guildName,
+        guildWorld
+      })
+
+      if (!res.guildId) {
+        return {
+          guildId: null,
+          message: res.message
+        }
+      }
+
+      await createRoomMutation.mutateAsync({
+        groupName,
+        guildId: res.guildId
+      })
+
+      queryClient.invalidateQueries({ queryKey: ['roomList', userType] })
+
+      return {
+        guildId: res.guildId,
+        message: '관리방 생성 성공'
+      }
+    } catch (error) {
+      console.error('관리방 생성 실패:', error)
+      return {
+        guildId: null,
+        message: '생성할수 없는 길드 입니다.'
+      }
+    }
+  }
+
+  return { handleCreateRoom, rooms }
+}

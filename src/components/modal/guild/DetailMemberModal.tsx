@@ -20,7 +20,9 @@ export const DetailMemberModal = ({
   descriptionMember
 }: Props) => {
   const [isEditMode, setIsEditMode] = useState(false)
-  const [description, setDescription] = useState('')
+  const [description, setDescription] = useState(
+    memberDetail.mainCharacterInfo?.description || ''
+  )
   const [selectedTab, setSelectedTab] = useState<'info' | 'alts'>('info')
 
   const subCharacterList =
@@ -43,7 +45,6 @@ export const DetailMemberModal = ({
       if (description !== '' && descriptionMember) {
         await descriptionMember(characterName, description)
       }
-      alert('수정 완료')
       setIsEditMode(false)
     } else {
       setIsEditMode(true)

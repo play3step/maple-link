@@ -1,7 +1,10 @@
 import { useLocation } from 'react-router-dom'
 import { QUERYSTRING } from '../../constants/querystring'
 import { useQuery } from '@tanstack/react-query'
-import { fetchNexonGuildMembers } from '../../apis/guild/guildController'
+import {
+  fetchNexonGuildMembers,
+  refreshGuildMember
+} from '../../apis/guild/guildController'
 import { NexonMembers } from '../../types/guild'
 import { useRoomsStore } from '../../store/roomsStore'
 import { guestGuilds } from '../../data/guest'
@@ -48,5 +51,12 @@ export const useGuildMember = () => {
       : undefined
     : undefined
 
-  return { nexonMembers, selectMember }
+  const refreshMember = (guildId: number) => {
+    if (userType !== 'member') return
+    if (guildId !== undefined && guildId !== 0) {
+      refreshGuildMember(guildId)
+    }
+  }
+
+  return { nexonMembers, selectMember, refreshMember }
 }

@@ -61,3 +61,8 @@ export const deleteGuildMember = async (
   })
   return response.data.message
 }
+
+export const refreshGuildMember = async (guildId: number) => {
+  const response = await basicApi.patch(`/api/guilds/${guildId}`)
+  return response.data.message
+}

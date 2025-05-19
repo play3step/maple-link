@@ -14,12 +14,14 @@ interface Props {
   showModal: (name: ModalType) => void
   guildList: Guild[]
   handleDetect: () => void
+  handleRefresh: (guildId: number) => void
 }
 
 export const ActionBtnList = ({
   showModal,
   guildList,
-  handleDetect
+  handleDetect,
+  handleRefresh
 }: Props) => {
   const [searchParams, setSearchParams] = useSearchParams()
   const [selectedGuild, setSelectedGuild] = useState<Guild | null>(null)
@@ -88,7 +90,7 @@ export const ActionBtnList = ({
                 onClick={() => setIsOpen(!isOpen)}
                 className="w-full flex items-center justify-between sm:justify-start gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700">
                 {selectedGuild ? (
-                  <span className="truncate">{selectedGuild.guildName}</span>
+                  <span className="truncate">{selectedGuild.guildId}</span>
                 ) : (
                   <span>길드 선택</span>
                 )}
@@ -120,7 +122,9 @@ export const ActionBtnList = ({
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
               <div className="relative group">
                 <button
-                  onClick={() => {}}
+                  onClick={() => {
+                    handleRefresh(selectedGuild?.guildId || 0)
+                  }}
                   className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700 group">
                   <IoRefreshCircleOutline className="text-lg text-blue-500 group-hover:rotate-180 transition-transform duration-500" />
                   <span className="sm:hidden md:inline">본/부캐 갱신</span>

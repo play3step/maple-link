@@ -21,7 +21,7 @@ const Room = () => {
   const { activeModal, openModal } = useModalStore()
   const navigate = useNavigate()
   const { guildList } = useGuildsList()
-  const { nexonMembers, selectMember } = useGuildMember()
+  const { nexonMembers, selectMember, refreshMember } = useGuildMember()
 
   const [selectedMember, setSelectedMember] = useState<{
     type: string
@@ -50,6 +50,12 @@ const Room = () => {
 
   const showModal = (name: ModalType) => {
     openModal(name)
+  }
+
+  const handleRefresh = (guildId: number) => {
+    if (refreshMember) {
+      refreshMember(guildId)
+    }
   }
 
   const handleMemberSelect = async (type: string, member: Member) => {
@@ -112,6 +118,7 @@ const Room = () => {
                 showModal={showModal}
                 guildList={guildList}
                 handleDetect={handleDetect}
+                handleRefresh={handleRefresh}
               />
               {guildList.length > 0 && <ListSwitch />}
             </div>

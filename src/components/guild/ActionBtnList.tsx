@@ -14,18 +14,21 @@ interface Props {
   showModal: (name: ModalType) => void
   guildList: Guild[]
   handleDetect: () => void
-  handleRefresh: (guildId: number) => void
+  refreshMember?: (guildId: number) => void
 }
 
 export const ActionBtnList = ({
   showModal,
   guildList,
   handleDetect,
-  handleRefresh
+  refreshMember
 }: Props) => {
   const [searchParams, setSearchParams] = useSearchParams()
   const [selectedGuild, setSelectedGuild] = useState<Guild | null>(null)
   const [isOpen, setIsOpen] = useState(false)
+
+  const [isLoading, setIsLoading] = useState(false)
+
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   const handleSwitch = (value: string) => {
@@ -36,6 +39,16 @@ export const ActionBtnList = ({
       newSearchParams.set(QUERYSTRING.GUILD, value)
     }
     setSearchParams(newSearchParams)
+  }
+
+  const handleRefresh = async (guildId: number) => {
+    if (!refreshMember) return
+    setIsLoading(true)
+    try {
+      await refreshMember(guildId)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -90,7 +103,7 @@ export const ActionBtnList = ({
                 onClick={() => setIsOpen(!isOpen)}
                 className="w-full flex items-center justify-between sm:justify-start gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700">
                 {selectedGuild ? (
-                  <span className="truncate">{selectedGuild.guildId}</span>
+                  <span className="truncate">{selectedGuild.guildName}</span>
                 ) : (
                   <span>길드 선택</span>
                 )}
@@ -121,14 +134,25 @@ export const ActionBtnList = ({
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
               <div className="relative group">
-                <button
-                  onClick={() => {
-                    handleRefresh(selectedGuild?.guildId || 0)
-                  }}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700 group">
-                  <IoRefreshCircleOutline className="text-lg text-blue-500 group-hover:rotate-180 transition-transform duration-500" />
-                  <span className="sm:hidden md:inline">본/부캐 갱신</span>
-                </button>
+                {
+                  <button
+                    onClick={() => {
+                      handleRefresh(selectedGuild?.guildId || 0)
+                    }}
+                    className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700 group">
+                    <IoRefreshCircleOutline className="text-lg text-blue-500 group-hover:rotate-180 transition-transform duration-500" />
+                    {isLoading ? (
+                      <div className="w-5 h-5 border-t-2 border-blue-500 rounded-full animate-spin" />
+                    ) : (
+                      <>
+                        <span className="sm:hidden md:inline">
+                          본/부캐 갱신
+                        </span>
+                      </>
+                    )}
+                  </button>
+                }
+
                 <div className="absolute left-0 -bottom-1 translate-y-full invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 z-20">
                   <div className="bg-gray-800 text-white text-base px-3 py-2 rounded-lg shadow-lg whitespace-nowrap">
                     캐릭터의 본/부캐 정보를 새로고침합니다

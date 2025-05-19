@@ -53,12 +53,6 @@ const Room = () => {
     openModal(name)
   }
 
-  const handleRefresh = (guildId: number) => {
-    if (refreshMember) {
-      refreshMember(guildId)
-    }
-  }
-
   const handleMemberSelect = async (type: string, member: Member) => {
     setSelectedMember({ type: type, member: member })
     if (type !== '미지정') {
@@ -119,7 +113,7 @@ const Room = () => {
                 showModal={showModal}
                 guildList={guildList}
                 handleDetect={handleDetect}
-                handleRefresh={handleRefresh}
+                refreshMember={refreshMember}
               />
               {guildList.length > 0 && <ListSwitch />}
             </div>

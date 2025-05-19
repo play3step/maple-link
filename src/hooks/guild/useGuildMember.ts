@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom'
 import { QUERYSTRING } from '../../constants/querystring'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   fetchNexonGuildMembers,
   refreshGuildMember,
@@ -17,6 +17,8 @@ export const useGuildMember = () => {
   const { userType } = useAuthStore()
 
   const guildName = params.get(QUERYSTRING.GUILD)
+
+  const queryClient = useQueryClient()
 
   //nexon 멤버 조회
   const { data: nexonMembers } = useQuery({
@@ -63,6 +65,9 @@ export const useGuildMember = () => {
     if (userType !== 'member') return
     if (description === '') return
     memberDescription(characterName, description)
+    queryClient.invalidateQueries({
+      queryKey: ['nexonMembers', guildList]
+    })
   }
 
   return { nexonMembers, selectMember, refreshMember, descriptionMember }

@@ -21,7 +21,8 @@ const Room = () => {
   const { activeModal, openModal } = useModalStore()
   const navigate = useNavigate()
   const { guildList } = useGuildsList()
-  const { nexonMembers, selectMember, refreshMember } = useGuildMember()
+  const { nexonMembers, selectMember, refreshMember, descriptionMember } =
+    useGuildMember()
 
   const [selectedMember, setSelectedMember] = useState<{
     type: string
@@ -164,6 +165,7 @@ const Room = () => {
           <DetailMemberModal
             memberDetail={selectedMember.member}
             memberList={nexonMembers as NexonMembers[]}
+            descriptionMember={descriptionMember}
           />
         )}
       {activeModal === 'alert' && (

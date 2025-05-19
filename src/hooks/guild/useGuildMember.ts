@@ -3,7 +3,8 @@ import { QUERYSTRING } from '../../constants/querystring'
 import { useQuery } from '@tanstack/react-query'
 import {
   fetchNexonGuildMembers,
-  refreshGuildMember
+  refreshGuildMember,
+  memberDescription
 } from '../../apis/guild/guildController'
 import { NexonMembers } from '../../types/guild'
 import { useRoomsStore } from '../../store/roomsStore'
@@ -58,5 +59,11 @@ export const useGuildMember = () => {
     }
   }
 
-  return { nexonMembers, selectMember, refreshMember }
+  const descriptionMember = (characterName: string, description: string) => {
+    if (userType !== 'member') return
+    if (description === '') return
+    memberDescription(characterName, description)
+  }
+
+  return { nexonMembers, selectMember, refreshMember, descriptionMember }
 }

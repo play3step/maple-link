@@ -66,3 +66,14 @@ export const refreshGuildMember = async (guildId: number) => {
   const response = await basicApi.patch(`/api/guilds/${guildId}`)
   return response.data.message
 }
+
+export const memberDescription = async (
+  characterName: string,
+  description: string
+) => {
+  const response = await basicApi.patch(`/api/guild-member/description`, {
+    characterName,
+    description
+  })
+  return response.data
+}

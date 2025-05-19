@@ -52,12 +52,13 @@ export interface Member {
   level: string
   name: string
   type: '본캐' | '부캐' | '미지정'
-  mainCharacterInfo: {
+  mainCharacterInfo?: {
     id: number
     name: string
     level: string
     job: string
     imagePath: string
+    description: string
   }
 }
 

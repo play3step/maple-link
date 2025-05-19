@@ -62,6 +62,12 @@ export const MemberContainer = ({
         member.type === '부캐' &&
         member.name.toLowerCase().includes(searchCharacter?.toLowerCase() || '')
       )
+    if (selectedType === '특이사항')
+      return (
+        member.mainCharacterInfo?.description &&
+        member.name === member.mainCharacterInfo.name &&
+        member.name.toLowerCase().includes(searchCharacter?.toLowerCase() || '')
+      )
     return member.type === '미지정'
   })
 
@@ -161,6 +167,14 @@ export const MemberContainer = ({
                   }}
                   className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 truncate">
                   미지정
+                </button>
+                <button
+                  onClick={() => {
+                    setSelectedType('특이사항')
+                    setIsOpen(false)
+                  }}
+                  className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 truncate">
+                  특이사항
                 </button>
               </div>
             )}

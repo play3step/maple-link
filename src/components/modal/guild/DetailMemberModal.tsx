@@ -11,11 +11,18 @@ import { MdOutlineDescription } from 'react-icons/md'
 interface Props {
   memberDetail: Member
   memberList: NexonMembers[]
+  descriptionMember?: (characterName: string, description: string) => void
 }
 
-export const DetailMemberModal = ({ memberDetail, memberList }: Props) => {
+export const DetailMemberModal = ({
+  memberDetail,
+  memberList,
+  descriptionMember
+}: Props) => {
   const [isEditMode, setIsEditMode] = useState(false)
-  const [description, setDescription] = useState('')
+  const [description, setDescription] = useState(
+    memberDetail.mainCharacterInfo?.description || ''
+  )
   const [selectedTab, setSelectedTab] = useState<'info' | 'alts'>('info')
 
   const subCharacterList =
@@ -29,6 +36,20 @@ export const DetailMemberModal = ({ memberDetail, memberList }: Props) => {
           guildName: n.guildName
         }))
     ) ?? []
+
+  const handleDescription = async (
+    characterName: string,
+    description: string
+  ) => {
+    if (isEditMode) {
+      if (description !== '' && descriptionMember) {
+        await descriptionMember(characterName, description)
+      }
+      setIsEditMode(false)
+    } else {
+      setIsEditMode(true)
+    }
+  }
 
   const renderTabContent = () => {
     switch (selectedTab) {
@@ -151,7 +172,7 @@ export const DetailMemberModal = ({ memberDetail, memberList }: Props) => {
           </div>
           {selectedTab !== 'alts' && (
             <button
-              onClick={() => setIsEditMode(!isEditMode)}
+              onClick={() => handleDescription(memberDetail.name, description)}
               className="flex items-center gap-1 text-sm text-gray-600 hover:text-blue-600 transition-colors">
               {isEditMode ? (
                 <>

@@ -1,7 +1,11 @@
 import { useLocation } from 'react-router-dom'
 import { QUERYSTRING } from '../../constants/querystring'
-import { useQuery } from '@tanstack/react-query'
-import { fetchNexonGuildMembers } from '../../apis/guild/guildController'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+  fetchNexonGuildMembers,
+  refreshGuildMember,
+  memberDescription
+} from '../../apis/guild/guildController'
 import { NexonMembers } from '../../types/guild'
 import { useRoomsStore } from '../../store/roomsStore'
 import { guestGuilds } from '../../data/guest'
@@ -13,6 +17,8 @@ export const useGuildMember = () => {
   const { userType } = useAuthStore()
 
   const guildName = params.get(QUERYSTRING.GUILD)
+
+  const queryClient = useQueryClient()
 
   //nexon 멤버 조회
   const { data: nexonMembers } = useQuery({
@@ -48,5 +54,21 @@ export const useGuildMember = () => {
       : undefined
     : undefined
 
-  return { nexonMembers, selectMember }
+  const refreshMember = (guildId: number) => {
+    if (userType !== 'member') return
+    if (guildId !== undefined && guildId !== 0) {
+      refreshGuildMember(guildId)
+    }
+  }
+
+  const descriptionMember = (characterName: string, description: string) => {
+    if (userType !== 'member') return
+    if (description === '') return
+    memberDescription(characterName, description)
+    queryClient.invalidateQueries({
+      queryKey: ['nexonMembers', guildList]
+    })
+  }
+
+  return { nexonMembers, selectMember, refreshMember, descriptionMember }
 }

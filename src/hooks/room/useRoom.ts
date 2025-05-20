@@ -1,4 +1,8 @@
-import { createRoomList, getRoomList } from '../../apis/guild/roomController'
+import {
+  createRoomList,
+  deleteRoomList,
+  getRoomList
+} from '../../apis/guild/roomController'
 import { useEffect } from 'react'
 import { useRoomsStore } from '../../store/roomsStore'
 import { addGuildList } from '../../apis/guild/guildController'
@@ -90,5 +94,29 @@ export const useRoom = () => {
     }
   }
 
-  return { handleCreateRoom, rooms }
+  const deleteRoomMutation = useMutation({
+    mutationFn: (groupAdminId: number) => deleteRoomList(groupAdminId)
+  })
+
+  const handleDeleteRoom = async (groupAdminId: number) => {
+    if (userType !== 'member') {
+      alert('게스트는 관리방을 삭제할 수 없습니다.')
+      return
+    }
+    try {
+      if (confirm('관리방을 삭제하시겠습니까?')) {
+        await deleteRoomMutation.mutateAsync(groupAdminId)
+        queryClient.invalidateQueries({ queryKey: ['roomList', userType] })
+
+        alert('관리방 삭제 성공')
+        return
+      }
+    } catch (error) {
+      console.error('관리방 삭제 실패:', error)
+      alert('관리방 삭제 실패')
+      return
+    }
+  }
+
+  return { handleCreateRoom, handleDeleteRoom, rooms }
 }

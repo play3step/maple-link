@@ -10,6 +10,11 @@ export const createRoomList = async (groupName: string, guildId: number) => {
   return response.data
 }
 
+export const deleteRoomList = async (groupAdminId: number) => {
+  const response = await basicApi.delete(`/api/group-admin/${groupAdminId}`)
+  return response.data
+}
+
 export const getRoomList = async () => {
   try {
     const response = await basicApi.get<Room[]>('/api/group-admin')

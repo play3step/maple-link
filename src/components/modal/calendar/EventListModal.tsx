@@ -1,10 +1,10 @@
 import { CalendarType } from '../../../types/notice'
-import Button from '../../common/Button'
-import InputText from '../../common/InputText'
+// import Button from '../../common/Button'
+// import InputText from '../../common/InputText'
 import ModalLayout from '../ModalLayout'
 import nexonIcon from '../../../assets/nexon.webp'
 
-import { useState } from 'react'
+// import { useState } from 'react'
 import { IoCalendarOutline } from 'react-icons/io5'
 
 interface Props {
@@ -15,22 +15,22 @@ interface Props {
 
 export const EventListModal = ({
   selectedDate,
-  list,
-  createUserNotice
+  list
+  // createUserNotice
 }: Props) => {
-  const [inputValue, setInputValue] = useState<string>('')
+  // const [inputValue, setInputValue] = useState<string>('')
 
-  const handleSubmit = async () => {
-    if (inputValue.trim()) {
-      await createUserNotice({
-        title: inputValue,
-        start: selectedDate,
-        color: '#E3F2FD',
-        type: 'user'
-      })
-      setInputValue('')
-    }
-  }
+  // const handleSubmit = async () => {
+  //   if (inputValue.trim()) {
+  //     await createUserNotice({
+  //       title: inputValue,
+  //       start: selectedDate,
+  //       color: '#E3F2FD',
+  //       type: 'user'
+  //     })
+  //     setInputValue('')
+  //   }
+  // }
 
   const formatDate = (date: string) => {
     return new Date(date).toLocaleDateString('ko-KR', {
@@ -127,7 +127,7 @@ export const EventListModal = ({
           )}
         </div>
 
-        <div className="sticky bottom-0 bg-white pt-4 border-t border-slate-200">
+        {/* <div className="sticky bottom-0 bg-white pt-4 border-t border-slate-200">
           <div className="flex gap-2">
             <InputText
               value={inputValue}
@@ -147,7 +147,7 @@ export const EventListModal = ({
               추가
             </Button>
           </div>
-        </div>
+        </div> */}
       </div>
     </ModalLayout>
   )

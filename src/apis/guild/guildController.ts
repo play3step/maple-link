@@ -1,11 +1,13 @@
-import { basicApi } from '..'
-import { Detect, NexonMembers, SearchGuild } from '../../types/guild'
+import { basicApi, nexonApi } from '..'
+import { Guild, SearchGuild } from '../../types/guild'
 
+//길드 목록 조회
 export const fetchGuildList = async () => {
   const response = await basicApi.get('/api/guilds')
   return response.data
 }
 
+//길드 목록 추가
 export const addGuildList = async (params: SearchGuild) => {
   const response = await basicApi.post('/api/guilds', null, {
     params: {
@@ -16,64 +18,33 @@ export const addGuildList = async (params: SearchGuild) => {
   return response.data
 }
 
+//길드 목록 삭제
 export const deleteGuildList = async (guildId: number) => {
   const response = await basicApi.delete(`/api/guilds/${guildId}`)
   return response.data
 }
 
-//멤버 조회
-export const fetchNexonGuildMembers = async (guildId: number) => {
-  const response = await basicApi.get<NexonMembers>(
-    `/api/guilds/${guildId}/members`
-  )
-
-  return response.data
-}
-
-//멤버 비교
-export const fetchDetectGuildMembers = async (guildId: number) => {
-  const response = await basicApi.get<Detect>(
-    `/api/guild-member/detect/${guildId}`
-  )
-  return response.data
-}
-
-//길드 멤버 기록 추가
-export const addGuildMember = async (
-  characterName: string,
-  guildId: number
-) => {
-  const response = await basicApi.post(`/api/guild-member/${guildId}`, {
-    characterName
-  })
-  return response.data.message
-}
-
-//길드 멤버 기록 삭제
-export const deleteGuildMember = async (
-  characterName: string,
-  guildId: number
-) => {
-  const response = await basicApi.delete(`/api/guild-member/${guildId}`, {
-    params: {
-      characterName: characterName
+//길드 유무 조회
+export const searchGuild = async (params: Guild) => {
+  const { data: oguild_id } = await nexonApi.get<{ oguild_id: string }>(
+    '/maplestory/v1/guild/id',
+    {
+      params: {
+        guild_name: params.guildName,
+        world_name: params.worldName
+      }
     }
-  })
-  return response.data.message
-}
+  )
 
-export const refreshGuildMember = async (guildId: number) => {
-  const response = await basicApi.patch(`/api/guilds/${guildId}`)
-  return response.data.message
-}
+  if (!oguild_id || !oguild_id.oguild_id) {
+    return null
+  }
 
-export const memberDescription = async (
-  characterName: string,
-  description: string
-) => {
-  const response = await basicApi.patch(`/api/guild-member/description`, {
-    characterName,
-    description
-  })
-  return response.data
+  const { data: guildInfo } = await nexonApi.get<SearchGuild>(
+    '/maplestory/v1/guild/basic',
+    {
+      params: { oguild_id: oguild_id.oguild_id }
+    }
+  )
+  return guildInfo
 }

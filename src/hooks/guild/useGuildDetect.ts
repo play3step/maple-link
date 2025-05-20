@@ -1,13 +1,13 @@
-import { fetchDetectGuildMembers } from '../../apis/guild/guildController'
-import {
-  addGuildMember,
-  deleteGuildMember
-} from '../../apis/guild/guildController'
 import { DetectResult, Guild } from '../../types/guild'
 import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAuthStore } from '../../store/authStore'
 import { guestDetect } from '../../data/guest'
+import {
+  addGuildMember,
+  deleteGuildMember,
+  fetchDetectGuildMembers
+} from '../../apis/guild/guildMemberController'
 
 type MutationParams = {
   member: string

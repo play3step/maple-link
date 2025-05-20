@@ -4,7 +4,7 @@ import { IoAdd } from 'react-icons/io5'
 import { useModalStore } from '../../../store/modalStore'
 import { SelectGuildForm } from '../SelectGuildForm'
 
-import { addGuildToRoom } from '../../../apis/guild/roomController'
+import { addGuildToRoom } from '../../../apis/room/roomController'
 import { useGuildsList } from '../../../hooks/guild/useGuildsList'
 import { useRoomsStore } from '../../../store/roomsStore'
 

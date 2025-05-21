@@ -168,15 +168,20 @@ export const guestGuilds = [
           imagePath: nochil
         }
       },
-
       {
         id: 9,
         name: '음메보이',
         level: '275',
         job: '팔라딘',
         imagePath: boyee,
-        type: '미지정',
-        mainCharacterInfo: {}
+        type: '부캐',
+        mainCharacterInfo: {
+          id: 222,
+          name: '쑵모',
+          level: '281',
+          job: '아란',
+          imagePath: nochil
+        }
       },
       {
         id: 10,

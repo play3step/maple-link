@@ -13,7 +13,7 @@ export const useAuth = () => {
       const provider = new GoogleAuthProvider()
       const result = await signInWithPopup(authService, provider)
       const token = await result.user.getIdToken()
-
+      console.log(token)
       if (token && result.user.uid) {
         storeLogin(token, result.user.uid, 'member')
         fetchUserInfo(result.user.uid)

@@ -55,6 +55,8 @@ const Room = () => {
     openModal(name)
   }
 
+  console.log(selectedMember)
+
   const handleMemberSelect = async (type: string, member: Member) => {
     setSelectedMember({ type: type, member: member })
     if (type !== '미지정') {

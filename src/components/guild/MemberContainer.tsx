@@ -229,7 +229,21 @@ export const MemberContainer = ({
               key={member.name}
               onClick={
                 member.type === '본캐'
-                  ? () => onSelect?.(member.type, member)
+                  ? () => {
+                      const mainMember = {
+                        ...member,
+                        mainCharacterInfo: {
+                          id: member.id,
+                          name: member.name,
+                          level: member.level,
+                          job: member.job,
+                          imagePath: member.imagePath,
+                          description:
+                            member.mainCharacterInfo?.description || ''
+                        }
+                      }
+                      onSelect?.(member.type, mainMember)
+                    }
                   : member.type === '부캐' && member.mainCharacterInfo
                     ? () => {
                         const found = allMembers
@@ -241,7 +255,19 @@ export const MemberContainer = ({
                           )
 
                         if (found) {
-                          onSelect?.(found.type, found)
+                          const mainMember = {
+                            ...found,
+                            mainCharacterInfo: {
+                              id: found.id,
+                              name: found.name,
+                              level: found.level,
+                              job: found.job,
+                              imagePath: found.imagePath,
+                              description:
+                                found.mainCharacterInfo?.description || ''
+                            }
+                          }
+                          onSelect?.(found.type, mainMember)
                         }
                       }
                     : () => onSelect?.(member.type, member)
@@ -259,45 +285,51 @@ export const MemberContainer = ({
                   </h3>
                   <p className="text-sm text-gray-500">{member.job}</p>
                   <div className="flex items-center gap-2 mt-1">
-                    <span className="text-xs text-gray-500">
-                      Lv.{member.level}
-                    </span>
-                    {masterName && (
-                      <span
-                        title={
-                          member.type === '본캐'
-                            ? '이 캐릭터는 본캐입니다.'
-                            : member.type === '부캐' &&
-                                filteredMembers.find(
-                                  m => m.id === member.mainCharacterInfo?.id
-                                )
-                              ? '같은 길드 내 본캐가 있는 부캐입니다.'
-                              : '외부 길드에 본캐가 있는 부캐입니다.'
-                        }
-                        className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                          member.type === '본캐'
-                            ? 'bg-blue-100 text-blue-700'
-                            : member.type === '부캐' &&
-                                allMembers?.find(m =>
-                                  m.memberDetailResponse?.find(
-                                    m => m.id === member.mainCharacterInfo?.id
+                    <div className="flex flex-col gap-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-gray-500">
+                          Lv.{member.level}
+                        </span>
+                        {masterName && (
+                          <span
+                            className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                              member.type === '본캐'
+                                ? 'bg-blue-100 text-blue-700'
+                                : member.type === '부캐' &&
+                                    allMembers?.find(m =>
+                                      m.memberDetailResponse?.find(
+                                        m =>
+                                          m.id === member.mainCharacterInfo?.id
+                                      )
+                                    )
+                                  ? 'bg-yellow-100 text-yellow-700'
+                                  : 'bg-gray-100 text-gray-700'
+                            }`}>
+                            {member.type === '본캐'
+                              ? '본캐'
+                              : member.type === '부캐' &&
+                                  allMembers?.find(m =>
+                                    m.memberDetailResponse?.find(
+                                      m => m.id === member.mainCharacterInfo?.id
+                                    )
                                   )
-                                )
-                              ? 'bg-yellow-100 text-yellow-700'
-                              : 'bg-gray-100 text-gray-700'
-                        }`}>
-                        {member.type === '본캐'
-                          ? '본캐'
-                          : member.type === '부캐' &&
-                              allMembers?.find(m =>
-                                m.memberDetailResponse?.find(
-                                  m => m.id === member.mainCharacterInfo?.id
-                                )
-                              )
-                            ? '부캐'
-                            : '외부 부캐'}
-                      </span>
-                    )}
+                                ? '부캐'
+                                : '외부 부캐'}
+                          </span>
+                        )}
+                      </div>
+                      {member.type === '부캐' &&
+                        !allMembers?.find(m =>
+                          m.memberDetailResponse?.find(
+                            m => m.id === member.mainCharacterInfo?.id
+                          )
+                        ) && (
+                          <span className="text-xs text-gray-500">
+                            외부 길드에 {member.mainCharacterInfo?.name}님의
+                            부캐입니다.
+                          </span>
+                        )}
+                    </div>
                   </div>
                 </div>
               </div>

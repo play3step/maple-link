@@ -114,11 +114,11 @@ export const DetailMemberModal = ({
             <div className="flex items-center justify-between">
               <h4 className="text-lg font-semibold">부캐릭터 목록</h4>
             </div>
-            <div className="flex flex-col gap-2 overflow-y-auto max-h-[calc(100vh-200px)] pb-[100px]">
+            <div className="flex flex-col gap-2 overflow-y-auto h-[calc(70vh-280px)]">
               {subCharacterList.map(alt => (
                 <div
                   key={alt?.id}
-                  className="flex items-center justify-between p-3 bg-blue-50 border border-blue-100 rounded-lg">
+                  className="flex items-center justify-between p-3 bg-blue-50 border border-blue-100 rounded-lg hover:bg-blue-100 transition-colors">
                   <div className="flex items-center gap-3">
                     <img
                       src={alt?.imagePath}

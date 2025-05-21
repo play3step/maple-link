@@ -7,7 +7,7 @@ import {
   addGuildMember,
   deleteGuildMember,
   fetchDetectGuildMembers
-} from '../../apis/guild/guildMemberController'
+} from '../../apis/guild/memberController'
 
 type MutationParams = {
   member: string

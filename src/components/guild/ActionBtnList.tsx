@@ -46,6 +46,8 @@ export const ActionBtnList = ({
     setIsLoading(true)
     try {
       await refreshMember(guildId)
+    } catch (error) {
+      console.error('Error refreshing members:', error)
     } finally {
       setIsLoading(false)
     }

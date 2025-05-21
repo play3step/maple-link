@@ -114,28 +114,29 @@ export const DetailMemberModal = ({
             <div className="flex items-center justify-between">
               <h4 className="text-lg font-semibold">부캐릭터 목록</h4>
             </div>
-
-            {subCharacterList.map(alt => (
-              <div
-                key={alt?.id}
-                className="flex items-center justify-between p-3 bg-blue-50 border border-blue-100 rounded-lg">
-                <div className="flex items-center gap-3">
-                  <img
-                    src={alt?.imagePath}
-                    alt={alt?.name}
-                    className="w-20 h-20 rounded object-cover"
-                  />
-                  <div className="flex flex-col gap-1">
-                    <div className="text-sm font-medium text-blue-900">
-                      {alt?.name} ({alt?.job}) Lv.{alt?.level}
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      길드: {alt?.guildName}
+            <div className="flex flex-col gap-2 overflow-y-auto max-h-[calc(100vh-200px)] pb-[100px]">
+              {subCharacterList.map(alt => (
+                <div
+                  key={alt?.id}
+                  className="flex items-center justify-between p-3 bg-blue-50 border border-blue-100 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={alt?.imagePath}
+                      alt={alt?.name}
+                      className="w-20 h-20 rounded object-cover"
+                    />
+                    <div className="flex flex-col gap-1">
+                      <div className="text-sm font-medium text-blue-900">
+                        {alt?.name} ({alt?.job}) Lv.{alt?.level}
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        길드: {alt?.guildName}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         )
       default:

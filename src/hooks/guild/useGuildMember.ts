@@ -10,7 +10,7 @@ import {
   fetchGuildMembers,
   memberDescription,
   refreshGuildMember
-} from '../../apis/guild/guildMemberController'
+} from '../../apis/guild/memberController'
 
 export const useGuildMember = () => {
   const { search } = useLocation()
@@ -54,10 +54,22 @@ export const useGuildMember = () => {
       : undefined
     : undefined
 
-  const refreshMember = (guildId: number) => {
-    if (userType !== 'member') return
-    if (guildId !== undefined && guildId !== 0) {
-      refreshGuildMember(guildId)
+  const refreshMember = async (guildId: number) => {
+    if (userType !== 'member') {
+      alert('멤버만 사용할 수 있는 기능입니다.')
+      return
+    }
+    if (guildId) {
+      try {
+        const res = await refreshGuildMember(guildId)
+        alert(res.message)
+        await queryClient.invalidateQueries({
+          queryKey: ['nexonMembers', guildList]
+        })
+      } catch (error) {
+        alert('본/부캐 정보 새로고침 중 오류가 발생했습니다.')
+        throw error
+      }
     }
   }
 

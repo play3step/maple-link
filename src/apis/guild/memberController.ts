@@ -45,7 +45,7 @@ export const deleteGuildMember = async (
 //길드 멤버 기록 새로고침
 export const refreshGuildMember = async (guildId: number) => {
   const response = await basicApi.patch(`/api/guilds/${guildId}`)
-  return response.data.message
+  return response.data
 }
 
 //길드 멤버 기록 설명 수정

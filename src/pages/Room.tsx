@@ -24,8 +24,6 @@ const Room = () => {
   const { nexonMembers, selectMember, refreshMember, descriptionMember } =
     useGuildMember()
 
-  console.log(nexonMembers)
-
   const [selectedMember, setSelectedMember] = useState<{
     type: string
     member: Member | null
@@ -54,8 +52,6 @@ const Room = () => {
   const showModal = (name: ModalType) => {
     openModal(name)
   }
-
-  console.log(selectedMember)
 
   const handleMemberSelect = async (type: string, member: Member) => {
     setSelectedMember({ type: type, member: member })

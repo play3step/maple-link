@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { SearchGuild } from '../../types/guild'
-import { searchGuild as searchGuildApi } from '../../apis/nexon/nexonController'
+import { searchGuild as searchGuildApi } from '../../apis/guild/guildController'
 
 import { worldNames } from '../../data/worlds'
 

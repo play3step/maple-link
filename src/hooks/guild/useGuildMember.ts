@@ -1,15 +1,17 @@
 import { useLocation } from 'react-router-dom'
 import { QUERYSTRING } from '../../constants/querystring'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import {
-  fetchNexonGuildMembers,
-  refreshGuildMember,
-  memberDescription
-} from '../../apis/guild/guildController'
+
 import { NexonMembers } from '../../types/guild'
 import { useRoomsStore } from '../../store/roomsStore'
 import { guestGuilds } from '../../data/guest'
 import { useAuthStore } from '../../store/authStore'
+import {
+  fetchGuildMembers,
+  memberDescription,
+  refreshGuildMember
+} from '../../apis/guild/guildMemberController'
+
 export const useGuildMember = () => {
   const { search } = useLocation()
   const params = new URLSearchParams(search)
@@ -24,9 +26,7 @@ export const useGuildMember = () => {
   const { data: nexonMembers } = useQuery({
     queryKey: ['nexonMembers', guildList],
     queryFn: () =>
-      Promise.all(
-        guildList?.map(v => fetchNexonGuildMembers(v.guildId ?? 0)) || []
-      ),
+      Promise.all(guildList?.map(v => fetchGuildMembers(v.guildId ?? 0)) || []),
     staleTime: 1000 * 60 * 10,
     enabled: userType !== 'guest'
   })

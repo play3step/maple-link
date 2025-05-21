@@ -24,6 +24,8 @@ const Room = () => {
   const { nexonMembers, selectMember, refreshMember, descriptionMember } =
     useGuildMember()
 
+  console.log(nexonMembers)
+
   const [selectedMember, setSelectedMember] = useState<{
     type: string
     member: Member | null

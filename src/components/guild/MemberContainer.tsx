@@ -229,7 +229,21 @@ export const MemberContainer = ({
               key={member.name}
               onClick={
                 member.type === '본캐'
-                  ? () => onSelect?.(member.type, member)
+                  ? () => {
+                      const mainMember = {
+                        ...member,
+                        mainCharacterInfo: {
+                          id: member.id,
+                          name: member.name,
+                          level: member.level,
+                          job: member.job,
+                          imagePath: member.imagePath,
+                          description:
+                            member.mainCharacterInfo?.description || ''
+                        }
+                      }
+                      onSelect?.(member.type, mainMember)
+                    }
                   : member.type === '부캐' && member.mainCharacterInfo
                     ? () => {
                         const found = allMembers
@@ -241,7 +255,19 @@ export const MemberContainer = ({
                           )
 
                         if (found) {
-                          onSelect?.(found.type, found)
+                          const mainMember = {
+                            ...found,
+                            mainCharacterInfo: {
+                              id: found.id,
+                              name: found.name,
+                              level: found.level,
+                              job: found.job,
+                              imagePath: found.imagePath,
+                              description:
+                                found.mainCharacterInfo?.description || ''
+                            }
+                          }
+                          onSelect?.(found.type, mainMember)
                         }
                       }
                     : () => onSelect?.(member.type, member)

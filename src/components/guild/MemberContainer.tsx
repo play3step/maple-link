@@ -234,7 +234,11 @@ export const MemberContainer = ({
                     ? () => {
                         const found = allMembers
                           ?.flatMap(g => g.memberDetailResponse)
-                          .find(m => m?.id === member.mainCharacterInfo!.id)
+                          .find(
+                            m =>
+                              m?.id === member.mainCharacterInfo!.id &&
+                              m.type === '본캐'
+                          )
 
                         if (found) {
                           onSelect?.(found.type, found)

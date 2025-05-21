@@ -3,8 +3,8 @@ import { Member, NexonMembers } from '../../../types/guild'
 import ModalLayout from '../ModalLayout'
 import {
   IoSettingsOutline,
-  IoSaveOutline,
-  IoPersonCircleOutline
+  IoSaveOutline
+  // IoPersonCircleOutline
 } from 'react-icons/io5'
 import { MdOutlineDescription } from 'react-icons/md'
 
@@ -91,7 +91,7 @@ export const DetailMemberModal = ({
                 </p>
               )}
             </div>
-
+            {/* 
             <div className="p-4 bg-gray-50 rounded-lg">
               <h4 className="text-lg font-semibold mb-3 flex items-center gap-2">
                 <IoPersonCircleOutline className="text-blue-500" />
@@ -105,7 +105,7 @@ export const DetailMemberModal = ({
                   </span>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         )
       case 'alts':

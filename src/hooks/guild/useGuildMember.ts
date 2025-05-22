@@ -73,13 +73,21 @@ export const useGuildMember = () => {
     }
   }
 
-  const descriptionMember = (characterName: string, description: string) => {
+  const descriptionMember = async (
+    characterName: string,
+    description: string
+  ) => {
     if (userType !== 'member') return
     if (description === '') return
-    memberDescription(characterName, description)
-    queryClient.invalidateQueries({
-      queryKey: ['nexonMembers', guildList]
-    })
+    try {
+      await memberDescription(characterName, description)
+      await queryClient.invalidateQueries({
+        queryKey: ['nexonMembers', guildList]
+      })
+    } catch (error) {
+      alert('설명 수정 중 오류가 발생했습니다.')
+      throw error
+    }
   }
 
   return { nexonMembers, selectMember, refreshMember, descriptionMember }

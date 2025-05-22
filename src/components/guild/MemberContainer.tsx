@@ -70,8 +70,7 @@ export const MemberContainer = ({
       )
     if (selectedType === '특이사항')
       return (
-        member.mainCharacterInfo?.description &&
-        member.name === member.mainCharacterInfo.name &&
+        member.description &&
         member.name.toLowerCase().includes(searchCharacter?.toLowerCase() || '')
       )
     return (

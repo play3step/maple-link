@@ -34,8 +34,6 @@ const Room = () => {
 
   const { deleteGuild } = useGuildsList()
 
-  console.log(nexonMembers)
-
   const [searchCharacter, setSearchCharacter] = useState('')
 
   const main = guildList[0]?.guildName

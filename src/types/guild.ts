@@ -51,6 +51,7 @@ export interface Member {
   job: string
   level: string
   name: string
+  description?: string
   type: '본캐' | '부캐' | '외부 부캐'
   mainCharacterInfo?: {
     id: number

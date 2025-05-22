@@ -2,7 +2,7 @@ import { useLocation } from 'react-router-dom'
 import { QUERYSTRING } from '../../constants/querystring'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 
-import { NexonMembers } from '../../types/guild'
+import { NexonMembers, Member } from '../../types/guild'
 import { useRoomsStore } from '../../store/roomsStore'
 import { guestGuilds } from '../../data/guest'
 import { useAuthStore } from '../../store/authStore'
@@ -81,9 +81,23 @@ export const useGuildMember = () => {
     if (description === '') return
     try {
       await memberDescription(characterName, description)
-      await queryClient.invalidateQueries({
-        queryKey: ['nexonMembers', guildList]
-      })
+
+      queryClient.setQueryData(
+        ['nexonMembers', guildList],
+        (oldData: NexonMembers[] | undefined) => {
+          if (!oldData) return oldData
+
+          return oldData.map(guild => ({
+            ...guild,
+            memberDetailResponse:
+              guild.memberDetailResponse?.map((member: Member) =>
+                member.name === characterName
+                  ? { ...member, description }
+                  : member
+              ) ?? []
+          }))
+        }
+      )
     } catch (error) {
       alert('설명 수정 중 오류가 발생했습니다.')
       throw error

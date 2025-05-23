@@ -12,6 +12,9 @@ function Footer() {
         />
         <p className="text-sm font-medium text-gray-700">© 2025 Maple Link</p>
       </div>
+      <p className="text-xs text-gray-400 sm:ml-2">
+        ※ 이 서비스는 NEXON Open API를 이용하여 제작되었습니다.
+      </p>
       <div className="flex flex-col sm:flex-row items-center gap-4">
         <a
           href="mailto:danbi5190@gmail.com"

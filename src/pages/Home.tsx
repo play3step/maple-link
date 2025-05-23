@@ -2,25 +2,19 @@ import { useNavigate } from 'react-router-dom'
 import SocialAuthButton from '../components/common/SocialAuthButton'
 import { useAuth } from '../hooks/useAuth'
 import { useAuthStore } from '../store/authStore'
-import { useEffect } from 'react'
+
 import Logo from '../assets/logo.png'
 import { useUserStore } from '../store/userStore'
 import { guest } from '../data/guest'
 
 const Home = () => {
   const { userLogin } = useAuth()
-  const { isLoggedIn, storeLogin } = useAuthStore()
+  const { storeLogin } = useAuthStore()
   const { setUserInfo } = useUserStore()
   const nav = useNavigate()
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      nav('/character')
-    }
-  }, [isLoggedIn, nav])
-
-  const handleGuestLogin = () => {
-    storeLogin('', '', 'guest')
+  const handleGuestLogin = async () => {
+    await storeLogin('', '', 'guest')
     setUserInfo({
       id: 0,
       firebaseId: '1',
@@ -28,6 +22,24 @@ const Home = () => {
       email: 'danbi5190@gmail.com',
       ocid: guest.ocid
     })
+    nav('/character')
+  }
+
+  const handleMemberLogin = async () => {
+    try {
+      const userInfo = await userLogin()
+      if (userInfo) {
+        setUserInfo(userInfo)
+        if (userInfo?.nexonApiKey) {
+          nav('/character')
+        } else {
+          nav('/signup')
+        }
+      }
+    } catch (error) {
+      console.error(error)
+      alert('로그인에 실패했습니다.')
+    }
   }
 
   return (
@@ -88,7 +100,7 @@ const Home = () => {
               </button>
 
               <SocialAuthButton
-                onClick={userLogin}
+                onClick={handleMemberLogin}
                 className="inline-flex items-center px-6 py-2.5 text-base font-medium text-white bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl shadow-lg hover:shadow-blue-500/25 hover:from-blue-400 hover:to-indigo-400 transform hover:translate-y-[-2px] transition-all duration-300 group">
                 Google로 시작하기
               </SocialAuthButton>

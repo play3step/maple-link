@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import InputText from '../components/common/InputText'
 import Button from '../components/common/Button'
-import { addUserInfo, fetchUserInfo } from '../apis/user/userController'
+import { addUserInfo } from '../apis/user/userController'
 import Title from '../components/common/Title'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { useAuthStore } from '../store/authStore'
+import { useUserStore } from '../store/userStore'
 
 const Signup = () => {
   const [apikey, setApikey] = useState<string>('')
@@ -13,6 +14,8 @@ const Signup = () => {
   const nav = useNavigate()
   const { userLogout } = useAuth()
   const { uid } = useAuthStore()
+
+  const { updateUserInfo } = useUserStore()
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -34,8 +37,13 @@ const Signup = () => {
         throw new Error('API 키 등록에 실패했습니다.')
       }
 
-      await fetchUserInfo(uid)
+      updateUserInfo({
+        nexonApiKey: result.generatedApiKey,
+        ocid: result.characterUid
+      })
+
       alert('API 키 등록이 완료되었습니다.')
+
       nav('/character')
     } catch (error) {
       console.error('API 키 등록 실패:', error)

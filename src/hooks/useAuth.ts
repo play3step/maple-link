@@ -16,7 +16,8 @@ export const useAuth = () => {
 
       if (token && result.user.uid) {
         storeLogin(token, result.user.uid, 'member')
-        fetchUserInfo(result.user.uid)
+        const userInfo = await fetchUserInfo(result.user.uid)
+        return userInfo
       }
     } catch (error) {
       console.log(error)

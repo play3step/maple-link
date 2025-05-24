@@ -21,8 +21,13 @@ const Room = () => {
   const { activeModal, openModal } = useModalStore()
   const navigate = useNavigate()
   const { guildList } = useGuildsList()
-  const { nexonMembers, selectMember, refreshMember, descriptionMember } =
-    useGuildMember()
+  const {
+    nexonMembers,
+    selectMember,
+    refreshMember,
+    descriptionMember,
+    nexonMembersLoading
+  } = useGuildMember()
 
   const [selectedMember, setSelectedMember] = useState<{
     type: string
@@ -121,6 +126,14 @@ const Room = () => {
 
           <div className="p-6">
             <div className="min-h-[600px]">
+              {nexonMembersLoading && (
+                <div className="flex justify-center items-center h-full">
+                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-4"></div>
+                  <p className="text-gray-600 font-medium">
+                    캐릭터 정보를 불러오는 중...
+                  </p>
+                </div>
+              )}
               {guildList.length > 0 ? (
                 <MemberContainer
                   members={selectMember?.memberDetailResponse as Member[]}

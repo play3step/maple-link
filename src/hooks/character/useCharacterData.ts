@@ -13,9 +13,10 @@ import {
 } from '../../types/character'
 
 import { useUserStore } from '../../store/userStore'
+import { useEffect } from 'react'
 
 export const useCharacterData = () => {
-  const { userInfo } = useUserStore()
+  const { userInfo, setUserName } = useUserStore()
   const ocid = userInfo?.ocid
 
   const { data: characterStats, isLoading: statsLoading } =
@@ -43,6 +44,12 @@ export const useCharacterData = () => {
     queryFn: ocid ? () => fetchCharacterBasic(ocid) : undefined,
     staleTime: 5 * 60 * 1000
   })
+
+  useEffect(() => {
+    if (basic?.character_name) {
+      setUserName(basic.character_name)
+    }
+  }, [basic?.character_name])
 
   const isLoading =
     statsLoading || abilityLoading || hyperLoading || basicLoading

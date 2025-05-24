@@ -58,7 +58,7 @@ export const GuildManageModal = ({ room }: GuildManageModalProps) => {
                 <div>{admin}</div>
 
                 <div className="flex space-x-2">
-                  {index !== 0 && (
+                  {room.admins.length > 0 && (
                     <button
                       onClick={() => {
                         handleRemoveAdmin(room.adminId, room.admins[index])

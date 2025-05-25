@@ -67,7 +67,7 @@ export const useGuildMember = () => {
           queryKey: ['nexonMembers', guildList]
         })
       } catch (error) {
-        alert('본/부캐 정보 새로고침 중 오류가 발생했습니다.')
+        alert('새로고침은 마스터만 가능합니다.')
         throw error
       }
     }

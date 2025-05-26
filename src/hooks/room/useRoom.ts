@@ -9,6 +9,8 @@ import { useRoomsStore } from '../../store/roomsStore'
 import { useAuthStore } from '../../store/authStore'
 import { guestRoom } from '../../data/guest'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import axios from 'axios'
+import { ErrorResponse } from '../../types'
 
 export const useRoom = () => {
   const { rooms, setRooms } = useRoomsStore()
@@ -77,11 +79,11 @@ export const useRoom = () => {
         message: '관리방 생성 성공'
       }
     } catch (error) {
-      console.error('관리방 생성 실패:', error)
-      return {
-        guildId: null,
-        message: '생성할수 없는 길드 입니다.'
+      if (axios.isAxiosError(error) && error.response?.data) {
+        const errorData = error.response.data as ErrorResponse
+        return { success: false, message: errorData.data.message }
       }
+      return { success: false, message: '관리방 생성 중 오류가 발생했습니다.' }
     }
   }
 

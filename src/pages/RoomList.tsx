@@ -16,7 +16,6 @@ export const RoomList = () => {
   const { setGroupId } = useRoomsStore()
   const { userName } = useUserStore()
   const navigate = useNavigate()
-  console.log(rooms)
 
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null)
 

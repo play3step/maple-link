@@ -6,8 +6,11 @@ import { useAuthStore } from '../../store/authStore'
 import { ErrorResponse } from '../../types'
 import axios from 'axios'
 import { addGuildToRoom } from '../../apis/room/roomController'
+import { useQueryClient } from '@tanstack/react-query'
 export const useGuildsList = () => {
   const { guildList, rooms, setGuildList, groupId } = useRoomsStore()
+
+  const queryClient = useQueryClient()
 
   const { userType } = useAuthStore()
 
@@ -36,7 +39,7 @@ export const useGuildsList = () => {
         setGuildList(guilds)
       }
     }
-  }, [])
+  }, [groupId])
 
   // 길드 생성
   const createGuild = async (worldName: string, guildName: string) => {
@@ -56,6 +59,7 @@ export const useGuildsList = () => {
           ...guildList,
           { guildId: res.guildId, guildName: guildName }
         ])
+        queryClient.invalidateQueries({ queryKey: ['roomList', userType] })
         return { success: true, message: '길드 생성 완료' }
       } else {
         return { success: false, message: '길드 ID가 응답에 없습니다.' }
@@ -78,6 +82,7 @@ export const useGuildsList = () => {
     try {
       await deleteGuildList(guildId)
       setGuildList(guildList.filter(guild => guild.guildId !== guildId))
+      queryClient.invalidateQueries({ queryKey: ['roomList', userType] })
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.data) {
         const errorData = error.response.data as ErrorResponse

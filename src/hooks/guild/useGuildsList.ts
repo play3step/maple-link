@@ -3,6 +3,9 @@ import { Guild } from '../../types/guild'
 import { useEffect } from 'react'
 import { addGuildList, deleteGuildList } from '../../apis/guild/guildController'
 import { useAuthStore } from '../../store/authStore'
+import { ErrorResponse } from '../../types'
+import axios from 'axios'
+import { addGuildToRoom } from '../../apis/room/roomController'
 export const useGuildsList = () => {
   const { guildList, rooms, setGuildList, groupId } = useRoomsStore()
 
@@ -42,20 +45,30 @@ export const useGuildsList = () => {
       alert('게스트 유저는 길드 생성을 할 수 없습니다.')
       return
     }
-    const response = await addGuildList({
-      world_name: worldName,
-      guild_name: guildName
-    })
-    if (response.guildId) {
-      setGuildList([
-        ...guildList,
-        {
-          guildId: response.guildId,
-          guildName: guildName
+    try {
+      const res = await addGuildList({
+        world_name: worldName,
+        guild_name: guildName
+      })
+      if (res.guildId) {
+        await addGuildToRoom(Number(groupId), res.guildId)
+        setGuildList([
+          ...guildList,
+          { guildId: res.guildId, guildName: guildName }
+        ])
+        return { success: true, message: '길드 생성 완료' }
+      } else {
+        return { success: false, message: '길드 ID가 응답에 없습니다.' }
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.data) {
+        const errorData = error.response.data as ErrorResponse
+        return {
+          success: false,
+          message: errorData.data.message ?? '길드 생성 중 오류가 발생했습니다.'
         }
-      ])
+      }
     }
-    return response
   }
 
   // 길드 삭제
@@ -65,8 +78,11 @@ export const useGuildsList = () => {
     try {
       await deleteGuildList(guildId)
       setGuildList(guildList.filter(guild => guild.guildId !== guildId))
-    } catch {
-      alert('길드 삭제 중 오류가 발생했습니다.')
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.data) {
+        const errorData = error.response.data as ErrorResponse
+        alert(errorData.data.message)
+      }
     }
   }
 

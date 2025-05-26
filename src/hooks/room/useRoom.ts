@@ -9,7 +9,6 @@ import { useRoomsStore } from '../../store/roomsStore'
 import { useAuthStore } from '../../store/authStore'
 import { guestRoom } from '../../data/guest'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { addGuildList } from '../../apis/guild/guildController'
 
 export const useRoom = () => {
   const { rooms, setRooms } = useRoomsStore()
@@ -30,24 +29,26 @@ export const useRoom = () => {
     }
   }, [roomList, userType, setRooms])
 
-  const createGuildMutation = useMutation({
-    mutationFn: ({
-      guildName,
-      guildWorld
-    }: {
-      guildName: string
-      guildWorld: string
-    }) => addGuildList({ guild_name: guildName, world_name: guildWorld })
-  })
+  // const createGuildMutation = useMutation({
+  //   mutationFn: ({
+  //     guildName,
+  //     guildWorld
+  //   }: {
+  //     guildName: string
+  //     guildWorld: string
+  //   }) => addGuildList({ guild_name: guildName, world_name: guildWorld })
+  // })
 
   const createRoomMutation = useMutation({
     mutationFn: ({
       groupName,
-      guildId
+      guildName,
+      guildWorld
     }: {
       groupName: string
-      guildId: number
-    }) => createRoomList(groupName, guildId)
+      guildName: string
+      guildWorld: string
+    }) => createRoomList(groupName, guildName, guildWorld)
   })
 
   const handleCreateRoom = async (
@@ -63,27 +64,16 @@ export const useRoom = () => {
     }
 
     try {
-      const res = await createGuildMutation.mutateAsync({
+      const res = await createRoomMutation.mutateAsync({
+        groupName,
         guildName,
         guildWorld
-      })
-
-      if (!res.guildId) {
-        return {
-          guildId: null,
-          message: res.message
-        }
-      }
-
-      await createRoomMutation.mutateAsync({
-        groupName,
-        guildId: res.guildId
       })
 
       queryClient.invalidateQueries({ queryKey: ['roomList', userType] })
 
       return {
-        guildId: res.guildId,
+        guildId: res.id,
         message: '관리방 생성 성공'
       }
     } catch (error) {

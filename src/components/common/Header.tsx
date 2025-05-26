@@ -20,7 +20,7 @@ function Header() {
     <header className="w-full max-w-[1440px] mx-auto px-6 py-4 border-b border-blue-100 backdrop-blur-sm bg-white/80 flex justify-between items-center sticky top-0 z-50 shadow-sm">
       <div className="flex items-center">
         <Link
-          to="/"
+          to="/character"
           className="flex items-center gap-2 hover:opacity-80 transition-all">
           <img
             src={Logo}

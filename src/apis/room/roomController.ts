@@ -10,11 +10,23 @@ export const getRoomList = async () => {
   }
 }
 
-export const createRoomList = async (groupName: string, guildId: number) => {
-  const response = await basicApi.post('/api/group-admin', {
-    groupName: groupName,
-    guildId: guildId
-  })
+export const createRoomList = async (
+  groupName: string,
+  guildName: string,
+  guildWorld: string
+) => {
+  const response = await basicApi.post(
+    '/api/guild-group',
+    {
+      groupName: groupName
+    },
+    {
+      params: {
+        guild_name: guildName,
+        world_name: guildWorld
+      }
+    }
+  )
 
   return response.data
 }

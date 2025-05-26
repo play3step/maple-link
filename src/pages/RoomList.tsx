@@ -8,11 +8,13 @@ import { GuildManageModal } from '../components/modal/room/RoomManageModal'
 import { useState } from 'react'
 import { Room } from '../types/rooms'
 import { useRoomsStore } from '../store/roomsStore'
+import { useUserStore } from '../store/userStore'
 
 export const RoomList = () => {
   const { openModal, activeModal } = useModalStore()
   const { rooms, handleDeleteRoom } = useRoom()
   const { setGroupId } = useRoomsStore()
+  const { userName } = useUserStore()
   const navigate = useNavigate()
 
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null)
@@ -111,8 +113,11 @@ export const RoomList = () => {
         ))}
       </div>
       {activeModal === 'createRoom' && <CreateRoomModal />}
-      {activeModal === 'guildManage' && (
-        <GuildManageModal room={selectedRoom as Room} />
+      {activeModal === 'guildManage' && userName && (
+        <GuildManageModal
+          room={selectedRoom as Room}
+          userName={userName}
+        />
       )}
     </div>
   )

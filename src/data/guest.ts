@@ -38,6 +38,7 @@ export const guestGuilds = [
     guildMasterName: '단뱅',
     memberDetailResponse: [
       {
+        description: '1회 경고',
         id: 1,
         name: '단뱅',
         level: '286',
@@ -49,11 +50,11 @@ export const guestGuilds = [
           name: '단뱅',
           level: '286',
           job: '데몬어벤져',
-          imagePath: danbaeng,
-          description: '1회 경고'
+          imagePath: danbaeng
         }
       },
       {
+        description: '',
         id: 2,
         name: '노칠',
         level: '290',
@@ -65,11 +66,11 @@ export const guestGuilds = [
           name: '노칠',
           level: '290',
           job: '듀얼블레이드',
-          imagePath: nochil,
-          description: ''
+          imagePath: nochil
         }
       },
       {
+        description: '',
         id: 3,
         name: '비굴',
         level: '290',
@@ -81,11 +82,11 @@ export const guestGuilds = [
           name: '비굴',
           level: '290',
           job: '듀얼블레이드',
-          imagePath: bigul,
-          description: ''
+          imagePath: bigul
         }
       },
       {
+        description: '휴메',
         id: 4,
         name: '맙빡',
         level: '290',
@@ -97,8 +98,7 @@ export const guestGuilds = [
           name: '맙빡',
           level: '290',
           job: '아크메이지(불, 독)',
-          imagePath: mabbak,
-          description: '휴메'
+          imagePath: mabbak
         }
       },
       {

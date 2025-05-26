@@ -23,7 +23,7 @@ export const useGuildMember = () => {
   const queryClient = useQueryClient()
 
   //nexon 멤버 조회
-  const { data: nexonMembers } = useQuery({
+  const { data: nexonMembers, isLoading: nexonMembersLoading } = useQuery({
     queryKey: ['nexonMembers', guildList],
     queryFn: () =>
       Promise.all(guildList?.map(v => fetchGuildMembers(v.guildId ?? 0)) || []),
@@ -67,7 +67,7 @@ export const useGuildMember = () => {
           queryKey: ['nexonMembers', guildList]
         })
       } catch (error) {
-        alert('본/부캐 정보 새로고침 중 오류가 발생했습니다.')
+        alert('새로고침은 마스터만 가능합니다.')
         throw error
       }
     }
@@ -104,5 +104,11 @@ export const useGuildMember = () => {
     }
   }
 
-  return { nexonMembers, selectMember, refreshMember, descriptionMember }
+  return {
+    nexonMembers,
+    selectMember,
+    refreshMember,
+    descriptionMember,
+    nexonMembersLoading
+  }
 }

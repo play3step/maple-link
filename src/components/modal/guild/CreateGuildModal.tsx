@@ -4,14 +4,21 @@ import { IoAdd } from 'react-icons/io5'
 import { useModalStore } from '../../../store/modalStore'
 import { SelectGuildForm } from '../SelectGuildForm'
 
-import { useGuildsList } from '../../../hooks/guild/useGuildsList'
+interface Props {
+  createGuild: (
+    worldName: string,
+    guildName: string
+  ) => Promise<{
+    success: boolean
+    message: string
+  }>
+}
 
-export const CreateGuildModal = () => {
+export const CreateGuildModal = ({ createGuild }: Props) => {
   const { closeModal } = useModalStore()
   const [guildName, setGuildName] = useState('')
   const [guildWorld, setGuildWorld] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const { createGuild } = useGuildsList()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

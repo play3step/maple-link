@@ -39,14 +39,19 @@ export const useGuildsList = () => {
         setGuildList(guilds)
       }
     }
-  }, [groupId])
+  }, [])
 
   // 길드 생성
   const createGuild = async (worldName: string, guildName: string) => {
-    if (!worldName || !guildName) return
+    if (!worldName || !guildName) {
+      return { success: false, message: '길드 정보를 입력해주세요.' }
+    }
     if (userType === 'guest') {
       alert('게스트 유저는 길드 생성을 할 수 없습니다.')
-      return
+      return {
+        success: false,
+        message: '게스트 유저는 길드 생성을 할 수 없습니다.'
+      }
     }
     try {
       const res = await addGuildList({
@@ -55,11 +60,13 @@ export const useGuildsList = () => {
       })
       if (res.guildId) {
         await addGuildToRoom(Number(groupId), res.guildId)
+        await queryClient.invalidateQueries({
+          queryKey: ['roomList', userType]
+        })
         setGuildList([
           ...guildList,
           { guildId: res.guildId, guildName: guildName }
         ])
-        queryClient.invalidateQueries({ queryKey: ['roomList', userType] })
         return { success: true, message: '길드 생성 완료' }
       } else {
         return { success: false, message: '길드 ID가 응답에 없습니다.' }
@@ -72,6 +79,7 @@ export const useGuildsList = () => {
           message: errorData.data.message ?? '길드 생성 중 오류가 발생했습니다.'
         }
       }
+      return { success: false, message: '길드 생성 중 오류가 발생했습니다.' }
     }
   }
 
@@ -81,8 +89,8 @@ export const useGuildsList = () => {
 
     try {
       await deleteGuildList(guildId)
+      await queryClient.invalidateQueries({ queryKey: ['roomList', userType] })
       setGuildList(guildList.filter(guild => guild.guildId !== guildId))
-      queryClient.invalidateQueries({ queryKey: ['roomList', userType] })
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.data) {
         const errorData = error.response.data as ErrorResponse

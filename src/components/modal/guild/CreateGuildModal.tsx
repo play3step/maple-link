@@ -4,17 +4,21 @@ import { IoAdd } from 'react-icons/io5'
 import { useModalStore } from '../../../store/modalStore'
 import { SelectGuildForm } from '../SelectGuildForm'
 
-import { addGuildToRoom } from '../../../apis/room/roomController'
-import { useGuildsList } from '../../../hooks/guild/useGuildsList'
-import { useRoomsStore } from '../../../store/roomsStore'
+interface Props {
+  createGuild: (
+    worldName: string,
+    guildName: string
+  ) => Promise<{
+    success: boolean
+    message: string
+  }>
+}
 
-export const CreateGuildModal = () => {
+export const CreateGuildModal = ({ createGuild }: Props) => {
   const { closeModal } = useModalStore()
   const [guildName, setGuildName] = useState('')
   const [guildWorld, setGuildWorld] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const { createGuild } = useGuildsList()
-  const { groupId } = useRoomsStore()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -24,28 +28,13 @@ export const CreateGuildModal = () => {
     }
 
     setIsLoading(true)
-    try {
-      const res = await createGuild(guildWorld, guildName)
+    const result = await createGuild(guildWorld, guildName)
 
-      if (res.status === 500) {
-        alert('존재하지 않는 길드입니다.')
-        return
-      }
-
-      if (res.guildId && groupId) {
-        try {
-          await addGuildToRoom(Number(groupId), res.guildId)
-          alert('길드가 성공적으로 추가되었습니다.')
-          closeModal()
-        } catch {
-          alert('길드 추가 중 오류가 발생했습니다.')
-        }
-      } else if (res.message) {
-        alert(res.message)
-      }
-    } catch {
-      alert('길드 생성 중 오류가 발생했습니다.')
-    } finally {
+    if (result?.success) {
+      alert(result?.message)
+      closeModal()
+    } else {
+      alert(result?.message)
       setIsLoading(false)
     }
   }

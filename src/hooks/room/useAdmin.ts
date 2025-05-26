@@ -5,14 +5,7 @@ import {
   removeAdminFromRoom
 } from '../../apis/room/adminController'
 import axios from 'axios'
-
-interface ErrorResponse {
-  errorCode: string
-  message: string
-  guildId: null
-  guildName: null
-  worldName: null
-}
+import { ErrorResponse } from '../../types'
 
 export const useAdmin = () => {
   const { userType } = useAuthStore()
@@ -63,7 +56,7 @@ export const useAdmin = () => {
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.data) {
         const errorData = error.response.data as ErrorResponse
-        return { success: false, message: errorData.message }
+        return { success: false, message: errorData.data.message }
       }
       return { success: false, message: '관리자 추가 중 오류가 발생했습니다.' }
     }
@@ -84,7 +77,7 @@ export const useAdmin = () => {
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.data) {
         const errorData = error.response.data as ErrorResponse
-        return { success: false, message: errorData.message }
+        return { success: false, message: errorData.data.message }
       }
       return { success: false, message: '관리자 제거 중 오류가 발생했습니다.' }
     }

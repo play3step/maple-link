@@ -2,7 +2,7 @@ import { ModalType } from '../../store/modalStore'
 import { Guild } from '../../types/guild'
 import { useSearchParams } from 'react-router-dom'
 import { QUERYSTRING } from '../../constants/querystring'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import {
   IoAdd,
   IoGitCompare,
@@ -31,15 +31,18 @@ export const ActionBtnList = ({
 
   const dropdownRef = useRef<HTMLDivElement>(null)
 
-  const handleSwitch = (value: string) => {
-    const newSearchParams = new URLSearchParams(searchParams)
-    if (value === null) {
-      newSearchParams.delete(QUERYSTRING.GUILD)
-    } else {
-      newSearchParams.set(QUERYSTRING.GUILD, value)
-    }
-    setSearchParams(newSearchParams)
-  }
+  const handleSwitch = useCallback(
+    (value: string) => {
+      const newSearchParams = new URLSearchParams(searchParams)
+      if (value === null) {
+        newSearchParams.delete(QUERYSTRING.GUILD)
+      } else {
+        newSearchParams.set(QUERYSTRING.GUILD, value)
+      }
+      setSearchParams(newSearchParams)
+    },
+    [searchParams, setSearchParams]
+  )
 
   const handleRefresh = async (guildId: number) => {
     if (!refreshMember) return
@@ -54,16 +57,19 @@ export const ActionBtnList = ({
   }
 
   useEffect(() => {
-    if (!searchParams.get(QUERYSTRING.GUILD) && guildList.length > 0) {
-      handleSwitch(guildList[0].guildName || '')
-      setSelectedGuild(guildList[0])
-    } else {
+    if (guildList.length > 0) {
       const currentGuild = guildList.find(
         g => g.guildName === searchParams.get(QUERYSTRING.GUILD)
       )
-      setSelectedGuild(currentGuild || null)
+
+      if (!currentGuild) {
+        handleSwitch(guildList[0].guildName || '')
+        setSelectedGuild(guildList[0])
+      } else {
+        setSelectedGuild(currentGuild)
+      }
     }
-  }, [searchParams, guildList])
+  }, [guildList, searchParams, handleSwitch])
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

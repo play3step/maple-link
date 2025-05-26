@@ -20,7 +20,7 @@ import { AlertModal } from '../components/modal/common/AlertModal'
 const Room = () => {
   const { activeModal, openModal } = useModalStore()
   const navigate = useNavigate()
-  const { guildList } = useGuildsList()
+  const { guildList, createGuild, deleteGuild } = useGuildsList()
   const {
     nexonMembers,
     selectMember,
@@ -36,8 +36,6 @@ const Room = () => {
     type: '',
     member: null
   })
-
-  const { deleteGuild } = useGuildsList()
 
   const [searchCharacter, setSearchCharacter] = useState('')
 
@@ -158,7 +156,9 @@ const Room = () => {
         </div>
       </div>
 
-      {activeModal === 'createGuild' && <CreateGuildModal />}
+      {activeModal === 'createGuild' && (
+        <CreateGuildModal createGuild={createGuild} />
+      )}
       {activeModal === 'detectMember' && (
         <DetectMemberModal
           guildDetectList={detectMembers ?? []}

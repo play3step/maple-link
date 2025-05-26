@@ -31,7 +31,7 @@ export const CreateRoomModal = () => {
       guildWorld
     )
 
-    if (result.guildId) {
+    if (result?.guildId) {
       alert(result.message || '관리방이 성공적으로 생성되었습니다.')
       closeModal()
     } else {

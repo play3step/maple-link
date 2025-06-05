@@ -12,7 +12,7 @@ const Home = () => {
   const { storeLogin } = useAuthStore()
   const { setUserInfo } = useUserStore()
   const nav = useNavigate()
-  const showMaintenance = true
+  const showMaintenance = false
 
   const handleGuestLogin = async () => {
     if (showMaintenance) {

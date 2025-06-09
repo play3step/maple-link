@@ -8,6 +8,7 @@ import {
 } from '../../apis/calendar/calendarController'
 import { Calendar, CalendarResponse } from '../../types/calendar'
 import { useAuthStore } from '../../store/authStore'
+import { guestCalendar } from '../../data/guest'
 
 export const useUserNotice = () => {
   const { userType } = useAuthStore()
@@ -16,7 +17,8 @@ export const useUserNotice = () => {
 
   const { data, isLoading } = useQuery<CalendarResponse>({
     queryKey: ['calendar'],
-    queryFn: getCalendar
+    queryFn: getCalendar,
+    enabled: userType !== 'guest'
   })
 
   const createPersonalCalendarMutation = useMutation({
@@ -104,6 +106,17 @@ export const useUserNotice = () => {
       }
     } catch (error) {
       console.error(error)
+    }
+  }
+
+  if (userType === 'guest') {
+    return {
+      data: guestCalendar,
+      isLoading: false,
+      createCalendar: () => {},
+      inviteGroupCalendar: () => {},
+      deleteCalendarHandler: () => {},
+      updateCalendarHandler: () => {}
     }
   }
 

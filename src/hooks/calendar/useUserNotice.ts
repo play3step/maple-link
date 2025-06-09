@@ -9,6 +9,8 @@ import {
 import { Calendar, CalendarResponse } from '../../types/calendar'
 import { useAuthStore } from '../../store/authStore'
 import { guestCalendar } from '../../data/guest'
+import axios from 'axios'
+import { ErrorResponse } from '../../types'
 
 export const useUserNotice = () => {
   const { userType } = useAuthStore()
@@ -25,6 +27,14 @@ export const useUserNotice = () => {
     mutationFn: (calendar: Calendar) => createPersonalCalendar(calendar),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['calendar'] })
+    },
+    onError: error => {
+      if (axios.isAxiosError(error) && error.response?.data) {
+        const errorData = error.response.data as ErrorResponse
+        alert(errorData.data.message)
+        return
+      }
+      alert('일정 생성 중 오류가 발생했습니다.')
     }
   })
 
@@ -38,6 +48,14 @@ export const useUserNotice = () => {
     }) => createGroupCalendar(memberNicknames, scheduleId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['calendar'] })
+    },
+    onError: error => {
+      if (axios.isAxiosError(error) && error.response?.data) {
+        const errorData = error.response.data as ErrorResponse
+        alert(errorData.data.message)
+        return
+      }
+      alert('일정 초대 중 오류가 발생했습니다.')
     }
   })
 
@@ -45,6 +63,14 @@ export const useUserNotice = () => {
     mutationFn: (scheduleId: number) => deleteCalendar(scheduleId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['calendar'] })
+    },
+    onError: error => {
+      if (axios.isAxiosError(error) && error.response?.data) {
+        const errorData = error.response.data as ErrorResponse
+        alert(errorData.data.message)
+        return
+      }
+      alert('일정 삭제 중 오류가 발생했습니다.')
     }
   })
 
@@ -52,6 +78,14 @@ export const useUserNotice = () => {
     mutationFn: (calendar: Calendar) => updateCalendar(calendar),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['calendar'] })
+    },
+    onError: error => {
+      if (axios.isAxiosError(error) && error.response?.data) {
+        const errorData = error.response.data as ErrorResponse
+        alert(errorData.data.message)
+        return
+      }
+      alert('일정 수정 중 오류가 발생했습니다.')
     }
   })
 
@@ -60,12 +94,9 @@ export const useUserNotice = () => {
       alert('게스트는 일정을 생성할 수 없습니다.')
       return
     }
-    try {
-      createPersonalCalendarMutation.mutate(calendar)
-    } catch (error) {
-      console.error(error)
-    }
+    createPersonalCalendarMutation.mutate(calendar)
   }
+
   const inviteGroupCalendar = (
     memberNicknames: string[],
     scheduleId: number
@@ -74,11 +105,7 @@ export const useUserNotice = () => {
       alert('게스트는 일정을 초대할 수 없습니다.')
       return
     }
-    try {
-      createGroupCalendarMutation.mutate({ memberNicknames, scheduleId })
-    } catch (error) {
-      console.error(error)
-    }
+    createGroupCalendarMutation.mutate({ memberNicknames, scheduleId })
   }
 
   const deleteCalendarHandler = (scheduleId: number) => {
@@ -86,12 +113,8 @@ export const useUserNotice = () => {
       alert('게스트는 일정을 삭제할 수 없습니다.')
       return
     }
-    try {
-      if (confirm('정말 삭제하시겠습니까?')) {
-        deleteCalendarMutation.mutate(scheduleId)
-      }
-    } catch (error) {
-      console.error(error)
+    if (confirm('정말 삭제하시겠습니까?')) {
+      deleteCalendarMutation.mutate(scheduleId)
     }
   }
 
@@ -100,12 +123,8 @@ export const useUserNotice = () => {
       alert('사용할수 없는 기능입니다.')
       return
     }
-    try {
-      if (confirm('정말 수정하시겠습니까?')) {
-        updateCalendarMutation.mutate(calendar)
-      }
-    } catch (error) {
-      console.error(error)
+    if (confirm('정말 수정하시겠습니까?')) {
+      updateCalendarMutation.mutate(calendar)
     }
   }
 

@@ -8,8 +8,18 @@ import { Calendar } from '../../../types/calendar'
 import { useState } from 'react'
 import { FiEdit2, FiTrash2 } from 'react-icons/fi'
 
+const isNexonEvent = (
+  event: CalendarType | Calendar
+): event is CalendarType => {
+  return event.type === 'nexon'
+}
+
+const isUserEvent = (event: CalendarType | Calendar): event is Calendar => {
+  return event.type === 'USER'
+}
+
 interface Props {
-  list: CalendarType[]
+  list: (CalendarType | Calendar)[]
   selectedDate: string
   createUserNotice: (calendar: Calendar) => void
   deleteCalendarHandler: (scheduleId: number) => void
@@ -70,18 +80,16 @@ export const EventListModal = ({
           {list.length > 0 ? (
             <div className="space-y-6">
               {/* 넥슨 이벤트 */}
-              {list.some(v => v.type === 'nexon') && (
+              {list.some(isNexonEvent) && (
                 <div className="space-y-3">
                   <h3 className="font-semibold text-slate-700 text-lg">
                     넥슨 이벤트
                   </h3>
                   <div className="space-y-2">
-                    {list
-                      .filter(v => v.type === 'nexon')
-                      .map((v, idx) => (
-                        <div
-                          key={idx}
-                          className={`
+                    {list.filter(isNexonEvent).map((v, idx) => (
+                      <div
+                        key={idx}
+                        className={`
                             flex items-center gap-3 p-4 rounded-lg
                             ${
                               v.title.includes('[시작]')
@@ -89,56 +97,54 @@ export const EventListModal = ({
                                 : 'bg-red-50 border border-red-200'
                             }
                           `}>
-                          <img
-                            src={nexonIcon}
-                            className="w-8 h-8"
-                            alt="Nexon"
-                          />
-                          <span
-                            className={`
+                        <img
+                          src={nexonIcon}
+                          className="w-8 h-8"
+                          alt="Nexon"
+                        />
+                        <span
+                          className={`
                               ${
                                 v.title.includes('[시작]')
                                   ? 'text-emerald-900'
                                   : 'text-red-900'
                               }
                              cursor-pointer hover:underline`}
-                            onClick={() => {
-                              window.open(v.nexonUrl, '_blank')
-                            }}>
-                            {v.title}
-                          </span>
-                        </div>
-                      ))}
+                          onClick={() => {
+                            window.open(v.nexonUrl, '_blank')
+                          }}>
+                          {v.title}
+                        </span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}
 
               {/* 유저 일정 */}
-              {list.some(v => v.type === 'USER') && (
+              {list.some(isUserEvent) && (
                 <div className="space-y-3">
                   <h3 className="font-semibold text-slate-700 text-lg">
                     내 일정
                   </h3>
                   <div className="space-y-2">
-                    {list
-                      .filter(v => v.type === 'USER')
-                      .map((v, idx) => (
-                        <div
-                          key={idx}
-                          className="flex items-center justify-between p-4 rounded-lg bg-blue-50 border border-blue-200">
-                          <span className="text-blue-900">{v.title}</span>
-                          <div className="flex items-center gap-2">
-                            <button className="p-1.5 text-blue-600 hover:bg-blue-100 rounded-md transition-colors">
-                              <FiEdit2 size={16} />
-                            </button>
-                            <button
-                              className="p-1.5 text-red-600 hover:bg-red-100 rounded-md transition-colors"
-                              onClick={() => handleDelete(v.id ?? 0)}>
-                              <FiTrash2 size={16} />
-                            </button>
-                          </div>
+                    {list.filter(isUserEvent).map(v => (
+                      <div
+                        key={v.id}
+                        className="flex items-center justify-between p-4 rounded-lg bg-blue-50 border border-blue-200">
+                        <span className="text-blue-900">{v.title}</span>
+                        <div className="flex items-center gap-2">
+                          <button className="p-1.5 text-blue-600 hover:bg-blue-100 rounded-md transition-colors">
+                            <FiEdit2 size={16} />
+                          </button>
+                          <button
+                            className="p-1.5 text-red-600 hover:bg-red-100 rounded-md transition-colors"
+                            onClick={() => handleDelete(v.id ?? 0)}>
+                            <FiTrash2 size={16} />
+                          </button>
                         </div>
-                      ))}
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}

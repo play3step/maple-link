@@ -6,17 +6,20 @@ import nexonIcon from '../../../assets/nexon.webp'
 import { IoCalendarOutline } from 'react-icons/io5'
 import { Calendar } from '../../../types/calendar'
 import { useState } from 'react'
+import { FiEdit2, FiTrash2 } from 'react-icons/fi'
 
 interface Props {
   list: CalendarType[]
   selectedDate: string
   createUserNotice: (calendar: Calendar) => void
+  deleteCalendarHandler: (scheduleId: number) => void
 }
 
 export const EventListModal = ({
   selectedDate,
   list,
-  createUserNotice
+  createUserNotice,
+  deleteCalendarHandler
 }: Props) => {
   const [inputValue, setInputValue] = useState<string>('')
   const [isComposing, setIsComposing] = useState(false)
@@ -31,6 +34,9 @@ export const EventListModal = ({
       })
       setInputValue('')
     }
+  }
+  const handleDelete = async (scheduleId: number) => {
+    await deleteCalendarHandler(scheduleId)
   }
 
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -119,8 +125,18 @@ export const EventListModal = ({
                       .map((v, idx) => (
                         <div
                           key={idx}
-                          className="flex items-center gap-3 p-4 rounded-lg bg-blue-50 border border-blue-200">
+                          className="flex items-center justify-between p-4 rounded-lg bg-blue-50 border border-blue-200">
                           <span className="text-blue-900">{v.title}</span>
+                          <div className="flex items-center gap-2">
+                            <button className="p-1.5 text-blue-600 hover:bg-blue-100 rounded-md transition-colors">
+                              <FiEdit2 size={16} />
+                            </button>
+                            <button
+                              className="p-1.5 text-red-600 hover:bg-red-100 rounded-md transition-colors"
+                              onClick={() => handleDelete(v.id ?? 0)}>
+                              <FiTrash2 size={16} />
+                            </button>
+                          </div>
                         </div>
                       ))}
                   </div>

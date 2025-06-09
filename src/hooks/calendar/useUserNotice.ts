@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   createGroupCalendar,
   createPersonalCalendar,
+  deleteCalendar,
   getCalendar
 } from '../../apis/calendar/calendarController'
 import { Calendar, CalendarResponse } from '../../types/calendar'
@@ -34,6 +35,13 @@ export const useUserNotice = () => {
     }) => createGroupCalendar(memberNicknames, scheduleId)
   })
 
+  const deleteCalendarMutation = useMutation({
+    mutationFn: (scheduleId: number) => deleteCalendar(scheduleId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['calendar'] })
+    }
+  })
+
   const createCalendar = (calendar: Calendar) => {
     if (userType !== 'member') {
       alert('게스트는 일정을 생성할 수 없습니다.')
@@ -60,10 +68,23 @@ export const useUserNotice = () => {
     }
   }
 
+  const deleteCalendarHandler = (scheduleId: number) => {
+    if (userType !== 'member') {
+      alert('게스트는 일정을 삭제할 수 없습니다.')
+      return
+    }
+    try {
+      deleteCalendarMutation.mutate(scheduleId)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return {
     data: [...(data?.personalSchedules ?? []), ...(data?.groupSchedules ?? [])],
     isLoading,
     createCalendar,
-    inviteGroupCalendar
+    inviteGroupCalendar,
+    deleteCalendarHandler
   }
 }

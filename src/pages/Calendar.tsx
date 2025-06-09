@@ -10,7 +10,7 @@ import { useUserNotice } from '../hooks/calendar/useUserNotice'
 import { EventContentArg } from '@fullcalendar/core'
 
 const Calendar = () => {
-  const { data, createCalendar } = useUserNotice()
+  const { data, createCalendar, deleteCalendarHandler } = useUserNotice()
   const { events } = useNexonNotice()
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
 
@@ -100,6 +100,7 @@ const Calendar = () => {
           list={selectEvent}
           selectedDate={selectedDate}
           createUserNotice={createCalendar}
+          deleteCalendarHandler={deleteCalendarHandler}
         />
       )}
     </div>

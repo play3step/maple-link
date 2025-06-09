@@ -21,3 +21,8 @@ export const createGroupCalendar = async (
   })
   return response.data
 }
+
+export const deleteCalendar = async (scheduleId: number) => {
+  const response = await basicApi.delete(`/api/calendar/${scheduleId}`)
+  return response.data
+}

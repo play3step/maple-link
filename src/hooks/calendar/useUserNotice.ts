@@ -33,7 +33,10 @@ export const useUserNotice = () => {
     }: {
       memberNicknames: string[]
       scheduleId: number
-    }) => createGroupCalendar(memberNicknames, scheduleId)
+    }) => createGroupCalendar(memberNicknames, scheduleId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['calendar'] })
+    }
   })
 
   const deleteCalendarMutation = useMutation({

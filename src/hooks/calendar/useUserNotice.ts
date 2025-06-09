@@ -3,7 +3,8 @@ import {
   createGroupCalendar,
   createPersonalCalendar,
   deleteCalendar,
-  getCalendar
+  getCalendar,
+  updateCalendar
 } from '../../apis/calendar/calendarController'
 import { Calendar, CalendarResponse } from '../../types/calendar'
 import { useAuthStore } from '../../store/authStore'
@@ -42,6 +43,13 @@ export const useUserNotice = () => {
     }
   })
 
+  const updateCalendarMutation = useMutation({
+    mutationFn: (calendar: Calendar) => updateCalendar(calendar),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['calendar'] })
+    }
+  })
+
   const createCalendar = (calendar: Calendar) => {
     if (userType !== 'member') {
       alert('게스트는 일정을 생성할 수 없습니다.')
@@ -74,7 +82,23 @@ export const useUserNotice = () => {
       return
     }
     try {
-      deleteCalendarMutation.mutate(scheduleId)
+      if (confirm('정말 삭제하시겠습니까?')) {
+        deleteCalendarMutation.mutate(scheduleId)
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const updateCalendarHandler = (calendar: Calendar) => {
+    if (userType !== 'member') {
+      alert('사용할수 없는 기능입니다.')
+      return
+    }
+    try {
+      if (confirm('정말 수정하시겠습니까?')) {
+        updateCalendarMutation.mutate(calendar)
+      }
     } catch (error) {
       console.error(error)
     }
@@ -85,6 +109,7 @@ export const useUserNotice = () => {
     isLoading,
     createCalendar,
     inviteGroupCalendar,
-    deleteCalendarHandler
+    deleteCalendarHandler,
+    updateCalendarHandler
   }
 }

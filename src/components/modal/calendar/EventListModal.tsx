@@ -6,7 +6,7 @@ import nexonIcon from '../../../assets/nexon.webp'
 import { IoCalendarOutline } from 'react-icons/io5'
 import { Calendar } from '../../../types/calendar'
 import { useState } from 'react'
-import { FiEdit2, FiTrash2 } from 'react-icons/fi'
+import { FiEdit2, FiTrash2, FiCheck, FiX } from 'react-icons/fi'
 
 const isNexonEvent = (
   event: CalendarType | Calendar
@@ -23,16 +23,20 @@ interface Props {
   selectedDate: string
   createUserNotice: (calendar: Calendar) => void
   deleteCalendarHandler: (scheduleId: number) => void
+  updateCalendarHandler: (calendar: Calendar) => void
 }
 
 export const EventListModal = ({
   selectedDate,
   list,
   createUserNotice,
-  deleteCalendarHandler
+  deleteCalendarHandler,
+  updateCalendarHandler
 }: Props) => {
   const [inputValue, setInputValue] = useState<string>('')
   const [isComposing, setIsComposing] = useState(false)
+  const [editingId, setEditingId] = useState<number | null>(null)
+  const [editValue, setEditValue] = useState<string>('')
 
   const handleSubmit = async () => {
     if (inputValue.trim()) {
@@ -45,13 +49,46 @@ export const EventListModal = ({
       setInputValue('')
     }
   }
+
   const handleDelete = async (scheduleId: number) => {
     await deleteCalendarHandler(scheduleId)
+  }
+
+  const handleEdit = (e: Calendar) => {
+    setEditingId(e.id ?? null)
+    setEditValue(e.title)
+  }
+
+  const handleCancelEdit = () => {
+    setEditingId(null)
+    setEditValue('')
+  }
+
+  const handleSaveEdit = async (e: Calendar) => {
+    if (editValue.trim() && editValue !== e.title) {
+      await updateCalendarHandler({
+        ...e,
+        title: editValue
+      })
+      setEditingId(null)
+      setEditValue('')
+    }
   }
 
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !isComposing) {
       await handleSubmit()
+    }
+  }
+
+  const handleEditKeyDown = async (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    event: Calendar
+  ) => {
+    if (e.key === 'Enter' && !isComposing) {
+      await handleSaveEdit(event)
+    } else if (e.key === 'Escape') {
+      handleCancelEdit()
     }
   }
 
@@ -132,17 +169,51 @@ export const EventListModal = ({
                       <div
                         key={v.id}
                         className="flex items-center justify-between p-4 rounded-lg bg-blue-50 border border-blue-200">
-                        <span className="text-blue-900">{v.title}</span>
-                        <div className="flex items-center gap-2">
-                          <button className="p-1.5 text-blue-600 hover:bg-blue-100 rounded-md transition-colors">
-                            <FiEdit2 size={16} />
-                          </button>
-                          <button
-                            className="p-1.5 text-red-600 hover:bg-red-100 rounded-md transition-colors"
-                            onClick={() => handleDelete(v.id ?? 0)}>
-                            <FiTrash2 size={16} />
-                          </button>
-                        </div>
+                        {editingId === v.id ? (
+                          <div className="flex-1 flex items-center gap-2">
+                            <input
+                              type="text"
+                              value={editValue}
+                              onChange={e => setEditValue(e.target.value)}
+                              onCompositionStart={() => setIsComposing(true)}
+                              onCompositionEnd={() => setIsComposing(false)}
+                              onKeyDown={e => handleEditKeyDown(e, v)}
+                              className="flex-1 px-3 py-1.5 bg-white rounded-md border border-blue-300
+                                text-blue-900 placeholder:text-blue-300
+                                focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100
+                                transition-all duration-200"
+                              autoFocus
+                            />
+                            <div className="flex items-center gap-1">
+                              <button
+                                className="p-1.5 text-emerald-600 hover:bg-emerald-100 rounded-md transition-colors"
+                                onClick={() => handleSaveEdit(v)}>
+                                <FiCheck size={16} />
+                              </button>
+                              <button
+                                className="p-1.5 text-slate-600 hover:bg-slate-100 rounded-md transition-colors"
+                                onClick={handleCancelEdit}>
+                                <FiX size={16} />
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <>
+                            <span className="text-blue-900">{v.title}</span>
+                            <div className="flex items-center gap-2">
+                              <button
+                                className="p-1.5 text-blue-600 hover:bg-blue-100 rounded-md transition-colors"
+                                onClick={() => handleEdit(v)}>
+                                <FiEdit2 size={16} />
+                              </button>
+                              <button
+                                className="p-1.5 text-red-600 hover:bg-red-100 rounded-md transition-colors"
+                                onClick={() => handleDelete(v.id ?? 0)}>
+                                <FiTrash2 size={16} />
+                              </button>
+                            </div>
+                          </>
+                        )}
                       </div>
                     ))}
                   </div>

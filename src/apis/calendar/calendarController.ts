@@ -26,3 +26,11 @@ export const deleteCalendar = async (scheduleId: number) => {
   const response = await basicApi.delete(`/api/calendar/${scheduleId}`)
   return response.data
 }
+
+export const updateCalendar = async (calendar: Calendar) => {
+  const response = await basicApi.patch(
+    `/api/calendar/personal/${calendar.id}`,
+    calendar
+  )
+  return response.data
+}

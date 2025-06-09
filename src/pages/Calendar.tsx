@@ -10,9 +10,11 @@ import { useUserNotice } from '../hooks/calendar/useUserNotice'
 import { EventContentArg } from '@fullcalendar/core'
 
 const Calendar = () => {
-  const { data } = useUserNotice()
+  const { data, createCalendar } = useUserNotice()
   const { events } = useNexonNotice()
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
+
+  console.log(data)
 
   const totalEvent = useMemo(() => {
     const userEvents = data.map(event => ({
@@ -22,6 +24,8 @@ const Calendar = () => {
     }))
     return [...userEvents, ...events]
   }, [data, events])
+
+  console.log(totalEvent)
 
   const selectEvent = useMemo(() => {
     if (!selectedDate) return []
@@ -95,7 +99,7 @@ const Calendar = () => {
         <EventListModal
           list={selectEvent}
           selectedDate={selectedDate}
-          createUserNotice={() => {}}
+          createUserNotice={createCalendar}
         />
       )}
     </div>

@@ -4,7 +4,7 @@ export interface CalendarResponse {
 }
 
 export interface Calendar {
-  id: number
+  id?: number
   title: string
   start: string
   description: string

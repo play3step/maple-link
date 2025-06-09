@@ -1,36 +1,37 @@
 import { CalendarType } from '../../../types/notice'
-// import Button from '../../common/Button'
-// import InputText from '../../common/InputText'
+import Button from '../../common/Button'
+import InputText from '../../common/InputText'
 import ModalLayout from '../ModalLayout'
 import nexonIcon from '../../../assets/nexon.webp'
 
-// import { useState } from 'react'
 import { IoCalendarOutline } from 'react-icons/io5'
+import { Calendar } from '../../../types/calendar'
+import { useState } from 'react'
 
 interface Props {
   list: CalendarType[]
   selectedDate: string
-  createUserNotice: ({ title, start, color, type }: CalendarType) => void
+  createUserNotice: (calendar: Calendar) => void
 }
 
 export const EventListModal = ({
   selectedDate,
-  list
-  // createUserNotice
+  list,
+  createUserNotice
 }: Props) => {
-  // const [inputValue, setInputValue] = useState<string>('')
+  const [inputValue, setInputValue] = useState<string>('')
 
-  // const handleSubmit = async () => {
-  //   if (inputValue.trim()) {
-  //     await createUserNotice({
-  //       title: inputValue,
-  //       start: selectedDate,
-  //       color: '#E3F2FD',
-  //       type: 'user'
-  //     })
-  //     setInputValue('')
-  //   }
-  // }
+  const handleSubmit = async () => {
+    if (inputValue.trim()) {
+      await createUserNotice({
+        title: inputValue,
+        start: selectedDate,
+        description: '',
+        type: 'USER'
+      })
+      setInputValue('')
+    }
+  }
 
   const formatDate = (date: string) => {
     return new Date(date).toLocaleDateString('ko-KR', {
@@ -101,14 +102,14 @@ export const EventListModal = ({
               )}
 
               {/* 유저 일정 */}
-              {list.some(v => v.type === 'user') && (
+              {list.some(v => v.type === 'USER') && (
                 <div className="space-y-3">
                   <h3 className="font-semibold text-slate-700 text-lg">
                     내 일정
                   </h3>
                   <div className="space-y-2">
                     {list
-                      .filter(v => v.type === 'user')
+                      .filter(v => v.type === 'USER')
                       .map((v, idx) => (
                         <div
                           key={idx}
@@ -127,7 +128,7 @@ export const EventListModal = ({
           )}
         </div>
 
-        {/* <div className="sticky bottom-0 bg-white pt-4 border-t border-slate-200">
+        <div className="sticky bottom-0 bg-white pt-4 border-t border-slate-200">
           <div className="flex gap-2">
             <InputText
               value={inputValue}
@@ -147,7 +148,7 @@ export const EventListModal = ({
               추가
             </Button>
           </div>
-        </div> */}
+        </div>
       </div>
     </ModalLayout>
   )

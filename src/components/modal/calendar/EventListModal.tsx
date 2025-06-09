@@ -1,6 +1,5 @@
 import { CalendarType } from '../../../types/notice'
 import Button from '../../common/Button'
-import InputText from '../../common/InputText'
 import ModalLayout from '../ModalLayout'
 import nexonIcon from '../../../assets/nexon.webp'
 
@@ -20,6 +19,7 @@ export const EventListModal = ({
   createUserNotice
 }: Props) => {
   const [inputValue, setInputValue] = useState<string>('')
+  const [isComposing, setIsComposing] = useState(false)
 
   const handleSubmit = async () => {
     if (inputValue.trim()) {
@@ -30,6 +30,12 @@ export const EventListModal = ({
         type: 'USER'
       })
       setInputValue('')
+    }
+  }
+
+  const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !isComposing) {
+      await handleSubmit()
     }
   }
 
@@ -129,21 +135,24 @@ export const EventListModal = ({
         </div>
 
         <div className="sticky bottom-0 bg-white pt-4 border-t border-slate-200">
-          <div className="flex gap-2">
-            <InputText
+          <div className="flex gap-3 pb-4 px-2">
+            <input
+              type="text"
               value={inputValue}
               onChange={e => setInputValue(e.target.value)}
+              onCompositionStart={() => setIsComposing(true)}
+              onCompositionEnd={() => setIsComposing(false)}
               placeholder="새로운 일정을 입력하세요"
-              className="flex-1"
-              onKeyDown={async e => {
-                if (e.key === 'Enter') {
-                  await handleSubmit()
-                }
-              }}
+              className="flex-1 px-4 py-2.5 bg-white rounded-lg border border-gray-300
+                text-gray-900 placeholder:text-gray-400
+                focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100
+                transition-all duration-200"
+              onKeyDown={handleKeyDown}
             />
             <Button
               size="small"
               scheme="solid"
+              className="px-6 py-2.5 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
               onClick={handleSubmit}>
               추가
             </Button>

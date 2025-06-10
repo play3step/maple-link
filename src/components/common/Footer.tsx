@@ -17,9 +17,9 @@ function Footer() {
       </p>
       <div className="flex flex-col sm:flex-row items-center gap-4">
         <a
-          href="mailto:danbi5190@gmail.com"
+          href="mailto:play3step@gmail.com"
           className="text-sm text-gray-600 hover:text-blue-600 transition-all">
-          문의하기 : danbi5190@gmail.com
+          문의하기 : play3step@gmail.com
         </a>
         <Link
           to="/privacy"

@@ -83,7 +83,7 @@ export const PrivacyPolicy = () => {
               <br />
               직책: 관리자
               <br />
-              연락처: danbi5190@gmail.com
+              연락처: play3step@gmail.com
             </p>
           </div>
         </section>

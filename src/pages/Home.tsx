@@ -19,7 +19,7 @@ const Home = () => {
       id: 0,
       firebaseId: '1',
       name: 'guest',
-      email: 'danbi5190@gmail.com',
+      email: 'play3step@gmail.com',
       ocid: guest.ocid
     })
     nav('/character')
@@ -54,6 +54,18 @@ const Home = () => {
       <div className="container mx-auto px-4 flex flex-col h-full relative z-10">
         {/* Navigation */}
         <nav className="flex justify-end py-4">
+          <div className="relative group">
+            <a
+              href="mailto:play3step@gmail.com"
+              className="text-slate-600 hover:text-blue-600 mr-8 transition-colors font-medium cursor-pointer">
+              문의하기
+            </a>
+            <div className="absolute left-0 -bottom-1 translate-y-full invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 whitespace-nowrap">
+              <div className="bg-gray-800 text-white text-sm px-3 py-2 rounded-lg shadow-lg">
+                play3step@gmail.com
+              </div>
+            </div>
+          </div>
           <button
             onClick={() => nav('/apiGuide')}
             className="text-slate-600 hover:text-blue-600 mr-8 transition-colors font-medium cursor-pointer">

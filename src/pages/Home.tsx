@@ -12,8 +12,13 @@ const Home = () => {
   const { storeLogin } = useAuthStore()
   const { setUserInfo } = useUserStore()
   const nav = useNavigate()
+  const showMaintenance = false
 
   const handleGuestLogin = async () => {
+    if (showMaintenance) {
+      alert('현재 서버 점검 중입니다. 잠시 후 다시 시도해주세요.')
+      return
+    }
     await storeLogin('', '', 'guest')
     setUserInfo({
       id: 0,
@@ -26,6 +31,10 @@ const Home = () => {
   }
 
   const handleMemberLogin = async () => {
+    if (showMaintenance) {
+      alert('현재 서버 점검 중입니다. 잠시 후 다시 시도해주세요.')
+      return
+    }
     try {
       const userInfo = await userLogin()
       if (userInfo) {
@@ -44,6 +53,25 @@ const Home = () => {
 
   return (
     <div className="h-full bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 text-slate-800 relative overflow-hidden flex flex-col">
+      {/* Maintenance Modal */}
+      {showMaintenance && (
+        <div className="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-50 flex items-center justify-center">
+          <div className="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full mx-4 text-center">
+            <div className="w-16 h-16 mx-auto mb-4 text-3xl animate-bounce">
+              🛠️
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              서버 점검 중
+            </h2>
+            <p className="text-gray-600">
+              더 나은 서비스를 위해 점검 중입니다.
+              <br />
+              잠시 후 다시 시도해 주세요.
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Background Effects */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute top-0 -left-4 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-blob"></div>

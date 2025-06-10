@@ -21,6 +21,12 @@ export const useAdmin = () => {
     }) => addAdminToRoom(groupAdminId, characterName),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['roomList'] })
+    },
+    onError: error => {
+      if (axios.isAxiosError(error) && error.response?.data) {
+        const errorData = error.response.data as ErrorResponse
+        alert(errorData.data.message)
+      }
     }
   })
 
@@ -34,10 +40,16 @@ export const useAdmin = () => {
     }) => removeAdminFromRoom(groupAdminId, characterName),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['roomList'] })
+    },
+    onError: error => {
+      if (axios.isAxiosError(error) && error.response?.data) {
+        const errorData = error.response.data as ErrorResponse
+        alert(errorData.data.message)
+      }
     }
   })
 
-  const handleAddAdmin = async (
+  const addAdminHandler = async (
     groupAdminId: number,
     characterName: string
   ) => {
@@ -53,16 +65,12 @@ export const useAdmin = () => {
     try {
       await addMutation.mutateAsync({ groupAdminId, characterName })
       return { success: true, message: '관리자가 추가되었습니다.' }
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response?.data) {
-        const errorData = error.response.data as ErrorResponse
-        return { success: false, message: errorData.data.message }
-      }
+    } catch {
       return { success: false, message: '관리자 추가 중 오류가 발생했습니다.' }
     }
   }
 
-  const handleRemoveAdmin = async (
+  const removeAdminHandler = async (
     groupAdminId: number,
     characterName: string
   ) => {
@@ -74,18 +82,14 @@ export const useAdmin = () => {
     try {
       await removeMutation.mutateAsync({ groupAdminId, characterName })
       return { success: true, message: '관리자가 제거되었습니다.' }
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response?.data) {
-        const errorData = error.response.data as ErrorResponse
-        return { success: false, message: errorData.data.message }
-      }
+    } catch {
       return { success: false, message: '관리자 제거 중 오류가 발생했습니다.' }
     }
   }
 
   return {
-    handleAddAdmin,
-    handleRemoveAdmin,
+    addAdminHandler,
+    removeAdminHandler,
     isAddingAdmin: addMutation.isPending,
     isRemovingAdmin: removeMutation.isPending
   }

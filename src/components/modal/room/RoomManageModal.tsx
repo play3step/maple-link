@@ -15,8 +15,12 @@ export const GuildManageModal = ({
   room: initialRoom,
   userName
 }: GuildManageModalProps) => {
-  const { handleAddAdmin, handleRemoveAdmin, isAddingAdmin, isRemovingAdmin } =
-    useAdmin()
+  const {
+    addAdminHandler,
+    removeAdminHandler,
+    isAddingAdmin,
+    isRemovingAdmin
+  } = useAdmin()
   const [characterName, setCharacterName] = useState('')
   const [message, setMessage] = useState<{
     type: 'success' | 'error'
@@ -41,7 +45,7 @@ export const GuildManageModal = ({
   }
 
   const handleAdd = async () => {
-    const result = await handleAddAdmin(room.adminId, characterName)
+    const result = await addAdminHandler(room.adminId, characterName)
     setMessage({
       type: result.success ? 'success' : 'error',
       text: result.message
@@ -56,7 +60,7 @@ export const GuildManageModal = ({
     if (!confirm('정말로 이 관리자를 제거하시겠습니까?')) return
 
     setRemovingAdminName(adminName)
-    const result = await handleRemoveAdmin(room.adminId, adminName)
+    const result = await removeAdminHandler(room.adminId, adminName)
     setMessage({
       type: result.success ? 'success' : 'error',
       text: result.message

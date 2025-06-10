@@ -12,7 +12,7 @@ import { useUserStore } from '../store/userStore'
 
 export const RoomList = () => {
   const { openModal, activeModal } = useModalStore()
-  const { rooms, handleDeleteRoom } = useRoom()
+  const { rooms, deleteRoomHandler } = useRoom()
   const { setGroupId } = useRoomsStore()
   const { userName } = useUserStore()
   const navigate = useNavigate()
@@ -103,7 +103,7 @@ export const RoomList = () => {
                   className="flex items-center justify-center w-10 h-10 bg-red-50 hover:bg-red-100 text-red-500 rounded-lg transition-colors"
                   title="삭제"
                   onClick={() => {
-                    handleDeleteRoom(room.adminId)
+                    deleteRoomHandler(room.adminId)
                   }}>
                   <IoTrashOutline className="text-xl" />
                 </button>

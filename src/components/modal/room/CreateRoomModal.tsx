@@ -7,7 +7,7 @@ import { IoAdd } from 'react-icons/io5'
 
 export const CreateRoomModal = () => {
   const roomNameRef = useRef<HTMLInputElement>(null)
-  const { handleCreateRoom } = useRoom()
+  const { createRoomHandler } = useRoom()
   const [guildName, setGuildName] = useState('')
   const [guildWorld, setGuildWorld] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -25,18 +25,13 @@ export const CreateRoomModal = () => {
 
     setIsLoading(true)
 
-    const result = await handleCreateRoom(
+    const result = await createRoomHandler(
       roomNameRef.current.value,
       guildName,
       guildWorld
     )
 
-    if (result?.guildId) {
-      alert(result.message || '관리방이 성공적으로 생성되었습니다.')
-      closeModal()
-    } else {
-      alert(result.message || '관리방 생성에 실패했습니다.')
-    }
+    if (result?.guildId) closeModal()
 
     setIsLoading(false)
   }

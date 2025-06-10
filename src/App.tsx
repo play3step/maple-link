@@ -13,6 +13,8 @@ import { Faq } from './pages/Faq'
 import { RoomList } from './pages/RoomList'
 import Room from './pages/Room'
 import { GuildPromotion } from './pages/GuildPromotion'
+import Notice from './pages/Notice'
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -35,6 +37,14 @@ const router = createBrowserRouter([
     element: (
       <Layout hide>
         <Faq />
+      </Layout>
+    )
+  },
+  {
+    path: '/notice',
+    element: (
+      <Layout hide>
+        <Notice />
       </Layout>
     )
   },

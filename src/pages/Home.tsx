@@ -3,6 +3,8 @@ import SocialAuthButton from '../components/common/SocialAuthButton'
 import { useAuth } from '../hooks/useAuth'
 import { useAuthStore } from '../store/authStore'
 import KakaoOpenChatButton from '../components/common/KakaoOpenChatButton'
+import { FiClock, FiChevronRight } from 'react-icons/fi'
+import { Link } from 'react-router-dom'
 
 import Logo from '../assets/logo.png'
 import { useUserStore } from '../store/userStore'
@@ -52,6 +54,19 @@ const Home = () => {
       alert('로그인에 실패했습니다.')
     }
   }
+
+  const recentNotices = [
+    {
+      id: 1,
+      title: '서비스 이용 안내',
+      date: '2025.05.23 '
+    },
+    {
+      id: 2,
+      title: '메이플스토리 캘린더 업데이트 안내',
+      date: '2025.06.11'
+    }
+  ]
 
   return (
     <div className="h-full bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 text-slate-800 relative overflow-hidden flex flex-col">
@@ -184,6 +199,36 @@ const Home = () => {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Recent Notices Section */}
+        <div className="max-w-4xl mx-auto px-4 py-8">
+          <div className="bg-white rounded-lg border border-gray-200 p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold text-gray-800">최근 소식</h2>
+              <Link
+                to="/notice"
+                className="text-sm text-blue-600 hover:text-blue-700 flex items-center gap-1">
+                더보기
+                <FiChevronRight />
+              </Link>
+            </div>
+
+            <div className="space-y-3">
+              {recentNotices.map(notice => (
+                <Link
+                  key={notice.id}
+                  to="/notice"
+                  className="flex items-center justify-between py-2 hover:bg-gray-50 rounded-lg px-3 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <FiClock className="text-gray-400" />
+                    <span className="text-gray-800">{notice.title}</span>
+                  </div>
+                  <span className="text-sm text-gray-500">{notice.date}</span>
+                </Link>
+              ))}
             </div>
           </div>
         </div>

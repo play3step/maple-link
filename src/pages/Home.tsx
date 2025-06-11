@@ -3,17 +3,23 @@ import SocialAuthButton from '../components/common/SocialAuthButton'
 import { useAuth } from '../hooks/useAuth'
 import { useAuthStore } from '../store/authStore'
 import KakaoOpenChatButton from '../components/common/KakaoOpenChatButton'
-import { FiClock, FiChevronRight } from 'react-icons/fi'
+import { FiClock, FiChevronRight, FiUserPlus, FiX } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
 
 import Logo from '../assets/logo.png'
 import { useUserStore } from '../store/userStore'
 import { guest } from '../data/guest'
+import { useState } from 'react'
+import Button from '../components/common/Button'
 
 const Home = () => {
   const { userLogin } = useAuth()
   const { storeLogin } = useAuthStore()
   const { setUserInfo } = useUserStore()
+
+  const [searchGuild, setSearchGuild] = useState<string>('')
+  const [searchGuildList, setSearchGuildList] = useState<string[]>([])
+
   const nav = useNavigate()
   const KAKAO_CHAT_LINK = 'https://open.kakao.com/o/s4tfG2Ah'
 
@@ -63,6 +69,13 @@ const Home = () => {
       date: '2025.06'
     }
   ]
+
+  const addSearchGuild = () => {
+    if (searchGuild.trim() && !searchGuildList.includes(searchGuild.trim())) {
+      setSearchGuildList([...searchGuildList, searchGuild.trim()])
+      setSearchGuild('')
+    }
+  }
 
   return (
     <div className="h-full bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 text-slate-800 relative overflow-hidden flex flex-col">
@@ -177,6 +190,83 @@ const Home = () => {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* 길드 검색 */}
+        <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 overflow-hidden">
+          <div className="flex items-center justify-between p-4 border-b border-gray-200">
+            <div className="flex items-center gap-2">
+              <FiUserPlus
+                className="text-purple-500"
+                size={24}
+              />
+              <h2 className="text-lg font-semibold text-gray-900">길드 검색</h2>
+            </div>
+            <button
+              onClick={() => {
+                setSearchGuildList([])
+              }}
+              className="text-gray-400 hover:text-gray-600 transition-colors">
+              <FiX size={20} />
+            </button>
+          </div>
+
+          <div className="p-4 space-y-4">
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={searchGuild}
+                onChange={e => setSearchGuild(e.target.value)}
+                placeholder="검색할 길드의 이름을 입력하세요"
+                className="flex-1 px-3 py-2 bg-white rounded-md border border-gray-300
+                    text-gray-900 placeholder:text-gray-400
+                    focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100
+                    transition-all duration-200"
+              />
+              <Button
+                size="small"
+                scheme="solid"
+                className="px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-md transition-colors"
+                onClick={addSearchGuild}>
+                추가
+              </Button>
+            </div>
+
+            {searchGuildList.length > 0 && (
+              <div className="space-y-2">
+                <p className="text-sm text-slate-500">초대 목록</p>
+                <div className="flex flex-wrap gap-2">
+                  {searchGuildList.map((name, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-center gap-1.5 px-2 py-1 bg-purple-50 border border-purple-200 rounded-md">
+                      <span className="text-sm text-purple-700">{name}</span>
+                      <button
+                        className="text-purple-400 hover:text-purple-600"
+                        onClick={() =>
+                          setSearchGuildList(
+                            searchGuildList.filter(item => item !== name)
+                          )
+                        }>
+                        <FiX size={14} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="flex items-center justify-end gap-2 p-4 border-t border-gray-200">
+            <Button
+              size="small"
+              scheme="solid"
+              className="px-6 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={() => {}}
+              disabled={searchGuildList.length === 0}>
+              검색하기
+            </Button>
           </div>
         </div>
 

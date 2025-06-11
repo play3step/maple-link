@@ -1,20 +1,30 @@
 import gogle from '../../assets/gogle.svg'
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode
+  provider: 'google'
+  onClick: () => Promise<void>
 }
 
-const SocialAuthButton = ({ children, onClick }: Props) => {
+const SocialAuthButton = ({ provider, onClick }: Props) => {
+  const getProviderText = () => {
+    switch (provider) {
+      case 'google':
+        return 'Google로 시작하기'
+      default:
+        return '시작하기'
+    }
+  }
+
   return (
     <button
-      className="relative w-full h-12 rounded-full bg-gradient-to-r from-white via-gray-100 to-white border border-gray-300 text-gray-800 flex items-center justify-center px-4 transition-all duration-300 hover:shadow-md hover:-translate-y-1"
+      className="relative w-fit h-10 rounded-lg bg-white text-gray-800 flex items-center justify-center px-4 transition-all duration-300 hover:bg-gray-50"
       onClick={onClick}>
       <img
         src={gogle}
         alt="Google 로고"
-        className="absolute left-4 w-6 h-6"
+        className="w-5 h-5 mr-2"
       />
-      <span className="font-medium text-gray-800">{children}</span>
+      <span className="font-medium text-gray-800">{getProviderText()}</span>
     </button>
   )
 }

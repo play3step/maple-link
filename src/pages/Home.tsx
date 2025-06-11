@@ -7,8 +7,7 @@ import {
   FiChevronRight,
   FiSearch,
   FiCalendar,
-  FiUsers,
-  FiX
+  FiUsers
 } from 'react-icons/fi'
 import Logo from '../assets/logo.png'
 import { useUserStore } from '../store/userStore'
@@ -25,18 +24,6 @@ const Home = () => {
 
   const [characterName, setCharacterName] = useState('')
   const [guildName, setGuildName] = useState('')
-  const [guildList, setGuildList] = useState<string[]>([])
-
-  const addGuildToList = () => {
-    if (guildName.trim() && !guildList.includes(guildName.trim())) {
-      setGuildList([...guildList, guildName.trim()])
-      setGuildName('')
-    }
-  }
-
-  const removeGuildFromList = (name: string) => {
-    setGuildList(guildList.filter(guild => guild !== name))
-  }
 
   const handleGuestLogin = async () => {
     await storeLogin('', '', 'guest')
@@ -153,83 +140,100 @@ const Home = () => {
         {/* 주요 기능 섹션 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
           {/* 길드 검색 */}
-          <div className="md:col-span-2 md:w-2/3 md:mx-auto bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-                <FiUsers className="text-purple-600 text-lg" />
+          <div className="md:col-span-2 md:w-2/3 md:mx-auto bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
+            <div className="absolute inset-0 bg-black/5 backdrop-blur-[1px] flex items-center justify-center z-10">
+              <div className="bg-amber-500/90 px-4 py-1.5 rounded-full">
+                <span className="text-white font-medium text-sm">
+                  Coming Soon
+                </span>
               </div>
-              <h2 className="text-base font-semibold">길드 검색</h2>
             </div>
-            <div className="space-y-3">
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  placeholder="길드 이름을 입력하세요"
-                  value={guildName}
-                  onChange={e => setGuildName(e.target.value)}
-                  className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                />
+            <div className="opacity-50">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                  <FiUsers className="text-purple-600 text-lg" />
+                </div>
+                <h2 className="text-base font-semibold">길드 검색</h2>
+              </div>
+              <div className="space-y-3">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="길드 이름을 입력하세요"
+                    value={guildName}
+                    onChange={e => setGuildName(e.target.value)}
+                    className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    disabled
+                  />
+                  <Button
+                    size="medium"
+                    scheme="solid"
+                    className="px-3 py-2 !bg-purple-500 hover:!bg-purple-600 text-sm"
+                    disabled>
+                    추가
+                  </Button>
+                </div>
+
+                <div className="space-y-1.5">
+                  <p className="text-xs text-gray-500">검색할 길드 목록</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    <div className="flex items-center gap-1 px-2 py-0.5 bg-purple-50 border border-purple-200 rounded-md">
+                      <span className="text-base text-purple-700">
+                        아르카나
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1 px-2 py-0.5 bg-purple-50 border border-purple-200 rounded-md">
+                      <span className="text-base text-purple-700">
+                        노비맙단
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
                 <Button
                   size="medium"
                   scheme="solid"
-                  className="px-3 py-2 !bg-purple-500 hover:!bg-purple-600 text-sm"
-                  onClick={addGuildToList}>
-                  추가
+                  className="w-full !bg-purple-500 hover:!bg-purple-600 text-sm"
+                  disabled>
+                  길드 검색
                 </Button>
               </div>
-
-              <div className="space-y-1.5">
-                <p className="text-xs text-gray-500">검색할 길드 목록</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {guildList.map((guild, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-center gap-1 px-2 py-0.5 bg-purple-50 border border-purple-200 rounded-md">
-                      <span className="text-base text-purple-700">{guild}</span>
-                      <button
-                        onClick={() => removeGuildFromList(guild)}
-                        className="text-purple-400 hover:text-purple-600">
-                        <FiX size={12} />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <Button
-                size="medium"
-                scheme="solid"
-                className="w-full !bg-purple-500 hover:!bg-purple-600 text-sm"
-                onClick={() => {}}
-                disabled={guildList.length === 0}>
-                길드 검색
-              </Button>
             </div>
           </div>
 
           {/* 캐릭터 검색 */}
-          <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                <FiSearch className="text-blue-600 text-xl" />
+          <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
+            <div className="absolute inset-0 bg-black/5 backdrop-blur-[1px] flex items-center justify-center z-10">
+              <div className="bg-amber-500/90 px-4 py-1.5 rounded-full">
+                <span className="text-white font-medium text-sm">
+                  Coming Soon
+                </span>
               </div>
-              <h2 className="text-lg font-semibold">캐릭터 검색</h2>
             </div>
-            <div className="space-y-3">
-              <input
-                type="text"
-                placeholder="캐릭터 이름을 입력하세요"
-                value={characterName}
-                onChange={e => setCharacterName(e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-              />
-              <Button
-                size="medium"
-                scheme="solid"
-                className="w-full text-sm"
-                onClick={() => {}}>
-                캐릭터 검색
-              </Button>
+            <div className="opacity-50">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <FiSearch className="text-blue-600 text-xl" />
+                </div>
+                <h2 className="text-lg font-semibold">캐릭터 검색</h2>
+              </div>
+              <div className="space-y-3">
+                <input
+                  type="text"
+                  placeholder="캐릭터 이름을 입력하세요"
+                  value={characterName}
+                  onChange={e => setCharacterName(e.target.value)}
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                  disabled
+                />
+                <Button
+                  size="medium"
+                  scheme="solid"
+                  className="w-full text-sm"
+                  disabled>
+                  캐릭터 검색
+                </Button>
+              </div>
             </div>
           </div>
 

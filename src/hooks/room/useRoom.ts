@@ -31,16 +31,6 @@ export const useRoom = () => {
     }
   }, [roomList, userType, setRooms])
 
-  // const createGuildMutation = useMutation({
-  //   mutationFn: ({
-  //     guildName,
-  //     guildWorld
-  //   }: {
-  //     guildName: string
-  //     guildWorld: string
-  //   }) => addGuildList({ guild_name: guildName, world_name: guildWorld })
-  // })
-
   const createRoomMutation = useMutation({
     mutationFn: ({
       groupName,
@@ -50,10 +40,32 @@ export const useRoom = () => {
       groupName: string
       guildName: string
       guildWorld: string
-    }) => createRoomList(groupName, guildName, guildWorld)
+    }) => createRoomList(groupName, guildName, guildWorld),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['roomList'] })
+    },
+    onError: error => {
+      if (axios.isAxiosError(error) && error.response?.data) {
+        const errorData = error.response.data as ErrorResponse
+        alert(errorData.data.message)
+      }
+    }
   })
 
-  const handleCreateRoom = async (
+  const deleteRoomMutation = useMutation({
+    mutationFn: (groupAdminId: number) => deleteRoomList(groupAdminId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['roomList'] })
+    },
+    onError: error => {
+      if (axios.isAxiosError(error) && error.response?.data) {
+        const errorData = error.response.data as ErrorResponse
+        alert(errorData.data.message)
+      }
+    }
+  })
+
+  const createRoomHandler = async (
     groupName: string,
     guildName: string,
     guildWorld: string
@@ -72,26 +84,17 @@ export const useRoom = () => {
         guildWorld
       })
 
-      queryClient.invalidateQueries({ queryKey: ['roomList', userType] })
-
       return {
-        guildId: res.id,
-        message: '관리방 생성 성공'
+        guildId: res.id
       }
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response?.data) {
-        const errorData = error.response.data as ErrorResponse
-        return { success: false, message: errorData.data.message }
+    } catch {
+      return {
+        success: false
       }
-      return { success: false, message: '관리방 생성 중 오류가 발생했습니다.' }
     }
   }
 
-  const deleteRoomMutation = useMutation({
-    mutationFn: (groupAdminId: number) => deleteRoomList(groupAdminId)
-  })
-
-  const handleDeleteRoom = async (groupAdminId: number) => {
+  const deleteRoomHandler = async (groupAdminId: number) => {
     if (userType !== 'member') {
       alert('게스트는 관리방을 삭제할 수 없습니다.')
       return
@@ -99,17 +102,12 @@ export const useRoom = () => {
     try {
       if (confirm('관리방을 삭제하시겠습니까?')) {
         await deleteRoomMutation.mutateAsync(groupAdminId)
-        queryClient.invalidateQueries({ queryKey: ['roomList', userType] })
-
-        alert('관리방 삭제 성공')
         return
       }
-    } catch (error) {
-      console.error('관리방 삭제 실패:', error)
-      alert('관리방 삭제 실패')
+    } catch {
       return
     }
   }
 
-  return { handleCreateRoom, handleDeleteRoom, rooms }
+  return { createRoomHandler, deleteRoomHandler, rooms }
 }

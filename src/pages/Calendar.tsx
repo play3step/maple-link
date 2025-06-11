@@ -8,14 +8,26 @@ import { useModalStore } from '../store/modalStore'
 import { EventListModal } from '../components/modal/calendar/EventListModal'
 import { useUserNotice } from '../hooks/calendar/useUserNotice'
 import { EventContentArg } from '@fullcalendar/core'
+import { FiUsers } from 'react-icons/fi'
 
 const Calendar = () => {
-  const { data, createUserNotice } = useUserNotice()
+  const {
+    data,
+    createCalendar,
+    deleteCalendarHandler,
+    updateCalendarHandler,
+    inviteGroupCalendar
+  } = useUserNotice()
   const { events } = useNexonNotice()
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
 
   const totalEvent = useMemo(() => {
-    return [...data, ...events]
+    const userEvents = data.map(event => ({
+      ...event,
+      id: event.id?.toString(),
+      color: '#E3F2FD'
+    }))
+    return [...userEvents, ...events]
   }, [data, events])
 
   const selectEvent = useMemo(() => {
@@ -28,6 +40,7 @@ const Calendar = () => {
   const renderEventContent = (eventInfo: EventContentArg) => {
     const isNexonEvent = eventInfo.event.extendedProps.type === 'nexon'
     const isStartEvent = eventInfo.event.title.includes('[시작]')
+    const isGroupEvent = eventInfo.event.extendedProps.type === 'GROUP'
 
     return (
       <div
@@ -41,14 +54,16 @@ const Calendar = () => {
             : 'bg-white border border-blue-300 text-slate-700'
         }
       `}>
-        {isNexonEvent && (
+        {isNexonEvent ? (
           <span
             className={`
             w-2 h-2 rounded-full
             ${isStartEvent ? 'bg-emerald-200' : 'bg-red-200'}
           `}
           />
-        )}
+        ) : isGroupEvent ? (
+          <FiUsers className="w-3 h-3 text-blue-500" />
+        ) : null}
         <p className="text-sm truncate">{eventInfo.event.title}</p>
       </div>
     )
@@ -90,7 +105,10 @@ const Calendar = () => {
         <EventListModal
           list={selectEvent}
           selectedDate={selectedDate}
-          createUserNotice={createUserNotice}
+          createUserNotice={createCalendar}
+          deleteCalendarHandler={deleteCalendarHandler}
+          updateCalendarHandler={updateCalendarHandler}
+          inviteGroupCalendar={inviteGroupCalendar}
         />
       )}
     </div>

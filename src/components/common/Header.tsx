@@ -4,6 +4,7 @@ import Button from './Button'
 import Logo from '../../assets/logo.png'
 import { useState } from 'react'
 import { useAuthStore } from '../../store/authStore'
+import KakaoOpenChatButton from './KakaoOpenChatButton'
 
 function Header() {
   const { userLogout } = useAuth()
@@ -11,6 +12,8 @@ function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const { userType } = useAuthStore()
+
+  const KAKAO_CHAT_LINK = 'https://open.kakao.com/o/s4tfG2Ah'
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen)
@@ -101,14 +104,17 @@ function Header() {
         </svg>
       </button>
 
-      {/* Logout button (desktop) */}
-      <Button
-        size="small"
-        scheme="outlined"
-        onClick={userLogout}
-        className="hidden md:block border-blue-500 text-blue-600 hover:bg-blue-50 transition-all">
-        {userType === 'guest' ? '체험 종료' : '로그아웃'}
-      </Button>
+      {/* Desktop buttons */}
+      <div className="hidden md:flex items-center gap-3">
+        <KakaoOpenChatButton chatLink={KAKAO_CHAT_LINK} />
+        <Button
+          size="small"
+          scheme="outlined"
+          onClick={userLogout}
+          className="border-blue-500 text-blue-600 hover:bg-blue-50 transition-all">
+          {userType === 'guest' ? '체험 종료' : '로그아웃'}
+        </Button>
+      </div>
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
@@ -167,6 +173,10 @@ function Header() {
             공지사항
           </Button> */}
           <hr className="my-2 border-blue-100" />
+          <KakaoOpenChatButton
+            chatLink={KAKAO_CHAT_LINK}
+            className="w-full justify-center"
+          />
           <Button
             size="small"
             scheme="outlined"

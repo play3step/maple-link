@@ -231,3 +231,42 @@ export const guestDetect = [
     toRemove: ['세르니움', '오디움', '도원경']
   }
 ]
+
+// 특정 요일로 날짜 조정하는 함수
+const getDateWithDay = (baseDate: Date, targetDay: number) => {
+  const date = new Date(baseDate)
+  const diff = targetDay - date.getDay()
+  date.setDate(date.getDate() + diff)
+  return date.toISOString().split('T')[0]
+}
+
+export const guestCalendar = [
+  {
+    id: 1,
+    title: '노비맙단 모임',
+    start: getDateWithDay(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), 2),
+    description: '노비맙단 모임',
+    type: 'GROUP'
+  },
+  {
+    id: 2,
+    title: '보스 초기화',
+    start: getDateWithDay(new Date(), 4),
+    description: '보스 초기화',
+    type: 'USER'
+  },
+  {
+    id: 3,
+    title: '검은마법사 22시',
+    start: getDateWithDay(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), 1),
+    description: '검은마법사 모임',
+    type: 'GROUP'
+  },
+  {
+    id: 4,
+    title: '길드 추첨',
+    start: getDateWithDay(new Date(Date.now() + 14 * 24 * 60 * 60 * 1000), 6),
+    description: '길드 추첨',
+    type: 'USER'
+  }
+]

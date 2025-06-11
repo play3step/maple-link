@@ -10,6 +10,7 @@ import {
   FiUsers
 } from 'react-icons/fi'
 import Logo from '../assets/logo.png'
+import GoogleLogo from '../assets/gogle.svg'
 import { useUserStore } from '../store/userStore'
 import { guest } from '../data/guest'
 import { useState } from 'react'
@@ -109,16 +110,26 @@ const Home = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* 히어로 섹션 */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <div className="flex flex-col items-center mb-6">
+            <img
+              src={Logo}
+              alt="메이플링크 로고"
+              className="w-16 h-16 mb-4"
+            />
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-full border border-blue-100">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+              <span className="text-sm text-blue-600 font-medium">
+                메이플스토리 통합 관리 플랫폼
+              </span>
+            </div>
+          </div>
+          <h1 className="text-4xl font-bold text-gray-900 mb-3">
             메이플스토리를 더 스마트하게
           </h1>
-          <p className="text-lg text-gray-600 mb-8">
-            길드 관리, 캐릭터 관리, 일정 관리까지 한 번에 해결하세요.
-            <br />※ 로그인 시, 캘린더와 길드 관리 기능을 사용할 수 있어요.
-            (로그인 없이도 캐릭터 및 길드 정보는 자유롭게 조회할 수 있습니다)
+          <p className="text-lg text-gray-500">
+            캐릭터부터 길드까지, 한눈에 관리하세요
           </p>
-
-          <div className="flex justify-center gap-4">
+          <div className="flex justify-center gap-4 mt-8">
             <button
               onClick={handleGuestLogin}
               className="px-5 py-2.5 bg-white text-blue-600 border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors">
@@ -128,7 +139,7 @@ const Home = () => {
               onClick={handleMemberLogin}
               className="px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
               <img
-                src={Logo}
+                src={GoogleLogo}
                 alt="Google"
                 className="w-5 h-5"
               />
@@ -141,10 +152,10 @@ const Home = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
           {/* 길드 검색 */}
           <div className="md:col-span-2 md:w-2/3 md:mx-auto bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
-            <div className="absolute inset-0 bg-black/5 backdrop-blur-[1px] flex items-center justify-center z-10">
+            <div className="absolute inset-0 bg-black/5 backdrop-blur-[1px] flex flex-col items-center justify-center z-10 gap-2">
               <div className="bg-amber-500/90 px-4 py-1.5 rounded-full">
                 <span className="text-white font-medium text-sm">
-                  Coming Soon
+                  서비스 준비중
                 </span>
               </div>
             </div>
@@ -202,20 +213,20 @@ const Home = () => {
           </div>
 
           {/* 캐릭터 검색 */}
-          <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
-            <div className="absolute inset-0 bg-black/5 backdrop-blur-[1px] flex items-center justify-center z-10">
+          <div className="bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden ">
+            <div className="absolute inset-0 bg-black/5 backdrop-blur-[1px] flex flex-col items-center justify-center z-10 gap-2">
               <div className="bg-amber-500/90 px-4 py-1.5 rounded-full">
                 <span className="text-white font-medium text-sm">
-                  Coming Soon
+                  서비스 준비중
                 </span>
               </div>
             </div>
-            <div className="opacity-50">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <FiSearch className="text-blue-600 text-xl" />
+            <div className="opacity-50 flex flex-col justify-between h-[240px]">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <FiSearch className="text-blue-600 text-lg" />
                 </div>
-                <h2 className="text-lg font-semibold">캐릭터 검색</h2>
+                <h2 className="text-base font-semibold">캐릭터 검색</h2>
               </div>
               <div className="space-y-3">
                 <input
@@ -238,23 +249,48 @@ const Home = () => {
           </div>
 
           {/* 체험하기 */}
-          <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                <FiCalendar className="text-green-600 text-xl" />
+          <div className="bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                <FiCalendar className="text-green-600 text-lg" />
               </div>
-              <h2 className="text-lg font-semibold">체험하기</h2>
+              <h2 className="text-base font-semibold">체험하기</h2>
             </div>
-            <p className="text-gray-600 mb-4">
-              게스트로 로그인하여 메이플링크의 다양한 기능을 체험해보세요
-            </p>
-            <Button
-              size="medium"
-              scheme="solid"
-              className="w-full text-sm"
-              onClick={handleGuestLogin}>
-              게스트로 시작하기
-            </Button>
+            <div className="space-y-3">
+              <div className="space-y-1.5 text-sm">
+                <p className="font-medium text-gray-900">
+                  비로그인 이용 가능한 기능
+                </p>
+                <div className="flex items-center gap-2 text-gray-600">
+                  <span className="w-1 h-1 rounded-full bg-blue-500" />
+                  <span>캐릭터 정보 조회</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-600">
+                  <span className="w-1 h-1 rounded-full bg-blue-500" />
+                  <span>길드 정보 조회</span>
+                </div>
+              </div>
+              <div className="space-y-1.5 text-sm">
+                <p className="font-medium text-gray-900">
+                  로그인 후 이용 가능한 기능
+                </p>
+                <div className="flex items-center gap-2 text-gray-600">
+                  <span className="w-1 h-1 rounded-full bg-gray-400" />
+                  <span>캘린더로 일정 관리하기</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-600">
+                  <span className="w-1 h-1 rounded-full bg-gray-400" />
+                  <span>길드원 관리하기</span>
+                </div>
+              </div>
+              <Button
+                size="medium"
+                scheme="solid"
+                className="w-full text-sm"
+                onClick={handleGuestLogin}>
+                게스트로 시작하기
+              </Button>
+            </div>
           </div>
         </div>
 

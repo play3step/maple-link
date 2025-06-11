@@ -29,7 +29,7 @@ const Layout = ({ children, hide }: LayoutProps) => {
 
     checkHealth()
 
-    const interval = setInterval(checkHealth, 60000) //60초 서버 검사
+    const interval = setInterval(checkHealth, 100000) //100초 서버 검사
     return () => clearInterval(interval)
   }, [])
 

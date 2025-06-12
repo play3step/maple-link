@@ -15,6 +15,7 @@ import { useUserStore } from '../store/userStore'
 import { guest } from '../data/guest'
 import { useState } from 'react'
 import Button from '../components/common/Button'
+import { searchCharacterOcid } from '../apis/character/characterController'
 
 const Home = () => {
   const { userLogin } = useAuth()
@@ -60,6 +61,14 @@ const Home = () => {
       alert('캐릭터 이름을 입력해주세요.')
       return
     }
+
+    const { ocid } = await searchCharacterOcid(characterName.trim())
+
+    if (!ocid) {
+      alert('캐릭터를 찾을 수 없습니다.')
+      return
+    }
+
     await storeLogin('', '', 'search')
 
     setUserInfo({
@@ -67,7 +76,7 @@ const Home = () => {
       firebaseId: '1',
       name: characterName.trim(),
       email: 'play3step@gmail.com',
-      ocid: '1'
+      ocid: ocid
     })
     nav(`/searchCharacter`)
   }

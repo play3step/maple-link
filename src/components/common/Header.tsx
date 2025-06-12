@@ -23,7 +23,7 @@ function Header() {
     <header className="w-full max-w-[1440px] mx-auto px-6 py-4 border-b border-blue-100 backdrop-blur-sm bg-white/80 flex justify-between items-center sticky top-0 z-50 shadow-sm">
       <div className="flex items-center">
         <Link
-          to="/character"
+          to={userType === 'search' ? '/searchCharacter' : '/character'}
           className="flex items-center gap-2 hover:opacity-80 transition-all">
           <img
             src={Logo}
@@ -42,9 +42,9 @@ function Header() {
               <Button
                 scheme="subtle"
                 size="small"
-                onClick={() => nav('/character')}
+                onClick={() => nav('/searchCharacter')}
                 className="hover:text-blue-600 font-medium transition-all">
-                캐릭터정보
+                캐릭터검색
               </Button>
               <Button
                 scheme="subtle"
@@ -120,53 +120,78 @@ function Header() {
           scheme="outlined"
           onClick={userLogout}
           className="border-blue-500 text-blue-600 hover:bg-blue-50 transition-all">
-          {userType === 'guest' ? '체험 종료' : '로그아웃'}
+          {userType === 'guest'
+            ? '체험 종료'
+            : userType === 'search'
+              ? '메인페이지'
+              : '로그아웃'}
         </Button>
       </div>
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
         <div className="absolute top-full left-0 right-0 bg-white shadow-lg border-b border-blue-100 py-4 px-6 md:hidden flex flex-col gap-3">
-          <Button
-            scheme="subtle"
-            size="small"
-            onClick={() => {
-              nav('/character')
-              setMobileMenuOpen(false)
-            }}
-            className="w-full text-left py-2 hover:bg-blue-50 rounded-lg">
-            캐릭터정보
-          </Button>
-          <Button
-            scheme="subtle"
-            size="small"
-            onClick={() => {
-              nav('/rooms')
-              setMobileMenuOpen(false)
-            }}
-            className="w-full text-left py-2 hover:bg-blue-50 rounded-lg">
-            길드관리
-          </Button>
-          <Button
-            scheme="subtle"
-            size="small"
-            onClick={() => {
-              nav('/calendar')
-              setMobileMenuOpen(false)
-            }}
-            className="w-full text-left py-2 hover:bg-blue-50 rounded-lg">
-            캘린더
-          </Button>
-          <Button
-            scheme="subtle"
-            size="small"
-            onClick={() => {
-              nav('/promotion')
-              setMobileMenuOpen(false)
-            }}
-            className="w-full text-left py-2 hover:bg-blue-50 rounded-lg">
-            길드 홍보
-          </Button>
+          {userType === 'search' ? (
+            <>
+              <Button
+                scheme="subtle"
+                size="small"
+                onClick={() => nav('/searchCharacter')}
+                className="hover:text-blue-600 font-medium transition-all">
+                캐릭터검색
+              </Button>
+              <Button
+                scheme="subtle"
+                size="small"
+                onClick={() => nav('/rooms')}
+                className="hover:text-blue-600 font-medium transition-all">
+                길드검색
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                scheme="subtle"
+                size="small"
+                onClick={() => {
+                  nav('/character')
+                  setMobileMenuOpen(false)
+                }}
+                className="w-full text-left py-2 hover:bg-blue-50 rounded-lg">
+                캐릭터정보
+              </Button>
+              <Button
+                scheme="subtle"
+                size="small"
+                onClick={() => {
+                  nav('/rooms')
+                  setMobileMenuOpen(false)
+                }}
+                className="w-full text-left py-2 hover:bg-blue-50 rounded-lg">
+                길드관리
+              </Button>
+              <Button
+                scheme="subtle"
+                size="small"
+                onClick={() => {
+                  nav('/calendar')
+                  setMobileMenuOpen(false)
+                }}
+                className="w-full text-left py-2 hover:bg-blue-50 rounded-lg">
+                캘린더
+              </Button>
+              <Button
+                scheme="subtle"
+                size="small"
+                onClick={() => {
+                  nav('/promotion')
+                  setMobileMenuOpen(false)
+                }}
+                className="w-full text-left py-2 hover:bg-blue-50 rounded-lg">
+                길드 홍보
+              </Button>
+            </>
+          )}
 
           <hr className="my-2 border-blue-100" />
           <KakaoOpenChatButton
@@ -181,7 +206,7 @@ function Header() {
             {userType === 'guest'
               ? '체험 종료'
               : userType === 'search'
-                ? '로그인'
+                ? '메인페이지'
                 : '로그아웃'}
           </Button>
         </div>

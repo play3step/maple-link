@@ -44,13 +44,13 @@ export const CharacterPage = ({
       {/* 탭 버튼 */}
       <div className="flex justify-between items-center mb-2 max-w-6xl mx-auto w-full px-4">
         <div className="w-64"></div>
-        <div className="bg-white shadow-md rounded-lg p-1 flex">
+        <div className="bg-white shadow-sm rounded-lg p-1 flex gap-1">
           <button
             onClick={() => setShowStats(true)}
             className={`px-6 py-2 rounded-md font-medium transition-all duration-200 ${
               showStats
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'text-gray-700 hover:bg-gray-100'
+                ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-sm'
+                : 'text-gray-600 hover:bg-gray-50'
             }`}>
             스탯 정보
           </button>
@@ -58,8 +58,8 @@ export const CharacterPage = ({
             onClick={() => setShowStats(false)}
             className={`px-6 py-2 rounded-md font-medium transition-all duration-200 ${
               !showStats
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'text-gray-700 hover:bg-gray-100'
+                ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-sm'
+                : 'text-gray-600 hover:bg-gray-50'
             }`}>
             장비 정보
           </button>
@@ -69,13 +69,13 @@ export const CharacterPage = ({
             <input
               type="text"
               placeholder="캐릭터 이름을 입력해주세요"
-              className="flex-1 px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="flex-1 px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
               value={characterName}
               onChange={e => setCharacterName?.(e.target.value)}
             />
             <button
               onClick={searchCharacterHandler}
-              className="px-3 py-1.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors flex-shrink-0">
+              className="px-4 py-1.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-medium rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all shadow-sm flex-shrink-0">
               검색
             </button>
           </div>

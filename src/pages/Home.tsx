@@ -55,6 +55,23 @@ const Home = () => {
     }
   }
 
+  const searchCharacterHandler = async () => {
+    if (characterName.trim() === '') {
+      alert('캐릭터 이름을 입력해주세요.')
+      return
+    }
+    await storeLogin('', '', 'search')
+
+    setUserInfo({
+      id: 0,
+      firebaseId: '1',
+      name: characterName.trim(),
+      email: 'play3step@gmail.com',
+      ocid: '1'
+    })
+    nav(`/searchCharacter`)
+  }
+
   const recentNotices = [
     {
       id: 1,
@@ -149,7 +166,7 @@ const Home = () => {
         </div>
 
         {/* 주요 기능 섹션 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2  gap-6 mb-12">
           {/* 길드 검색 */}
           <div className="md:col-span-2 md:w-2/3 md:mx-auto bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
             <div className="absolute inset-0 bg-black/5 backdrop-blur-[1px] flex flex-col items-center justify-center z-10 gap-2">
@@ -213,15 +230,8 @@ const Home = () => {
           </div>
 
           {/* 캐릭터 검색 */}
-          <div className="bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden ">
-            <div className="absolute inset-0 bg-black/5 backdrop-blur-[1px] flex flex-col items-center justify-center z-10 gap-2">
-              <div className="bg-amber-500/90 px-4 py-1.5 rounded-full">
-                <span className="text-white font-medium text-sm">
-                  서비스 준비중
-                </span>
-              </div>
-            </div>
-            <div className="opacity-50 flex flex-col justify-between h-[240px]">
+          <div className="bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden h-fit self-start">
+            <div className="opacity-50 flex flex-col justify-between">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
                   <FiSearch className="text-blue-600 text-lg" />
@@ -235,13 +245,12 @@ const Home = () => {
                   value={characterName}
                   onChange={e => setCharacterName(e.target.value)}
                   className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                  disabled
                 />
                 <Button
                   size="medium"
                   scheme="solid"
                   className="w-full text-sm"
-                  disabled>
+                  onClick={searchCharacterHandler}>
                   캐릭터 검색
                 </Button>
               </div>

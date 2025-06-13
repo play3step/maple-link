@@ -70,10 +70,31 @@ const Home = () => {
     setGuildName('')
   }
 
+  const removeGuildList = (guildToRemove: string) => {
+    setGuildList(prev => prev.filter(guild => guild !== guildToRemove))
+  }
+
   const handleGuildKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       addGuildList(guildName)
     }
+  }
+
+  const searchGuildHandler = async () => {
+    if (guildList.length === 0) {
+      alert('검색할 길드를 추가해주세요.')
+      return
+    }
+    await storeLogin('', '', 'search')
+    setUserInfo({
+      id: 0,
+      firebaseId: '1',
+      name: 'search',
+      email: 'play3step@gmail.com',
+      ocid: guest.ocid
+    })
+
+    nav(`/searchGuild`)
   }
 
   const searchCharacterHandler = async () => {
@@ -230,8 +251,27 @@ const Home = () => {
                   <p className="text-xs text-gray-600">검색할 길드 목록</p>
                   <div className="flex flex-wrap gap-1.5">
                     {guildList.map(guild => (
-                      <div className="flex items-center gap-1 px-2 py-0.5 bg-gradient-to-r from-purple-50 to-purple-100 border border-purple-200 rounded-md">
+                      <div
+                        key={guild}
+                        className="flex items-center gap-1 px-2.5 py-1 bg-gradient-to-r from-purple-50 to-purple-100 border border-purple-200 rounded-md group">
                         <span className="text-sm text-purple-700">{guild}</span>
+                        <button
+                          onClick={() => removeGuildList(guild)}
+                          className="p-0.5 text-purple-400 hover:text-purple-600 rounded-full hover:bg-purple-100 transition-colors">
+                          <svg
+                            className="w-3.5 h-3.5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M6 18L18 6M6 6l12 12"
+                            />
+                          </svg>
+                        </button>
                       </div>
                     ))}
                   </div>
@@ -240,6 +280,7 @@ const Home = () => {
                 <Button
                   size="medium"
                   scheme="solid"
+                  onClick={searchGuildHandler}
                   className="w-full text-sm bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 transition-all shadow-sm">
                   길드 검색
                 </Button>

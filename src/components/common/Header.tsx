@@ -46,13 +46,13 @@ function Header() {
                 className="hover:text-blue-600 font-medium transition-all">
                 캐릭터검색
               </Button>
-              {/* <Button
+              <Button
                 scheme="subtle"
                 size="small"
-                onClick={() => nav('/rooms')}
+                onClick={() => nav('/searchGuild')}
                 className="hover:text-blue-600 font-medium transition-all">
                 길드검색
-              </Button> */}
+              </Button>
             </>
           ) : (
             <>
@@ -140,13 +140,13 @@ function Header() {
                 className="hover:text-blue-600 font-medium transition-all">
                 캐릭터검색
               </Button>
-              {/* <Button
+              <Button
                 scheme="subtle"
                 size="small"
-                onClick={() => nav('/rooms')}
+                onClick={() => nav('/searchGuild')}
                 className="hover:text-blue-600 font-medium transition-all">
                 길드검색
-              </Button> */}
+              </Button>
             </>
           ) : (
             <>

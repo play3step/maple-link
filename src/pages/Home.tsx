@@ -178,19 +178,14 @@ const Home = () => {
         <div className="grid grid-cols-1 md:grid-cols-2  gap-6 mb-12">
           {/* 길드 검색 */}
           <div className="md:col-span-2 md:w-2/3 md:mx-auto bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
-            <div className="absolute inset-0 bg-black/5 backdrop-blur-[1px] flex flex-col items-center justify-center z-10 gap-2">
-              <div className="bg-amber-500/90 px-4 py-1.5 rounded-full">
-                <span className="text-white font-medium text-sm">
-                  서비스 준비중
-                </span>
-              </div>
-            </div>
-            <div className="opacity-50">
+            <div className="flex flex-col justify-between">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-br from-purple-100 to-purple-200 rounded-lg flex items-center justify-center shadow-sm">
                   <FiUsers className="text-purple-600 text-lg" />
                 </div>
-                <h2 className="text-base font-semibold">길드 검색</h2>
+                <h2 className="text-base font-semibold text-gray-800">
+                  길드 검색
+                </h2>
               </div>
               <div className="space-y-3">
                 <div className="flex gap-2">
@@ -199,30 +194,24 @@ const Home = () => {
                     placeholder="길드 이름을 입력하세요"
                     value={guildName}
                     onChange={e => setGuildName(e.target.value)}
-                    className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                    disabled
+                    className="flex-1 px-4 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white"
                   />
                   <Button
                     size="medium"
                     scheme="solid"
-                    className="px-3 py-2 !bg-purple-500 hover:!bg-purple-600 text-sm"
-                    disabled>
+                    className="px-4 py-2.5 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-sm transition-all shadow-sm">
                     추가
                   </Button>
                 </div>
 
                 <div className="space-y-1.5">
-                  <p className="text-xs text-gray-500">검색할 길드 목록</p>
+                  <p className="text-xs text-gray-600">검색할 길드 목록</p>
                   <div className="flex flex-wrap gap-1.5">
-                    <div className="flex items-center gap-1 px-2 py-0.5 bg-purple-50 border border-purple-200 rounded-md">
-                      <span className="text-base text-purple-700">
-                        아르카나
-                      </span>
+                    <div className="flex items-center gap-1 px-2 py-0.5 bg-gradient-to-r from-purple-50 to-purple-100 border border-purple-200 rounded-md">
+                      <span className="text-sm text-purple-700">아르카나</span>
                     </div>
-                    <div className="flex items-center gap-1 px-2 py-0.5 bg-purple-50 border border-purple-200 rounded-md">
-                      <span className="text-base text-purple-700">
-                        노비맙단
-                      </span>
+                    <div className="flex items-center gap-1 px-2 py-0.5 bg-gradient-to-r from-purple-50 to-purple-100 border border-purple-200 rounded-md">
+                      <span className="text-sm text-purple-700">노비맙단</span>
                     </div>
                   </div>
                 </div>
@@ -230,8 +219,7 @@ const Home = () => {
                 <Button
                   size="medium"
                   scheme="solid"
-                  className="w-full !bg-purple-500 hover:!bg-purple-600 text-sm"
-                  disabled>
+                  className="w-full text-sm bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 transition-all shadow-sm">
                   길드 검색
                 </Button>
               </div>

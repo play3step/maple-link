@@ -48,3 +48,15 @@ export const searchGuild = async (params: Guild) => {
   )
   return guildInfo
 }
+
+//로그인 없이 길드 조회
+export const searchGuildWithoutLogin = async (
+  guildNames: string[],
+  worldName: string
+) => {
+  const response = await basicApi.post('/api/none/guilds', {
+    guildNames,
+    worldName
+  })
+  return response.data
+}

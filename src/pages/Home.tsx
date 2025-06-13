@@ -15,6 +15,7 @@ import { useUserStore } from '../store/userStore'
 import { guest } from '../data/guest'
 import { useState } from 'react'
 import Button from '../components/common/Button'
+import { searchCharacterOcid } from '../apis/character/characterController'
 
 const Home = () => {
   const { userLogin } = useAuth()
@@ -53,6 +54,31 @@ const Home = () => {
       console.error(error)
       alert('로그인에 실패했습니다.')
     }
+  }
+
+  const searchCharacterHandler = async () => {
+    if (characterName.trim() === '') {
+      alert('캐릭터 이름을 입력해주세요.')
+      return
+    }
+
+    const { ocid } = await searchCharacterOcid(characterName.trim())
+
+    if (!ocid) {
+      alert('캐릭터를 찾을 수 없습니다.')
+      return
+    }
+
+    await storeLogin('', '', 'search')
+
+    setUserInfo({
+      id: 0,
+      firebaseId: '1',
+      name: characterName.trim(),
+      email: 'play3step@gmail.com',
+      ocid: ocid
+    })
+    nav(`/searchCharacter`)
   }
 
   const recentNotices = [
@@ -149,7 +175,7 @@ const Home = () => {
         </div>
 
         {/* 주요 기능 섹션 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2  gap-6 mb-12">
           {/* 길드 검색 */}
           <div className="md:col-span-2 md:w-2/3 md:mx-auto bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
             <div className="absolute inset-0 bg-black/5 backdrop-blur-[1px] flex flex-col items-center justify-center z-10 gap-2">
@@ -213,20 +239,15 @@ const Home = () => {
           </div>
 
           {/* 캐릭터 검색 */}
-          <div className="bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden ">
-            <div className="absolute inset-0 bg-black/5 backdrop-blur-[1px] flex flex-col items-center justify-center z-10 gap-2">
-              <div className="bg-amber-500/90 px-4 py-1.5 rounded-full">
-                <span className="text-white font-medium text-sm">
-                  서비스 준비중
-                </span>
-              </div>
-            </div>
-            <div className="opacity-50 flex flex-col justify-between h-[240px]">
+          <div className="bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden h-fit self-start">
+            <div className="flex flex-col justify-between">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg flex items-center justify-center shadow-sm">
                   <FiSearch className="text-blue-600 text-lg" />
                 </div>
-                <h2 className="text-base font-semibold">캐릭터 검색</h2>
+                <h2 className="text-base font-semibold text-gray-800">
+                  캐릭터 검색
+                </h2>
               </div>
               <div className="space-y-3">
                 <input
@@ -234,14 +255,13 @@ const Home = () => {
                   placeholder="캐릭터 이름을 입력하세요"
                   value={characterName}
                   onChange={e => setCharacterName(e.target.value)}
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                  disabled
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm bg-white"
                 />
                 <Button
                   size="medium"
                   scheme="solid"
-                  className="w-full text-sm"
-                  disabled>
+                  className="w-full text-sm bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 transition-all shadow-sm"
+                  onClick={searchCharacterHandler}>
                   캐릭터 검색
                 </Button>
               </div>

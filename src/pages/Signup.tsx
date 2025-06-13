@@ -103,6 +103,11 @@ const Signup = () => {
                   </svg>
                 </a>
               </div>
+              <div className="flex items-center gap-2 mt-2">
+                <p className="text-sm text-gray-600">
+                  2023년 12월 21일 이후의 데이터만 조회할 수 있습니다.
+                </p>
+              </div>
             </div>
 
             <div className="space-y-4">

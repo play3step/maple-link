@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-type UserType = 'member' | 'guest'
+type UserType = 'member' | 'guest' | 'search'
 
 interface StoreState {
   token: string | null

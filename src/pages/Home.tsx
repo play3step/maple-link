@@ -26,6 +26,7 @@ const Home = () => {
 
   const [characterName, setCharacterName] = useState('')
   const [guildName, setGuildName] = useState('')
+  const [guildList, setGuildList] = useState<string[]>([])
 
   const handleGuestLogin = async () => {
     await storeLogin('', '', 'guest')
@@ -53,6 +54,25 @@ const Home = () => {
     } catch (error) {
       console.error(error)
       alert('로그인에 실패했습니다.')
+    }
+  }
+
+  const addGuildList = (guildName: string) => {
+    if (guildList.includes(guildName)) {
+      alert('이미 추가된 길드입니다.')
+      return
+    }
+    if (guildName.trim() === '') {
+      alert('길드 이름을 입력해주세요.')
+      return
+    }
+    setGuildList(prev => [...prev, guildName])
+    setGuildName('')
+  }
+
+  const handleGuildKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      addGuildList(guildName)
     }
   }
 
@@ -194,11 +214,13 @@ const Home = () => {
                     placeholder="길드 이름을 입력하세요"
                     value={guildName}
                     onChange={e => setGuildName(e.target.value)}
+                    onKeyPress={handleGuildKeyPress}
                     className="flex-1 px-4 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white"
                   />
                   <Button
                     size="medium"
                     scheme="solid"
+                    onClick={() => addGuildList(guildName)}
                     className="px-4 py-2.5 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-sm transition-all shadow-sm">
                     추가
                   </Button>
@@ -207,12 +229,11 @@ const Home = () => {
                 <div className="space-y-1.5">
                   <p className="text-xs text-gray-600">검색할 길드 목록</p>
                   <div className="flex flex-wrap gap-1.5">
-                    <div className="flex items-center gap-1 px-2 py-0.5 bg-gradient-to-r from-purple-50 to-purple-100 border border-purple-200 rounded-md">
-                      <span className="text-sm text-purple-700">아르카나</span>
-                    </div>
-                    <div className="flex items-center gap-1 px-2 py-0.5 bg-gradient-to-r from-purple-50 to-purple-100 border border-purple-200 rounded-md">
-                      <span className="text-sm text-purple-700">노비맙단</span>
-                    </div>
+                    {guildList.map(guild => (
+                      <div className="flex items-center gap-1 px-2 py-0.5 bg-gradient-to-r from-purple-50 to-purple-100 border border-purple-200 rounded-md">
+                        <span className="text-sm text-purple-700">{guild}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
 

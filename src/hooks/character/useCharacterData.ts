@@ -19,30 +19,48 @@ export const useCharacterData = () => {
   const { userInfo, setUserName } = useUserStore()
   const ocid = userInfo?.ocid
 
-  const { data: characterStats, isLoading: statsLoading } =
-    useQuery<CharacterStats>({
-      queryKey: ['characterStats', ocid],
-      queryFn: ocid ? () => fetchCharacterStat(ocid) : undefined,
-      staleTime: 5 * 60 * 1000
-    })
-
-  const { data: ability, isLoading: abilityLoading } =
-    useQuery<CharacterAbility>({
-      queryKey: ['characterAbility', ocid],
-      queryFn: ocid ? () => fetchCharacterAbility(ocid) : undefined,
-      staleTime: 5 * 60 * 1000
-    })
-
-  const { data: hyperStat, isLoading: hyperLoading } = useQuery<HyperStat>({
-    queryKey: ['characterHyperStat', ocid],
-    queryFn: ocid ? () => fetchCharacterHyperStat(ocid) : undefined,
-    staleTime: 5 * 60 * 1000
+  const {
+    data: characterStats,
+    isLoading: statsLoading,
+    error: statsError
+  } = useQuery<CharacterStats>({
+    queryKey: ['characterStats', ocid],
+    queryFn: ocid ? () => fetchCharacterStat(ocid) : undefined,
+    staleTime: 5 * 60 * 1000,
+    retry: false
   })
 
-  const { data: basic, isLoading: basicLoading } = useQuery<CharacterBasic>({
+  const {
+    data: ability,
+    isLoading: abilityLoading,
+    error: abilityError
+  } = useQuery<CharacterAbility>({
+    queryKey: ['characterAbility', ocid],
+    queryFn: ocid ? () => fetchCharacterAbility(ocid) : undefined,
+    staleTime: 5 * 60 * 1000,
+    retry: false
+  })
+
+  const {
+    data: hyperStat,
+    isLoading: hyperLoading,
+    error: hyperError
+  } = useQuery<HyperStat>({
+    queryKey: ['characterHyperStat', ocid],
+    queryFn: ocid ? () => fetchCharacterHyperStat(ocid) : undefined,
+    staleTime: 5 * 60 * 1000,
+    retry: false
+  })
+
+  const {
+    data: basic,
+    isLoading: basicLoading,
+    error: basicError
+  } = useQuery<CharacterBasic>({
     queryKey: ['characterBasic', ocid],
     queryFn: ocid ? () => fetchCharacterBasic(ocid) : undefined,
-    staleTime: 5 * 60 * 1000
+    staleTime: 5 * 60 * 1000,
+    retry: false
   })
 
   useEffect(() => {
@@ -54,11 +72,14 @@ export const useCharacterData = () => {
   const isLoading =
     statsLoading || abilityLoading || hyperLoading || basicLoading
 
+  const error = statsError || abilityError || hyperError || basicError
+
   return {
     characterStats,
     ability,
     hyperStat,
     basic,
-    isLoading
+    isLoading,
+    error
   }
 }

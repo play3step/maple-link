@@ -6,6 +6,7 @@ import { InventoryContainer } from './inventory/InventoryContainer'
 import { StatContainer } from './StatContainer'
 import { useCharacterData } from '../../hooks/character/useCharacterData'
 import { useInventory } from '../../hooks/character/useInventory'
+import { useNavigate } from 'react-router-dom'
 
 interface CharacterPageProps {
   type: 'character' | 'search'
@@ -19,12 +20,13 @@ export const CharacterPage = ({
   setCharacterName,
   searchCharacterHandler
 }: CharacterPageProps) => {
-  const { characterStats, ability, hyperStat, basic, isLoading } =
+  const { characterStats, ability, hyperStat, basic, isLoading, error } =
     useCharacterData()
 
   const { inventory } = useInventory()
 
   const [showStats, setShowStats] = useState(true)
+  const nav = useNavigate()
 
   if (isLoading) {
     return (
@@ -37,6 +39,13 @@ export const CharacterPage = ({
         </div>
       </div>
     )
+  }
+
+  if (error) {
+    alert(
+      '2023년 12월 21일 이후의 데이터만 조회할 수 있습니다.\n게임에 접속한 뒤 다시 시도해주세요.'
+    )
+    nav('/')
   }
 
   return (

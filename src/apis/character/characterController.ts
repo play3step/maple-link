@@ -8,6 +8,17 @@ import {
 } from '../../types/character'
 import { Inventory } from '../../types/item'
 
+export const searchCharacterOcid = async (characterName: string) => {
+  try {
+    const response = await nexonApi.get<{ ocid: string }>('/maplestory/v1/id', {
+      params: { character_name: characterName }
+    })
+    return response.data
+  } catch {
+    return { ocid: null }
+  }
+}
+
 export const fetchCharacterStat = async (characterUid: string) => {
   const response = await nexonApi.get<CharacterStats>(
     '/maplestory/v1/character/stat',

@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { User } from '../types/auth'
+import { guest } from '../data/guest'
 
 interface UserState {
   userInfo: User | null
@@ -13,7 +14,13 @@ interface UserState {
 }
 
 export const useUserStore = create<UserState>(set => ({
-  userInfo: null,
+  userInfo: {
+    id: 0,
+    firebaseId: '1',
+    name: 'search',
+    email: 'play3step@gmail.com',
+    ocid: guest.ocid
+  },
   userName: null,
 
   setUserInfo: info => set({ userInfo: info }),

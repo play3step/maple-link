@@ -12,7 +12,6 @@ import {
 import Logo from '../assets/logo.png'
 import GoogleLogo from '../assets/gogle.svg'
 import { useUserStore } from '../store/userStore'
-import { guest } from '../data/guest'
 import { useState } from 'react'
 import Button from '../components/common/Button'
 import { searchCharacterOcid } from '../apis/character/characterController'
@@ -22,7 +21,7 @@ import { servers } from '../data/worlds'
 const Home = () => {
   const { userLogin } = useAuth()
   const { storeLogin } = useAuthStore()
-  const { setUserInfo } = useUserStore()
+  const { setUserInfo, updateUserInfo } = useUserStore()
   const nav = useNavigate()
   const KAKAO_CHAT_LINK = 'https://open.kakao.com/o/s4tfG2Ah'
 
@@ -42,13 +41,7 @@ const Home = () => {
 
   const handleGuestLogin = async () => {
     await storeLogin('', '', 'guest')
-    setUserInfo({
-      id: 0,
-      firebaseId: '1',
-      name: 'guest',
-      email: 'play3step@gmail.com',
-      ocid: guest.ocid
-    })
+
     nav('/character')
   }
 
@@ -83,25 +76,10 @@ const Home = () => {
     }
 
     await storeLogin('', '', 'search')
-
-    setUserInfo({
-      id: 0,
-      firebaseId: '1',
-      name: characterName.trim(),
-      email: 'play3step@gmail.com',
-      ocid: ocid
-    })
+    updateUserInfo({ ocid })
     nav(`/searchCharacter`)
   }
   const onSearchGuild = async () => {
-    await storeLogin('', '', 'search')
-    setUserInfo({
-      id: 0,
-      firebaseId: '1',
-      name: 'search',
-      email: 'play3step@gmail.com',
-      ocid: guest.ocid
-    })
     nav(`/searchGuild`)
     searchGuildHandler()
   }

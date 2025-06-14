@@ -16,7 +16,6 @@ import { guest } from '../data/guest'
 import { useState } from 'react'
 import Button from '../components/common/Button'
 import { searchCharacterOcid } from '../apis/character/characterController'
-import { searchGuildWithoutLogin } from '../apis/guild/guildController'
 
 const Home = () => {
   const { userLogin } = useAuth()
@@ -112,8 +111,7 @@ const Home = () => {
       alert('서버를 선택해주세요.')
       return
     }
-    const guilds = await searchGuildWithoutLogin(guildList, selectedServer)
-    console.log(guilds)
+
     await storeLogin('', '', 'search')
     setUserInfo({
       id: 0,

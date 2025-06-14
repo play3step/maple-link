@@ -46,7 +46,7 @@ export interface RecordedMembers {
 }
 
 export interface Member {
-  id: number
+  id?: number
   imagePath: string
   job: string
   level: string
@@ -59,7 +59,6 @@ export interface Member {
     level: string
     job: string
     imagePath: string
-    description: string
   }
 }
 
@@ -73,4 +72,15 @@ export interface DetectResult {
   guildName: string
   toAdd: string[]
   toRemove: string[]
+}
+
+export interface SearchGuildResponse {
+  guilds: GuildInfo[]
+}
+
+export interface GuildInfo {
+  worldName: string
+  guildName: string
+  guildMasterName: string
+  guildMember: Member[]
 }

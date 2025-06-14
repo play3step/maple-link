@@ -1,5 +1,5 @@
-import { basicApi, nexonApi } from '..'
-import { Guild, SearchGuild } from '../../types/guild'
+import { basicApi, nexonApi, publicApi } from '..'
+import { Guild, SearchGuild, SearchGuildResponse } from '../../types/guild'
 
 //길드 목록 조회
 export const fetchGuildList = async () => {
@@ -54,9 +54,12 @@ export const searchGuildWithoutLogin = async (
   guildNames: string[],
   worldName: string
 ) => {
-  const response = await basicApi.post('/api/none/guilds', {
-    guildNames,
-    worldName
-  })
+  const response = await publicApi.post<SearchGuildResponse>(
+    'api/v1/public/guilds',
+    {
+      guildNames,
+      worldName
+    }
+  )
   return response.data
 }

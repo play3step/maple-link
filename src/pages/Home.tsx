@@ -16,6 +16,7 @@ import { guest } from '../data/guest'
 import { useState } from 'react'
 import Button from '../components/common/Button'
 import { searchCharacterOcid } from '../apis/character/characterController'
+import { useSearchGuild } from '../hooks/search/useSearchGuild'
 
 const Home = () => {
   const { userLogin } = useAuth()
@@ -26,8 +27,14 @@ const Home = () => {
 
   const [characterName, setCharacterName] = useState('')
   const [guildName, setGuildName] = useState('')
-  const [guildList, setGuildList] = useState<string[]>([])
-  const [selectedServer, setSelectedServer] = useState('')
+
+  const {
+    selectedServer,
+    setSelectedServer,
+    guildList,
+    setGuildList,
+    searchGuildHandler
+  } = useSearchGuild()
 
   const servers = [
     { id: '스카니아', name: '스카니아' },
@@ -102,28 +109,6 @@ const Home = () => {
     }
   }
 
-  const searchGuildHandler = async () => {
-    if (guildList.length === 0) {
-      alert('검색할 길드를 추가해주세요.')
-      return
-    }
-    if (!selectedServer) {
-      alert('서버를 선택해주세요.')
-      return
-    }
-
-    await storeLogin('', '', 'search')
-    setUserInfo({
-      id: 0,
-      firebaseId: '1',
-      name: 'search',
-      email: 'play3step@gmail.com',
-      ocid: guest.ocid
-    })
-
-    nav(`/searchGuild`)
-  }
-
   const searchCharacterHandler = async () => {
     if (characterName.trim() === '') {
       alert('캐릭터 이름을 입력해주세요.')
@@ -147,6 +132,18 @@ const Home = () => {
       ocid: ocid
     })
     nav(`/searchCharacter`)
+  }
+  const onSearchGuild = async () => {
+    await storeLogin('', '', 'search')
+    setUserInfo({
+      id: 0,
+      firebaseId: '1',
+      name: 'search',
+      email: 'play3step@gmail.com',
+      ocid: guest.ocid
+    })
+    nav(`/searchGuild`)
+    searchGuildHandler()
   }
 
   const recentNotices = [
@@ -320,7 +317,7 @@ const Home = () => {
                 <Button
                   size="medium"
                   scheme="solid"
-                  onClick={searchGuildHandler}
+                  onClick={onSearchGuild}
                   className="w-full text-sm bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 transition-all shadow-sm">
                   길드 검색
                 </Button>

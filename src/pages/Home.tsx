@@ -17,6 +17,7 @@ import { useState } from 'react'
 import Button from '../components/common/Button'
 import { searchCharacterOcid } from '../apis/character/characterController'
 import { useSearchGuild } from '../hooks/search/useSearchGuild'
+import { servers } from '../data/worlds'
 
 const Home = () => {
   const { userLogin } = useAuth()
@@ -26,32 +27,18 @@ const Home = () => {
   const KAKAO_CHAT_LINK = 'https://open.kakao.com/o/s4tfG2Ah'
 
   const [characterName, setCharacterName] = useState('')
-  const [guildName, setGuildName] = useState('')
 
   const {
     selectedServer,
     setSelectedServer,
     guildList,
-    setGuildList,
-    searchGuildHandler
+    searchGuildHandler,
+    addGuildList,
+    removeGuildList,
+    handleGuildKeyPress,
+    guildName,
+    setGuildName
   } = useSearchGuild()
-
-  const servers = [
-    { id: '스카니아', name: '스카니아' },
-    { id: '베라', name: '베라' },
-    { id: '루나', name: '루나' },
-    { id: '제니스', name: '제니스' },
-    { id: '크로아', name: '크로아' },
-    { id: '유니온', name: '유니온' },
-    { id: '엘리시움', name: '엘리시움' },
-    { id: '이노시스', name: '이노시스' },
-    { id: '레드', name: '레드' },
-    { id: '오로라', name: '오로라' },
-    { id: '아케인', name: '아케인' },
-    { id: '노바', name: '노바' },
-    { id: '에오스', name: '에오스' },
-    { id: '핼리오스', name: '핼리오스' }
-  ]
 
   const handleGuestLogin = async () => {
     await storeLogin('', '', 'guest')
@@ -79,33 +66,6 @@ const Home = () => {
     } catch (error) {
       console.error(error)
       alert('로그인에 실패했습니다.')
-    }
-  }
-
-  const addGuildList = (guildName: string) => {
-    if (!selectedServer) {
-      alert('서버를 선택해주세요.')
-      return
-    }
-    if (guildList.includes(guildName)) {
-      alert('이미 추가된 길드입니다.')
-      return
-    }
-    if (guildName.trim() === '') {
-      alert('길드 이름을 입력해주세요.')
-      return
-    }
-    setGuildList(prev => [...prev, guildName])
-    setGuildName('')
-  }
-
-  const removeGuildList = (guildToRemove: string) => {
-    setGuildList(prev => prev.filter(guild => guild !== guildToRemove))
-  }
-
-  const handleGuildKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      addGuildList(guildName)
     }
   }
 

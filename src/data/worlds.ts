@@ -30,3 +30,20 @@ export const worldNames: WorldData[] = [
   { name: '에오스', icon: eosIcon },
   { name: '핼리오스', icon: heliosIcon }
 ]
+
+export const servers = [
+  { id: '스카니아', name: '스카니아' },
+  { id: '베라', name: '베라' },
+  { id: '루나', name: '루나' },
+  { id: '제니스', name: '제니스' },
+  { id: '크로아', name: '크로아' },
+  { id: '유니온', name: '유니온' },
+  { id: '엘리시움', name: '엘리시움' },
+  { id: '이노시스', name: '이노시스' },
+  { id: '레드', name: '레드' },
+  { id: '오로라', name: '오로라' },
+  { id: '아케인', name: '아케인' },
+  { id: '노바', name: '노바' },
+  { id: '에오스', name: '에오스' },
+  { id: '핼리오스', name: '핼리오스' }
+]

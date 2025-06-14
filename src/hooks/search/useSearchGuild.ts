@@ -7,7 +7,7 @@ import { useSearchParams } from 'react-router-dom'
 export const useSearchGuild = () => {
   const [guildList, setGuildList] = useState<string[]>([])
   const [selectedServer, setSelectedServer] = useState('')
-
+  const [guildName, setGuildName] = useState('')
   const [searchParams, setSearchParams] = useSearchParams()
 
   const { data: guilds, isLoading } = useQuery({
@@ -15,6 +15,32 @@ export const useSearchGuild = () => {
     queryFn: () => searchGuildWithoutLogin(guildList, selectedServer)
   })
 
+  const addGuildList = (guildName: string) => {
+    if (!selectedServer) {
+      alert('서버를 선택해주세요.')
+      return
+    }
+    if (guildList.includes(guildName)) {
+      alert('이미 추가된 길드입니다.')
+      return
+    }
+    if (guildName.trim() === '') {
+      alert('길드 이름을 입력해주세요.')
+      return
+    }
+    setGuildList(prev => [...prev, guildName])
+    setGuildName('')
+  }
+
+  const removeGuildList = (guildToRemove: string) => {
+    setGuildList(prev => prev.filter(guild => guild !== guildToRemove))
+  }
+
+  const handleGuildKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      addGuildList(guildName)
+    }
+  }
   const searchGuildHandler = async () => {
     if (guildList.length === 0) {
       alert('검색할 길드를 추가해주세요.')
@@ -38,8 +64,12 @@ export const useSearchGuild = () => {
     setGuildList,
     selectedServer,
     setSelectedServer,
-
+    guildName,
+    setGuildName,
     guilds,
-    isLoading
+    isLoading,
+    addGuildList,
+    removeGuildList,
+    handleGuildKeyPress
   }
 }

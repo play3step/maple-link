@@ -15,8 +15,8 @@ export const useSearchGuild = () => {
   const serachGuildList = params.get('guildList')?.split(',') || []
   const serachServer = params.get('server') || ''
 
-  const { data: guilds, isLoading } = useQuery({
-    queryKey: ['guilds', serachGuildList, serachServer],
+  const { data: guildsInfo, isLoading } = useQuery({
+    queryKey: ['guildsInfo', serachGuildList, serachServer],
     queryFn: () => searchGuildWithoutLogin(serachGuildList, serachServer)
   })
 
@@ -71,7 +71,7 @@ export const useSearchGuild = () => {
     setSelectedServer,
     guildName,
     setGuildName,
-    guilds,
+    guildsInfo,
     isLoading,
     addGuildList,
     removeGuildList,

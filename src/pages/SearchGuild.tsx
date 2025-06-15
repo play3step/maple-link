@@ -3,10 +3,15 @@ import Button from '../components/common/Button'
 import { useSearchGuild } from '../hooks/search/useSearchGuild'
 
 import { servers } from '../data/worlds'
+import { IoArrowBack } from 'react-icons/io5'
+import { MemberContainer } from '../components/guild/MemberContainer'
+import { Empty } from '../components/common/Empty'
+import { ActionBtnList } from '../components/guild/ActionBtnList'
+import { Guild } from '../types/guild'
 
 export const SearchGuild = () => {
   const {
-    guilds,
+    guildsInfo,
     selectedServer,
     setSelectedServer,
     guildName,
@@ -19,13 +24,11 @@ export const SearchGuild = () => {
     isLoading
   } = useSearchGuild()
 
-  if (isLoading) return <div>Loading...</div>
-
-  console.log(guilds)
+  console.log(guildsInfo)
 
   return (
     <div>
-      {guilds?.length === 0 ? (
+      {guildsInfo?.length === 0 ? (
         <div className="md:col-span-2 md:w-2/3 md:mx-auto bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
           <div className="flex flex-col justify-between">
             <div className="flex items-center gap-3 mb-3">
@@ -109,12 +112,61 @@ export const SearchGuild = () => {
           </div>
         </div>
       ) : (
-        <div>
-          {guilds?.map(guild => (
-            <div key={guild.guildName}>
-              {guild.worldName} {guild.guildName}
+        <div className="max-w-7xl mx-auto px-4 py-5">
+          <div className="flex items-center gap-4 mb-5">
+            <button
+              onClick={() => {}}
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              title="뒤로 가기">
+              <IoArrowBack className="text-xl text-gray-600" />
+            </button>
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">길드 관리</h1>
+              <p className="text-sm text-gray-600 mt-1">길드원 정보 관리</p>
             </div>
-          ))}
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100">
+            <div className="p-6 border-b border-gray-100">
+              <div className="flex justify-between items-center">
+                <ActionBtnList
+                  guildList={
+                    (guildsInfo?.map(v => ({
+                      worldName: v.worldName,
+                      guildName: v.guildName
+                    })) as Guild[]) || []
+                  }
+                />
+                {/* {guildList.length > 0 && <ListSwitch />} */}
+              </div>
+            </div>
+            <div className="p-6">
+              <div className="min-h-[600px]">
+                {isLoading && (
+                  <div className="flex justify-center items-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-4"></div>
+                    <p className="text-gray-600 font-medium">
+                      캐릭터 정보를 불러오는 중...
+                    </p>
+                  </div>
+                )}
+                {guildsInfo && guildsInfo.length > 0 && (
+                  <MemberContainer
+                    members={guildsInfo[0].guildMember}
+                    // allMembers={}
+                    masterName={guildsInfo[0].guildMasterName}
+                    guildName={guildsInfo[0].guildName}
+                    onSelect={() => {}}
+                    searchCharacter={''}
+                    setSearchCharacter={() => {}}
+                  />
+                )}
+                {guildsInfo && guildsInfo.length === 0 && (
+                  <Empty text="길드를 선택해주세요" />
+                )}
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>

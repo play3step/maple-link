@@ -55,10 +55,22 @@ export const searchGuildWithoutLogin = async (
   worldName: string
 ) => {
   const response = await publicApi.post<SearchGuildResponse[]>(
-    '/api/v1/public/guilds/async',
+    '/api/v1/public/guilds/async/test',
     {
       guildNames,
       worldName
+    }
+  )
+  return response.data
+}
+
+//로그인 없이 길드 본/부캐 조회
+
+export const searchGuildMemberWithoutLogin = async (members: string[]) => {
+  const response = await publicApi.post<SearchGuildResponse[]>(
+    '/api/v1/public/guilds/member/async',
+    {
+      members
     }
   )
   return response.data

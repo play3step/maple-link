@@ -63,7 +63,7 @@ export const MemberContainer = ({
         member.type === '부캐' &&
         allMembers?.find(m =>
           m.memberDetailResponse?.find(
-            m => m.id === member.mainCharacterInfo?.id
+            m => m.name === member.mainCharacterInfo?.name
           )
         ) &&
         member.name.toLowerCase().includes(searchCharacter?.toLowerCase() || '')
@@ -76,7 +76,9 @@ export const MemberContainer = ({
     return (
       member.type === '부캐' &&
       !allMembers?.find(m =>
-        m.memberDetailResponse?.find(m => m.id === member.mainCharacterInfo?.id)
+        m.memberDetailResponse?.find(
+          m => m.name === member.mainCharacterInfo?.name
+        )
       )
     )
   })
@@ -235,7 +237,7 @@ export const MemberContainer = ({
                           ?.flatMap(g => g.memberDetailResponse)
                           .find(
                             m =>
-                              m?.id === member.mainCharacterInfo!.id &&
+                              m?.name === member.mainCharacterInfo!.name &&
                               m.type === '본캐'
                           )
 
@@ -272,7 +274,8 @@ export const MemberContainer = ({
                                     allMembers?.find(m =>
                                       m.memberDetailResponse?.find(
                                         m =>
-                                          m.id === member.mainCharacterInfo?.id
+                                          m.name ===
+                                          member.mainCharacterInfo?.name
                                       )
                                     )
                                   ? 'bg-yellow-100 text-yellow-700'
@@ -283,18 +286,22 @@ export const MemberContainer = ({
                               : member.type === '부캐' &&
                                   allMembers?.find(m =>
                                     m.memberDetailResponse?.find(
-                                      m => m.id === member.mainCharacterInfo?.id
+                                      m =>
+                                        m.name ===
+                                        member.mainCharacterInfo?.name
                                     )
                                   )
                                 ? '부캐'
-                                : '외부 부캐'}
+                                : member.mainCharacterInfo === null
+                                  ? ''
+                                  : '외부 부캐'}
                           </span>
                         )}
                       </div>
                       {member.type === '부캐' &&
                         !allMembers?.find(m =>
                           m.memberDetailResponse?.find(
-                            m => m.id === member.mainCharacterInfo?.id
+                            m => m.name === member.mainCharacterInfo?.name
                           )
                         ) && (
                           <span className="text-xs text-gray-500">

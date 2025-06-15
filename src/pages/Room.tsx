@@ -144,7 +144,7 @@ const Room = () => {
                   setSearchCharacter={handleSearchCharacter}
                   onDeleteGuild={
                     selectMember?.guildId
-                      ? () => deleteGuild(selectMember.guildId)
+                      ? () => deleteGuild(selectMember.guildId as number)
                       : undefined
                   }
                 />

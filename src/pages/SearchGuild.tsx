@@ -8,6 +8,7 @@ import { MemberContainer } from '../components/guild/MemberContainer'
 import { Empty } from '../components/common/Empty'
 import { ActionBtnList } from '../components/guild/ActionBtnList'
 import { Guild } from '../types/guild'
+import { useState } from 'react'
 
 export const SearchGuild = () => {
   const {
@@ -21,9 +22,15 @@ export const SearchGuild = () => {
     removeGuildList,
     guildList,
     searchGuildHandler,
-    isLoading
+    isLoading,
+    selectedGuildMember
   } = useSearchGuild()
 
+  const [searchCharacter, setSearchCharacter] = useState('')
+
+  const handleSearchCharacter = (value: string) => {
+    setSearchCharacter(value)
+  }
   console.log(guildsInfo)
 
   return (
@@ -152,13 +159,17 @@ export const SearchGuild = () => {
                 )}
                 {guildsInfo && guildsInfo.length > 0 && (
                   <MemberContainer
-                    members={guildsInfo[0].guildMember}
-                    // allMembers={}
-                    masterName={guildsInfo[0].guildMasterName}
-                    guildName={guildsInfo[0].guildName}
+                    members={selectedGuildMember?.guildMember}
+                    allMembers={guildsInfo.map(v => ({
+                      guildName: v.guildName,
+                      guildMasterName: v.guildMasterName,
+                      memberDetailResponse: v.guildMember
+                    }))}
+                    masterName={selectedGuildMember?.guildMasterName}
+                    guildName={selectedGuildMember?.guildName}
                     onSelect={() => {}}
-                    searchCharacter={''}
-                    setSearchCharacter={() => {}}
+                    searchCharacter={searchCharacter}
+                    setSearchCharacter={handleSearchCharacter}
                   />
                 )}
                 {guildsInfo && guildsInfo.length === 0 && (

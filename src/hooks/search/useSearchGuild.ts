@@ -14,6 +14,7 @@ export const useSearchGuild = () => {
 
   const serachGuildList = params.get('guildList')?.split(',') || []
   const serachServer = params.get('server') || ''
+  const selectedGuild = params.get('guild') || ''
 
   const { data: guildsInfo, isLoading } = useQuery({
     queryKey: ['guildsInfo', serachGuildList, serachServer],
@@ -63,6 +64,10 @@ export const useSearchGuild = () => {
     setSearchParams(newSearchParams)
   }
 
+  const selectedGuildMember = guildsInfo?.find(
+    guild => guild.guildName === selectedGuild
+  )
+
   return {
     searchGuildHandler,
     guildList,
@@ -75,6 +80,7 @@ export const useSearchGuild = () => {
     isLoading,
     addGuildList,
     removeGuildList,
-    handleGuildKeyPress
+    handleGuildKeyPress,
+    selectedGuildMember
   }
 }

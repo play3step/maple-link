@@ -33,7 +33,7 @@ export interface SearchGuild {
 }
 
 export interface NexonMembers {
-  guildId: number
+  guildId?: number
   guildName: string
   guildMasterName?: string
   memberDetailResponse?: Member[]

@@ -152,7 +152,7 @@ export const ActionBtnList = ({
                     onClick={() => {
                       handleSwitch(guild.guildName || '')
                     }}
-                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 whitespace-nowrap text-ellipsis">
+                    className="w-full border border-gray-200 rounded-lg text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 whitespace-nowrap text-ellipsis">
                     {guild.guildName}
                   </button>
                 ))}

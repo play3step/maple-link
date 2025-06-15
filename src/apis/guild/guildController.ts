@@ -54,8 +54,8 @@ export const searchGuildWithoutLogin = async (
   guildNames: string[],
   worldName: string
 ) => {
-  const response = await publicApi.post<SearchGuildResponse>(
-    'api/v1/public/guilds',
+  const response = await publicApi.post<SearchGuildResponse[]>(
+    '/api/v1/public/guilds/async',
     {
       guildNames,
       worldName

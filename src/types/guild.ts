@@ -75,10 +75,6 @@ export interface DetectResult {
 }
 
 export interface SearchGuildResponse {
-  guilds: GuildInfo[]
-}
-
-export interface GuildInfo {
   worldName: string
   guildName: string
   guildMasterName: string

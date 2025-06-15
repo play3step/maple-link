@@ -15,14 +15,17 @@ export const SearchGuild = () => {
     addGuildList,
     removeGuildList,
     guildList,
-    searchGuildHandler
+    searchGuildHandler,
+    isLoading
   } = useSearchGuild()
+
+  if (isLoading) return <div>Loading...</div>
 
   console.log(guilds)
 
   return (
     <div>
-      {guilds && guilds.guilds.length === 0 && (
+      {guilds?.length === 0 ? (
         <div className="md:col-span-2 md:w-2/3 md:mx-auto bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
           <div className="flex flex-col justify-between">
             <div className="flex items-center gap-3 mb-3">
@@ -104,6 +107,14 @@ export const SearchGuild = () => {
               </Button>
             </div>
           </div>
+        </div>
+      ) : (
+        <div>
+          {guilds?.map(guild => (
+            <div key={guild.guildName}>
+              {guild.worldName} {guild.guildName}
+            </div>
+          ))}
         </div>
       )}
     </div>

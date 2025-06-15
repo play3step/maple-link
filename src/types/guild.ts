@@ -80,3 +80,15 @@ export interface SearchGuildResponse {
   guildMasterName: string
   guildMember: Member[]
 }
+
+export interface SearchGuildMemberResponse {
+  memberName: string
+  type: string
+  mainCharacterInfo: {
+    name: string
+    level: string
+    job: string
+    imagePath: string
+    gender: string
+  }
+}

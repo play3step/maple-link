@@ -15,13 +15,15 @@ interface Props {
   guildList: Guild[]
   handleDetect?: () => void
   refreshMember?: (guildId: number) => void
+  mainCharacterInfoSearchHandler?: () => void
 }
 
 export const ActionBtnList = ({
   showModal,
   guildList,
   handleDetect,
-  refreshMember
+  refreshMember,
+  mainCharacterInfoSearchHandler
 }: Props) => {
   const [searchParams, setSearchParams] = useSearchParams()
   const [selectedGuild, setSelectedGuild] = useState<Guild | null>(null)
@@ -156,6 +158,13 @@ export const ActionBtnList = ({
                     {guild.guildName}
                   </button>
                 ))}
+                <button
+                  onClick={() => {
+                    mainCharacterInfoSearchHandler?.()
+                  }}
+                  className="w-full border border-gray-200 rounded-lg text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 whitespace-nowrap text-ellipsis">
+                  본캐/부캐 조회
+                </button>
               </div>
             )}
 

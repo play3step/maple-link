@@ -1,14 +1,19 @@
-import { searchGuildWithoutLogin } from '../../apis/guild/guildController'
+import {
+  searchGuildMemberWithoutLogin,
+  searchGuildWithoutLogin
+} from '../../apis/guild/guildController'
 import { useState } from 'react'
 
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useSearchParams } from 'react-router-dom'
+import { SearchGuildResponse } from '../../types/guild'
 
 export const useSearchGuild = () => {
   const [guildList, setGuildList] = useState<string[]>([])
   const [selectedServer, setSelectedServer] = useState('')
   const [guildName, setGuildName] = useState('')
   const [searchParams, setSearchParams] = useSearchParams()
+  const [isUpdating, setIsUpdating] = useState(false)
 
   const params = new URLSearchParams(searchParams)
 
@@ -16,10 +21,56 @@ export const useSearchGuild = () => {
   const serachServer = params.get('server') || ''
   const selectedGuild = params.get('guild') || ''
 
+  const queryClient = useQueryClient()
+
   const { data: guildsInfo, isLoading } = useQuery({
     queryKey: ['guildsInfo', serachGuildList, serachServer],
     queryFn: () => searchGuildWithoutLogin(serachGuildList, serachServer)
   })
+
+  const mainCharacterInfoSearchMutation = useMutation({
+    mutationFn: (members: string[]) => searchGuildMemberWithoutLogin(members)
+  })
+
+  const mainCharacterInfoSearchHandler = async () => {
+    if (!guildsInfo) return
+    setIsUpdating(true)
+
+    try {
+      const allMemberNames = guildsInfo
+        .map(guild => guild.guildMember.map(member => member.name))
+        .flat()
+
+      const response =
+        await mainCharacterInfoSearchMutation.mutateAsync(allMemberNames)
+
+      queryClient.setQueryData(
+        ['guildsInfo', serachGuildList, serachServer],
+        (oldData: SearchGuildResponse[]) => {
+          if (!oldData) return oldData
+
+          return oldData.map(guild => ({
+            ...guild,
+            guildMember: guild.guildMember.map(member => {
+              const match = response.find(res => res.memberName === member.name)
+              const matchedMember = match?.mainCharacterInfo
+
+              return {
+                ...member,
+                type: match?.type ?? member.type,
+                mainCharacterInfo: matchedMember ?? member.mainCharacterInfo
+              }
+            })
+          }))
+        }
+      )
+    } catch (error) {
+      console.error('메인 캐릭터 정보 조회 중 오류 발생:', error)
+      alert('메인 캐릭터 정보 조회 중 오류가 발생했습니다.')
+    } finally {
+      setIsUpdating(false)
+    }
+  }
 
   const addGuildList = (guildName: string) => {
     if (!selectedServer) {
@@ -78,9 +129,11 @@ export const useSearchGuild = () => {
     setGuildName,
     guildsInfo,
     isLoading,
+    isUpdating,
     addGuildList,
     removeGuildList,
     handleGuildKeyPress,
-    selectedGuildMember
+    selectedGuildMember,
+    mainCharacterInfoSearchHandler
   }
 }

@@ -1,5 +1,10 @@
 import { basicApi, nexonApi, publicApi } from '..'
-import { Guild, SearchGuild, SearchGuildResponse } from '../../types/guild'
+import {
+  Guild,
+  SearchGuild,
+  SearchGuildMemberResponse,
+  SearchGuildResponse
+} from '../../types/guild'
 
 //길드 목록 조회
 export const fetchGuildList = async () => {
@@ -67,7 +72,7 @@ export const searchGuildWithoutLogin = async (
 //로그인 없이 길드 본/부캐 조회
 
 export const searchGuildMemberWithoutLogin = async (members: string[]) => {
-  const response = await publicApi.post<SearchGuildResponse[]>(
+  const response = await publicApi.post<SearchGuildMemberResponse[]>(
     '/api/v1/public/guilds/member/async',
     {
       members

@@ -3,7 +3,6 @@ import Button from '../components/common/Button'
 import { useSearchGuild } from '../hooks/search/useSearchGuild'
 
 import { servers } from '../data/worlds'
-import { IoArrowBack } from 'react-icons/io5'
 import { MemberContainer } from '../components/guild/MemberContainer'
 import { Empty } from '../components/common/Empty'
 import { ActionBtnList } from '../components/guild/ActionBtnList'
@@ -23,7 +22,9 @@ export const SearchGuild = () => {
     guildList,
     searchGuildHandler,
     isLoading,
-    selectedGuildMember
+    selectedGuildMember,
+    mainCharacterInfoSearchHandler,
+    isUpdating
   } = useSearchGuild()
 
   const [searchCharacter, setSearchCharacter] = useState('')
@@ -31,7 +32,6 @@ export const SearchGuild = () => {
   const handleSearchCharacter = (value: string) => {
     setSearchCharacter(value)
   }
-  console.log(guildsInfo)
 
   return (
     <div>
@@ -121,12 +121,6 @@ export const SearchGuild = () => {
       ) : (
         <div className="max-w-7xl mx-auto px-4 py-5">
           <div className="flex items-center gap-4 mb-5">
-            <button
-              onClick={() => {}}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-              title="뒤로 가기">
-              <IoArrowBack className="text-xl text-gray-600" />
-            </button>
             <div>
               <h1 className="text-2xl font-bold text-gray-900">길드 관리</h1>
               <p className="text-sm text-gray-600 mt-1">길드원 정보 관리</p>
@@ -143,13 +137,15 @@ export const SearchGuild = () => {
                       guildName: v.guildName
                     })) as Guild[]) || []
                   }
+                  mainCharacterInfoSearchHandler={
+                    mainCharacterInfoSearchHandler
+                  }
                 />
-                {/* {guildList.length > 0 && <ListSwitch />} */}
               </div>
             </div>
             <div className="p-6">
               <div className="min-h-[600px]">
-                {isLoading && (
+                {(isLoading || isUpdating) && (
                   <div className="flex justify-center items-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-4"></div>
                     <p className="text-gray-600 font-medium">
@@ -157,21 +153,24 @@ export const SearchGuild = () => {
                     </p>
                   </div>
                 )}
-                {guildsInfo && guildsInfo.length > 0 && (
-                  <MemberContainer
-                    members={selectedGuildMember?.guildMember}
-                    allMembers={guildsInfo.map(v => ({
-                      guildName: v.guildName,
-                      guildMasterName: v.guildMasterName,
-                      memberDetailResponse: v.guildMember
-                    }))}
-                    masterName={selectedGuildMember?.guildMasterName}
-                    guildName={selectedGuildMember?.guildName}
-                    onSelect={() => {}}
-                    searchCharacter={searchCharacter}
-                    setSearchCharacter={handleSearchCharacter}
-                  />
-                )}
+                {guildsInfo &&
+                  guildsInfo.length > 0 &&
+                  !isLoading &&
+                  !isUpdating && (
+                    <MemberContainer
+                      members={selectedGuildMember?.guildMember}
+                      allMembers={guildsInfo.map(v => ({
+                        guildName: v.guildName,
+                        guildMasterName: v.guildMasterName,
+                        memberDetailResponse: v.guildMember
+                      }))}
+                      masterName={selectedGuildMember?.guildMasterName}
+                      guildName={selectedGuildMember?.guildName}
+                      onSelect={() => {}}
+                      searchCharacter={searchCharacter}
+                      setSearchCharacter={handleSearchCharacter}
+                    />
+                  )}
                 {guildsInfo && guildsInfo.length === 0 && (
                   <Empty text="길드를 선택해주세요" />
                 )}

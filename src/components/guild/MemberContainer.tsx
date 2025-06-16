@@ -331,9 +331,35 @@ export const MemberContainer = ({
                         </span>
                         {masterName && (
                           <span
-                            className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                              member.type === '본캐'
-                                ? 'bg-blue-100 text-blue-700'
+                            className={`px-2 py-0.5 rounded-full text-xs font-medium flex items-center gap-1 ${
+                              member.name === masterName
+                                ? 'bg-rose-100 text-rose-700'
+                                : member.type === '본캐'
+                                  ? 'bg-blue-100 text-blue-700'
+                                  : member.type === '부캐' &&
+                                      allMembers?.find(m =>
+                                        m.memberDetailResponse?.find(
+                                          m =>
+                                            m.name ===
+                                            member.mainCharacterInfo?.name
+                                        )
+                                      )
+                                    ? 'bg-purple-100 text-purple-700'
+                                    : 'bg-gray-100 text-gray-700'
+                            }`}>
+                            {member.name === masterName && (
+                              <svg
+                                className="w-3 h-3"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 1l3.22 6.52 7.2.97-5.21 5.07 1.23 7.19L12 17.77l-6.44 3.38 1.23-7.19-5.21-5.07 7.2-.97z" />
+                              </svg>
+                            )}
+                            {member.name === masterName
+                              ? '마스터'
+                              : member.type === '본캐'
+                                ? '본캐'
                                 : member.type === '부캐' &&
                                     allMembers?.find(m =>
                                       m.memberDetailResponse?.find(
@@ -342,23 +368,10 @@ export const MemberContainer = ({
                                           member.mainCharacterInfo?.name
                                       )
                                     )
-                                  ? 'bg-yellow-100 text-yellow-700'
-                                  : 'bg-gray-100 text-gray-700'
-                            }`}>
-                            {member.type === '본캐'
-                              ? '본캐'
-                              : member.type === '부캐' &&
-                                  allMembers?.find(m =>
-                                    m.memberDetailResponse?.find(
-                                      m =>
-                                        m.name ===
-                                        member.mainCharacterInfo?.name
-                                    )
-                                  )
-                                ? '부캐'
-                                : member.mainCharacterInfo === null
-                                  ? ''
-                                  : '외부 부캐'}
+                                  ? '부캐'
+                                  : member.mainCharacterInfo === null
+                                    ? ''
+                                    : '외부 부캐'}
                           </span>
                         )}
                       </div>

@@ -344,7 +344,7 @@ export const MemberContainer = ({
                                             member.mainCharacterInfo?.name
                                         )
                                       )
-                                    ? 'bg-purple-100 text-purple-700'
+                                    ? 'bg-yellow-100 text-yellow-700'
                                     : 'bg-gray-100 text-gray-700'
                             }`}>
                             {member.name === masterName && (

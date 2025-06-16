@@ -6,8 +6,10 @@ import { servers } from '../data/worlds'
 import { MemberContainer } from '../components/guild/MemberContainer'
 import { Empty } from '../components/common/Empty'
 import { ActionBtnList } from '../components/guild/ActionBtnList'
-import { Guild } from '../types/guild'
+import { Guild, Member } from '../types/guild'
 import { useState } from 'react'
+import { useModalStore } from '../store/modalStore'
+import { DetailMemberModal } from '../components/modal/guild/DetailMemberModal'
 
 export const SearchGuild = () => {
   const {
@@ -29,9 +31,24 @@ export const SearchGuild = () => {
   } = useSearchGuild()
 
   const [searchCharacter, setSearchCharacter] = useState('')
+  const { activeModal, openModal } = useModalStore()
 
+  const [selectedMember, setSelectedMember] = useState<{
+    type: string
+    member: Member | null
+  }>({
+    type: '',
+    member: null
+  })
   const handleSearchCharacter = (value: string) => {
     setSearchCharacter(value)
+  }
+
+  const handleMemberSelect = async (type: string, member: Member) => {
+    setSelectedMember({ type: type, member: member })
+    if (type !== '미지정') {
+      openModal('detailMember')
+    }
   }
 
   return (
@@ -185,7 +202,7 @@ export const SearchGuild = () => {
                       }))}
                       masterName={selectedGuildMember?.guildMasterName}
                       guildName={selectedGuildMember?.guildName}
-                      onSelect={() => {}}
+                      onSelect={handleMemberSelect}
                       searchCharacter={searchCharacter}
                       setSearchCharacter={handleSearchCharacter}
                     />
@@ -198,6 +215,19 @@ export const SearchGuild = () => {
           </div>
         </div>
       )}
+      {activeModal === 'detailMember' &&
+        selectedMember &&
+        selectedMember.member &&
+        guildsInfo && (
+          <DetailMemberModal
+            memberDetail={selectedMember.member}
+            memberList={guildsInfo.map(v => ({
+              guildName: v.guildName,
+              guildMasterName: v.guildMasterName,
+              memberDetailResponse: v.guildMember
+            }))}
+          />
+        )}
     </div>
   )
 }

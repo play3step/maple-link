@@ -68,7 +68,7 @@ const Room = () => {
           mainChar: mainChar.character_name,
           subChar: member.name
         })
-        openModal('alert')
+        openModal('alert') // 이거 나중에 삭제해야함
       } catch {
         setAlertMessage({
           mainChar: member.name,

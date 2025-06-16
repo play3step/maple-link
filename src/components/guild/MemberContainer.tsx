@@ -90,39 +90,77 @@ export const MemberContainer = ({
     <div className="w-full max-w-7xl mx-auto bg-white rounded-xl shadow-lg">
       {guildName && (
         <div className="p-4 bg-gradient-to-r from-blue-500 to-blue-600 relative">
-          <div className="flex items-center gap-2">
-            <h2 className="text-white text-lg font-semibold">
-              길드: {guildName}
-            </h2>
-            <div className="relative group">
-              <IoHelpCircleOutline className="text-white/80 hover:text-white cursor-help transition-colors text-xl" />
-              <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 px-4 py-3 bg-gray-800 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 w-64 z-50">
-                <div className="mb-2">
-                  <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700 mb-1">
-                    본캐
-                  </span>
-                  <p className="text-xs text-gray-200">
-                    길드의 메인 캐릭터입니다.
-                  </p>
+          <div className="flex items-center gap-2 justify-between">
+            <div className="flex items-center gap-2">
+              <h2 className="text-white text-lg font-semibold">
+                길드: {guildName}
+              </h2>
+              <div className="relative group">
+                <IoHelpCircleOutline className="text-white/80 hover:text-white cursor-help transition-colors text-xl" />
+                <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 px-4 py-3 bg-gray-800 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 w-64 z-50">
+                  <div className="mb-2">
+                    <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700 mb-1">
+                      본캐
+                    </span>
+                    <p className="text-xs text-gray-200">
+                      길드의 메인 캐릭터입니다.
+                    </p>
+                  </div>
+                  <div className="mb-2">
+                    <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700 mb-1">
+                      부캐
+                    </span>
+                    <p className="text-xs text-gray-200">
+                      같은 길드 내 본캐가 있는 부캐릭터입니다.
+                    </p>
+                  </div>
+                  <div>
+                    <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700 mb-1">
+                      외부 부캐
+                    </span>
+                    <p className="text-xs text-gray-200">
+                      다른 길드에 본캐가 있는 부캐릭터입니다.
+                    </p>
+                  </div>
+                  <div className="absolute left-1/2 -translate-x-1/2 -top-1 w-2 h-2 bg-gray-800 transform rotate-45"></div>
                 </div>
-                <div className="mb-2">
-                  <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700 mb-1">
-                    부캐
-                  </span>
-                  <p className="text-xs text-gray-200">
-                    같은 길드 내 본캐가 있는 부캐릭터입니다.
-                  </p>
-                </div>
-                <div>
-                  <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700 mb-1">
-                    외부 부캐
-                  </span>
-                  <p className="text-xs text-gray-200">
-                    다른 길드에 본캐가 있는 부캐릭터입니다.
-                  </p>
-                </div>
-                <div className="absolute left-1/2 -translate-x-1/2 -top-1 w-2 h-2 bg-gray-800 transform rotate-45"></div>
               </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <p className="bg-gray-700/70 px-3 py-1.5 rounded text-white text-sm font-bold shadow-md">
+                총 인원 : {members.length}
+              </p>
+              <p className="bg-emerald-600/70 px-3 py-1.5 rounded text-white text-sm font-bold shadow-md">
+                본캐 : {members.filter(member => member.type === '본캐').length}
+              </p>
+              <p className="bg-purple-600/70 px-3 py-1.5 rounded text-white text-sm font-bold shadow-md">
+                부캐 :
+                {
+                  members.filter(
+                    member =>
+                      member.type === '부캐' &&
+                      allMembers?.find(m =>
+                        m.memberDetailResponse?.find(
+                          m => m.name === member.mainCharacterInfo?.name
+                        )
+                      )
+                  ).length
+                }
+              </p>
+              <p className="bg-red-600/70 px-3 py-1.5 rounded text-white text-sm font-bold shadow-md">
+                외부 부캐 :
+                {
+                  members.filter(
+                    member =>
+                      member.type === '부캐' &&
+                      !allMembers?.some(m =>
+                        m.memberDetailResponse?.some(
+                          m => m.name === member.mainCharacterInfo?.name
+                        )
+                      )
+                  ).length
+                }
+              </p>
             </div>
           </div>
           {onDeleteGuild && !isMainGuild && (

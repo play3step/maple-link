@@ -30,7 +30,8 @@ export const useSearchGuild = () => {
   } = useQuery({
     queryKey: ['guildsInfo', serachGuildList, serachServer],
     queryFn: () => searchGuildWithoutLogin(serachGuildList, serachServer),
-    retry: false
+    retry: false,
+    staleTime: 1000 * 60 * 5
   })
 
   const mainCharacterInfoSearchMutation = useMutation({

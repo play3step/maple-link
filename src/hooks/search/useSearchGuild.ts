@@ -23,9 +23,14 @@ export const useSearchGuild = () => {
 
   const queryClient = useQueryClient()
 
-  const { data: guildsInfo, isLoading } = useQuery({
+  const {
+    data: guildsInfo,
+    isLoading,
+    isError
+  } = useQuery({
     queryKey: ['guildsInfo', serachGuildList, serachServer],
-    queryFn: () => searchGuildWithoutLogin(serachGuildList, serachServer)
+    queryFn: () => searchGuildWithoutLogin(serachGuildList, serachServer),
+    retry: false
   })
 
   const mainCharacterInfoSearchMutation = useMutation({
@@ -119,6 +124,15 @@ export const useSearchGuild = () => {
     guild => guild.guildName === selectedGuild
   )
 
+  const resetSearchParams = () => {
+    setSearchParams(new URLSearchParams())
+  }
+
+  if (isError) {
+    alert('길드 정보가 존재하지 않습니다.')
+    resetSearchParams()
+  }
+
   return {
     searchGuildHandler,
     guildList,
@@ -134,6 +148,7 @@ export const useSearchGuild = () => {
     removeGuildList,
     handleGuildKeyPress,
     selectedGuildMember,
-    mainCharacterInfoSearchHandler
+    mainCharacterInfoSearchHandler,
+    resetSearchParams
   }
 }

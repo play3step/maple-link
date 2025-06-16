@@ -24,7 +24,8 @@ export const SearchGuild = () => {
     isLoading,
     selectedGuildMember,
     mainCharacterInfoSearchHandler,
-    isUpdating
+    isUpdating,
+    resetSearchParams
   } = useSearchGuild()
 
   const [searchCharacter, setSearchCharacter] = useState('')
@@ -120,11 +121,29 @@ export const SearchGuild = () => {
         </div>
       ) : (
         <div className="max-w-7xl mx-auto px-4 py-5">
-          <div className="flex items-center gap-4 mb-5">
+          <div className="flex items-center justify-between mb-5">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">길드 관리</h1>
               <p className="text-sm text-gray-600 mt-1">길드원 정보 관리</p>
             </div>
+            <button
+              onClick={resetSearchParams}
+              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 hover:border-gray-300 rounded-lg transition-all shadow-sm">
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                />
+              </svg>
+              다른 길드 검색
+            </button>
           </div>
 
           <div className="bg-white rounded-xl shadow-sm border border-gray-100">

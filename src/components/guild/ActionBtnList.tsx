@@ -213,6 +213,7 @@ export const ActionBtnList = ({
                 <div className="relative group">
                   {
                     <button
+                      disabled={isLoading}
                       onClick={() => {
                         handleRefresh(selectedGuild?.guildId || 0)
                       }}

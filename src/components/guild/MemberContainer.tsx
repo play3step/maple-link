@@ -35,6 +35,9 @@ export const MemberContainer = ({
 
   const [isOpen, setIsOpen] = useState(false)
 
+  const [sortType, setSortType] = useState('캐릭터 정렬')
+  const [sortTypeOpen, setSortTypeOpen] = useState(false)
+
   const [selectedType, setSelectedType] = useState('캐릭터 분류')
 
   const [gridSize, setGridSize] = useState(2)
@@ -51,40 +54,49 @@ export const MemberContainer = ({
     setShowMenu(false)
   }
 
-  const filteredMembers = members.filter(member => {
-    if (selectedType === '모두 보기' || selectedType === '캐릭터 분류')
-      return member.name
+  const filteredMembers = members
+    .filter(member => {
+      const searchMatch = member.name
         .toLowerCase()
         .includes(searchCharacter?.toLowerCase() || '')
-    if (selectedType === '본캐')
-      return (
-        member.type === '본캐' &&
-        member.name.toLowerCase().includes(searchCharacter?.toLowerCase() || '')
-      )
-    if (selectedType === '부캐')
+
+      if (selectedType === '모두 보기' || selectedType === '캐릭터 분류')
+        return searchMatch
+
+      if (selectedType === '본캐') return member.type === '본캐' && searchMatch
+
+      if (selectedType === '부캐')
+        return (
+          member.type === '부캐' &&
+          allMembers?.find(m =>
+            m.memberDetailResponse?.find(
+              m => m.name === member.mainCharacterInfo?.name
+            )
+          ) &&
+          searchMatch
+        )
+
+      if (selectedType === '특이사항') return member.description && searchMatch
+
       return (
         member.type === '부캐' &&
-        allMembers?.find(m =>
+        !allMembers?.find(m =>
           m.memberDetailResponse?.find(
             m => m.name === member.mainCharacterInfo?.name
           )
         ) &&
-        member.name.toLowerCase().includes(searchCharacter?.toLowerCase() || '')
+        searchMatch
       )
-    if (selectedType === '특이사항')
-      return (
-        member.description &&
-        member.name.toLowerCase().includes(searchCharacter?.toLowerCase() || '')
-      )
-    return (
-      member.type === '부캐' &&
-      !allMembers?.find(m =>
-        m.memberDetailResponse?.find(
-          m => m.name === member.mainCharacterInfo?.name
-        )
-      )
-    )
-  })
+    })
+    .sort((a, b) => {
+      if (sortType === '이름순') {
+        return a.name.localeCompare(b.name)
+      }
+      if (sortType === '레벨순') {
+        return Number(b.level) - Number(a.level)
+      }
+      return 0
+    })
 
   return (
     <div className="w-full max-w-7xl mx-auto bg-white rounded-xl shadow-lg">
@@ -205,6 +217,41 @@ export const MemberContainer = ({
               className="relative"
               ref={dropdownRef}>
               <button
+                onClick={() => setSortTypeOpen(!sortTypeOpen)}
+                className="w-full flex items-center justify-between gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700">
+                {sortType ? <span>{sortType}</span> : <span>캐릭터 정렬</span>}
+                <IoChevronDown
+                  className={`text-gray-400 transform transition-transform flex-shrink-0 ${
+                    sortTypeOpen ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
+
+              {sortTypeOpen && (
+                <div className="absolute left-0 mt-2 w-32 bg-white rounded-lg shadow-lg border border-gray-100 py-1 z-10">
+                  <button
+                    onClick={() => {
+                      setSortType('이름순')
+                      setSortTypeOpen(false)
+                    }}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 truncate">
+                    이름순
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSortType('레벨순')
+                      setSortTypeOpen(false)
+                    }}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 truncate">
+                    레벨순
+                  </button>
+                </div>
+              )}
+            </div>
+            <div
+              className="relative"
+              ref={dropdownRef}>
+              <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="w-full flex items-center justify-between gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700">
                 {selectedType ? (
@@ -220,7 +267,7 @@ export const MemberContainer = ({
               </button>
 
               {isOpen && (
-                <div className="absolute left-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-100 py-1 z-10">
+                <div className="absolute left-0 mt-2 w-36 bg-white rounded-lg shadow-lg border border-gray-100 py-1 z-10">
                   <button
                     onClick={() => {
                       setSelectedType('모두 보기')

@@ -42,6 +42,18 @@ export default function Notice() {
       content:
         '1. 캐릭터 정보 조회\n→ 로그인하지 않아도 캐릭터 닉네임만 입력하면 정보를 조회할 수 있습니다.\n\n2. 로그인 없이 길드 조회 및 본캐/부캐 확인\n→ 누구나 길드 이름을 검색하여 길드에 등록된 본캐와 부캐 정보를 확인할 수 있습니다.\n\n',
       date: '2025.06'
+    },
+    {
+      id: 4,
+      type: 'update',
+      title: '메이플링크 비로그인 기능 업데이트 안내',
+      content:
+        '1. 캐릭터 정보 조회\n→ 로그인 없이 캐릭터 닉네임만 입력하면 정보를 조회할 수 있습니다.\n\n' +
+        '2. 길드 정보 조회 (로그인 불필요)\n→ 길드 이름/서버를 여러개 입력하면 아래 정보를 누구나 확인할 수 있습니다:\n' +
+        '- 본캐 / 부캐 구분\n' +
+        '- 총 인원 수, 본캐 수, 부캐 수 표시\n' +
+        '- 2개, 4개, 8개 단위로 캐릭터 목록 보기 지원',
+      date: '2025.06.17'
     }
   ])
 
@@ -124,7 +136,7 @@ export default function Notice() {
 
         {/* 공지/업데이트 목록 */}
         <div className="space-y-4">
-          {filteredItems.map(item => (
+          {filteredItems.reverse().map(item => (
             <div
               key={item.id}
               className="bg-white rounded-lg shadow-sm hover:shadow transition-shadow">

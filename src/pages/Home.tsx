@@ -99,6 +99,12 @@ const Home = () => {
       id: 3,
       title: '다음 업데이트 예정 기능',
       date: '2025.06'
+    },
+
+    {
+      id: 4,
+      title: '메이플링크 비로그인 기능 업데이트 안내',
+      date: '2025.06.17'
     }
   ]
 
@@ -353,7 +359,7 @@ const Home = () => {
             </div>
           </div>
           <div className="divide-y divide-gray-200">
-            {recentNotices.map(notice => (
+            {recentNotices.reverse().map(notice => (
               <Link
                 key={notice.id}
                 to="/notice"

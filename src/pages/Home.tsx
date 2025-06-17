@@ -73,19 +73,23 @@ const Home = () => {
     }
 
     setSearchLoading(true)
-    const { ocid } = await searchCharacterOcid(characterName.trim())
+    try {
+      const { ocid } = await searchCharacterOcid(characterName.trim())
 
-    if (!ocid) {
-      alert('캐릭터를 찾을 수 없습니다.')
-      return
+      if (!ocid) {
+        alert('캐릭터를 찾을 수 없습니다.')
+        return
+      }
+      await storeLogin('', '', 'search')
+      setCharacterOcid(ocid)
+      nav(`/searchCharacter`)
+    } catch (error) {
+      console.error(error)
+      alert('캐릭터 검색에 실패했습니다.')
+    } finally {
+      setSearchLoading(false)
     }
-
-    await storeLogin('', '', 'search')
-    setCharacterOcid(ocid)
-    nav(`/searchCharacter`)
-    setSearchLoading(false)
   }
-
   const onSearchGuild = async () => {
     nav(`/searchGuild`)
     searchGuildHandler()

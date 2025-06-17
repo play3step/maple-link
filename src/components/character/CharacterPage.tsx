@@ -27,17 +27,21 @@ export const CharacterPage = () => {
       alert('캐릭터 이름을 입력해주세요.')
       return
     }
-
     setSearchLoading(true)
-    const { ocid } = await searchCharacterOcid(characterName.trim())
 
-    if (!ocid) {
-      alert('캐릭터를 찾을 수 없습니다.')
-      return
+    try {
+      const { ocid } = await searchCharacterOcid(characterName.trim())
+      if (!ocid) {
+        alert('캐릭터를 찾을 수 없습니다.')
+        return
+      }
+      setCharacterOcid(ocid)
+    } catch (error) {
+      console.error(error)
+      alert('캐릭터 검색에 실패했습니다.')
+    } finally {
+      setSearchLoading(false)
     }
-
-    setCharacterOcid(ocid)
-    setSearchLoading(false)
   }
 
   if (isLoading) {

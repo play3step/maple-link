@@ -61,7 +61,7 @@ export const SearchGuild = () => {
                 <FiUsers className="text-purple-600 text-lg" />
               </div>
               <h2 className="text-base font-semibold text-gray-800">
-                길드 검색
+                길드 검색 (최대 4개 검색 가능)
               </h2>
             </div>
             <div className="space-y-3">

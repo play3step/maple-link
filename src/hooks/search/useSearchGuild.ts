@@ -91,6 +91,10 @@ export const useSearchGuild = () => {
       alert('길드 이름을 입력해주세요.')
       return
     }
+    if (guildList.length >= 4) {
+      alert('최대 4개의 길드를 검색할 수 있습니다.')
+      return
+    }
     setGuildList(prev => [...prev, guildName])
     setGuildName('')
   }

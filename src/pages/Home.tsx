@@ -21,7 +21,7 @@ import { servers } from '../data/worlds'
 const Home = () => {
   const { userLogin } = useAuth()
   const { storeLogin } = useAuthStore()
-  const { setUserInfo, updateUserInfo } = useUserStore()
+  const { setUserInfo, setCharacterOcid } = useUserStore()
   const nav = useNavigate()
   const KAKAO_CHAT_LINK = 'https://open.kakao.com/o/s4tfG2Ah'
 
@@ -50,6 +50,7 @@ const Home = () => {
       const userInfo = await userLogin()
       if (userInfo) {
         setUserInfo(userInfo)
+        setCharacterOcid(userInfo.ocid!)
         if (userInfo?.nexonApiKey) {
           nav('/character')
         } else {
@@ -76,7 +77,7 @@ const Home = () => {
     }
 
     await storeLogin('', '', 'search')
-    updateUserInfo({ ocid })
+    setCharacterOcid(ocid)
     nav(`/searchCharacter`)
   }
   const onSearchGuild = async () => {

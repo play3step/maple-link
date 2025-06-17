@@ -15,11 +15,11 @@ export const useAuthStore = create<StoreState>(set => ({
   token: null,
   uid: null,
   isLoggedIn: false,
-  userType: 'guest',
+  userType: 'search',
   storeLogin: (token: string, uid: string, userType: UserType) => {
     set({ token, uid, isLoggedIn: true, userType })
   },
   storeLogout: () => {
-    set({ token: null, uid: null, isLoggedIn: false, userType: 'guest' })
+    set({ token: null, uid: null, isLoggedIn: false, userType: 'search' })
   }
 }))

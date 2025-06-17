@@ -21,13 +21,16 @@ export const DetailMemberModal = ({
 }: Props) => {
   const [isEditMode, setIsEditMode] = useState(false)
   const [description, setDescription] = useState(memberDetail.description || '')
-  const [selectedTab, setSelectedTab] = useState<'info' | 'alts'>('info')
+  const [selectedTab, setSelectedTab] = useState<'info' | 'alts'>(
+    memberDetail.description ? 'info' : 'alts'
+  )
 
   const subCharacterList =
     memberList.flatMap(n =>
       n.memberDetailResponse
         ?.filter(
-          m => m.type === '부캐' && m.mainCharacterInfo?.id === memberDetail.id
+          m =>
+            m.type === '부캐' && m.mainCharacterInfo?.name === memberDetail.name
         )
         .map(m => ({
           ...m,
@@ -111,6 +114,9 @@ export const DetailMemberModal = ({
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h4 className="text-lg font-semibold">부캐릭터 목록</h4>
+              <p className="text-sm text-gray-500">
+                부캐릭터 총 {subCharacterList.length}개
+              </p>
             </div>
             <div className="flex flex-col gap-2 overflow-y-auto h-[calc(70vh-280px)]">
               {subCharacterList.map(alt => (

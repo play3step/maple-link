@@ -15,7 +15,7 @@ const Signup = () => {
   const { userLogout } = useAuth()
   const { uid } = useAuthStore()
 
-  const { updateUserInfo } = useUserStore()
+  const { updateUserInfo, setCharacterOcid } = useUserStore()
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -41,6 +41,7 @@ const Signup = () => {
         nexonApiKey: result.generatedApiKey,
         ocid: result.characterUid
       })
+      setCharacterOcid(result.characterUid)
 
       alert('API 키 등록이 완료되었습니다.')
 

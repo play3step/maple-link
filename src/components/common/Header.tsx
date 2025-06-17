@@ -23,7 +23,9 @@ function Header() {
     <header className="w-full max-w-[1440px] mx-auto px-6 py-4 border-b border-blue-100 backdrop-blur-sm bg-white/80 flex justify-between items-center sticky top-0 z-50 shadow-sm">
       <div className="flex items-center">
         <Link
-          to={userType === 'search' ? '/' : '/character'}
+          to={
+            userType === 'search' || userType === undefined ? '/' : '/character'
+          }
           className="flex items-center gap-2 hover:opacity-80 transition-all">
           <img
             src={Logo}
@@ -37,7 +39,7 @@ function Header() {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-5 ml-10">
-          {userType === 'search' ? (
+          {userType === 'search' || userType === undefined ? (
             <>
               <Button
                 scheme="subtle"
@@ -46,13 +48,13 @@ function Header() {
                 className="hover:text-blue-600 font-medium transition-all">
                 캐릭터검색
               </Button>
-              {/* <Button
+              <Button
                 scheme="subtle"
                 size="small"
-                onClick={() => nav('/rooms')}
+                onClick={() => nav('/searchGuild')}
                 className="hover:text-blue-600 font-medium transition-all">
                 길드검색
-              </Button> */}
+              </Button>
             </>
           ) : (
             <>
@@ -131,7 +133,7 @@ function Header() {
       {/* Mobile menu */}
       {mobileMenuOpen && (
         <div className="absolute top-full left-0 right-0 bg-white shadow-lg border-b border-blue-100 py-4 px-6 md:hidden flex flex-col gap-3">
-          {userType === 'search' ? (
+          {userType === 'search' || userType === undefined ? (
             <>
               <Button
                 scheme="subtle"
@@ -140,13 +142,13 @@ function Header() {
                 className="hover:text-blue-600 font-medium transition-all">
                 캐릭터검색
               </Button>
-              {/* <Button
+              <Button
                 scheme="subtle"
                 size="small"
-                onClick={() => nav('/rooms')}
+                onClick={() => nav('/searchGuild')}
                 className="hover:text-blue-600 font-medium transition-all">
                 길드검색
-              </Button> */}
+              </Button>
             </>
           ) : (
             <>

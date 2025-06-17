@@ -4,7 +4,8 @@ import {
   IoChevronDown,
   IoEllipsisVertical,
   IoSearchOutline,
-  IoHelpCircleOutline
+  IoHelpCircleOutline,
+  IoGridOutline
 } from 'react-icons/io5'
 
 interface MemberContainerProps {
@@ -34,7 +35,12 @@ export const MemberContainer = ({
 
   const [isOpen, setIsOpen] = useState(false)
 
+  const [sortType, setSortType] = useState('캐릭터 정렬')
+  const [sortTypeOpen, setSortTypeOpen] = useState(false)
+
   const [selectedType, setSelectedType] = useState('캐릭터 분류')
+
+  const [gridSize, setGridSize] = useState(2)
 
   const dropdownRef = useRef<HTMLDivElement>(null)
 
@@ -48,76 +54,125 @@ export const MemberContainer = ({
     setShowMenu(false)
   }
 
-  const filteredMembers = members.filter(member => {
-    if (selectedType === '모두 보기' || selectedType === '캐릭터 분류')
-      return member.name
+  const filteredMembers = members
+    .filter(member => {
+      const searchMatch = member.name
         .toLowerCase()
         .includes(searchCharacter?.toLowerCase() || '')
-    if (selectedType === '본캐')
-      return (
-        member.type === '본캐' &&
-        member.name.toLowerCase().includes(searchCharacter?.toLowerCase() || '')
-      )
-    if (selectedType === '부캐')
+
+      if (selectedType === '모두 보기' || selectedType === '캐릭터 분류')
+        return searchMatch
+
+      if (selectedType === '본캐') return member.type === '본캐' && searchMatch
+
+      if (selectedType === '부캐')
+        return (
+          member.type === '부캐' &&
+          allMembers?.find(m =>
+            m.memberDetailResponse?.find(
+              m => m.name === member.mainCharacterInfo?.name
+            )
+          ) &&
+          searchMatch
+        )
+
+      if (selectedType === '특이사항') return member.description && searchMatch
+
       return (
         member.type === '부캐' &&
-        allMembers?.find(m =>
+        !allMembers?.find(m =>
           m.memberDetailResponse?.find(
-            m => m.id === member.mainCharacterInfo?.id
+            m => m.name === member.mainCharacterInfo?.name
           )
         ) &&
-        member.name.toLowerCase().includes(searchCharacter?.toLowerCase() || '')
+        searchMatch
       )
-    if (selectedType === '특이사항')
-      return (
-        member.description &&
-        member.name.toLowerCase().includes(searchCharacter?.toLowerCase() || '')
-      )
-    return (
-      member.type === '부캐' &&
-      !allMembers?.find(m =>
-        m.memberDetailResponse?.find(m => m.id === member.mainCharacterInfo?.id)
-      )
-    )
-  })
+    })
+    .sort((a, b) => {
+      if (sortType === '이름순') {
+        return a.name.localeCompare(b.name)
+      }
+      if (sortType === '레벨순') {
+        return Number(b.level) - Number(a.level)
+      }
+      return 0
+    })
 
   return (
-    <div className="w-full max-w-3xl mx-auto bg-white rounded-xl shadow-lg">
+    <div className="w-full max-w-7xl mx-auto bg-white rounded-xl shadow-lg">
       {guildName && (
         <div className="p-4 bg-gradient-to-r from-blue-500 to-blue-600 relative">
-          <div className="flex items-center gap-2">
-            <h2 className="text-white text-lg font-semibold">
-              길드: {guildName}
-            </h2>
-            <div className="relative group">
-              <IoHelpCircleOutline className="text-white/80 hover:text-white cursor-help transition-colors text-xl" />
-              <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 px-4 py-3 bg-gray-800 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 w-64 z-50">
-                <div className="mb-2">
-                  <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700 mb-1">
-                    본캐
-                  </span>
-                  <p className="text-xs text-gray-200">
-                    길드의 메인 캐릭터입니다.
-                  </p>
+          <div className="flex items-center gap-2 justify-between">
+            <div className="flex items-center gap-2">
+              <h2 className="text-white text-lg font-semibold">
+                길드: {guildName}
+              </h2>
+              <div className="relative group">
+                <IoHelpCircleOutline className="text-white/80 hover:text-white cursor-help transition-colors text-xl" />
+                <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 px-4 py-3 bg-gray-800 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 w-64 z-50">
+                  <div className="mb-2">
+                    <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700 mb-1">
+                      본캐
+                    </span>
+                    <p className="text-xs text-gray-200">
+                      길드의 메인 캐릭터입니다.
+                    </p>
+                  </div>
+                  <div className="mb-2">
+                    <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700 mb-1">
+                      부캐
+                    </span>
+                    <p className="text-xs text-gray-200">
+                      같은 길드 내 본캐가 있는 부캐릭터입니다.
+                    </p>
+                  </div>
+                  <div>
+                    <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700 mb-1">
+                      외부 부캐
+                    </span>
+                    <p className="text-xs text-gray-200">
+                      다른 길드에 본캐가 있는 부캐릭터입니다.
+                    </p>
+                  </div>
+                  <div className="absolute left-1/2 -translate-x-1/2 -top-1 w-2 h-2 bg-gray-800 transform rotate-45"></div>
                 </div>
-                <div className="mb-2">
-                  <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700 mb-1">
-                    부캐
-                  </span>
-                  <p className="text-xs text-gray-200">
-                    같은 길드 내 본캐가 있는 부캐릭터입니다.
-                  </p>
-                </div>
-                <div>
-                  <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700 mb-1">
-                    외부 부캐
-                  </span>
-                  <p className="text-xs text-gray-200">
-                    다른 길드에 본캐가 있는 부캐릭터입니다.
-                  </p>
-                </div>
-                <div className="absolute left-1/2 -translate-x-1/2 -top-1 w-2 h-2 bg-gray-800 transform rotate-45"></div>
               </div>
+            </div>
+            <div className="flex items-center gap-3 mr-10">
+              <p className="bg-gray-700/70 px-3 py-1.5 rounded text-white text-sm font-bold shadow-md">
+                총 인원 : {members.length}
+              </p>
+              <p className="bg-emerald-600/70 px-3 py-1.5 rounded text-white text-sm font-bold shadow-md">
+                본캐 : {members.filter(member => member.type === '본캐').length}
+              </p>
+              <p className="bg-purple-600/70 px-3 py-1.5 rounded text-white text-sm font-bold shadow-md">
+                부캐 :
+                {
+                  members.filter(
+                    member =>
+                      member.type === '부캐' &&
+                      allMembers?.find(m =>
+                        m.memberDetailResponse?.find(
+                          m => m.name === member.mainCharacterInfo?.name
+                        )
+                      )
+                  ).length
+                }
+              </p>
+              <p className="bg-red-600/70 px-3 py-1.5 rounded text-white text-sm font-bold shadow-md">
+                외부 부캐 :
+                {
+                  members.filter(
+                    member =>
+                      member.type === '부캐' &&
+                      !allMembers?.some(m =>
+                        m.memberDetailResponse?.some(
+                          m => m.name === member.mainCharacterInfo?.name
+                        )
+                      )
+                  ).length
+                }
+              </p>
             </div>
           </div>
           {onDeleteGuild && !isMainGuild && (
@@ -145,7 +200,7 @@ export const MemberContainer = ({
       )}
 
       <div className="min-h-[520px] max-h-[calc(100vh-200px)] overflow-y-auto p-4">
-        <div className="mb-2 flex gap-2 items-center">
+        <div className="mb-2 flex gap-2 items-center sticky top-0 bg-white z-10">
           <div className="relative flex-1">
             <input
               type="text"
@@ -157,72 +212,124 @@ export const MemberContainer = ({
             <IoSearchOutline className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
           </div>
 
-          <div
-            className="relative w-full sm:w-auto"
-            ref={dropdownRef}>
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="w-full flex items-center justify-between sm:justify-start gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700">
-              {selectedType ? (
-                <span>{selectedType}</span>
-              ) : (
-                <span>캐릭터 분류</span>
+          <div className="flex gap-2">
+            <div
+              className="relative"
+              ref={dropdownRef}>
+              <button
+                onClick={() => setSortTypeOpen(!sortTypeOpen)}
+                className="w-full flex items-center justify-between gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700">
+                {sortType ? <span>{sortType}</span> : <span>캐릭터 정렬</span>}
+                <IoChevronDown
+                  className={`text-gray-400 transform transition-transform flex-shrink-0 ${
+                    sortTypeOpen ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
+
+              {sortTypeOpen && (
+                <div className="absolute left-0 mt-2 w-32 bg-white rounded-lg shadow-lg border border-gray-100 py-1 z-10">
+                  <button
+                    onClick={() => {
+                      setSortType('이름순')
+                      setSortTypeOpen(false)
+                    }}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 truncate">
+                    이름순
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSortType('레벨순')
+                      setSortTypeOpen(false)
+                    }}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 truncate">
+                    레벨순
+                  </button>
+                </div>
               )}
+            </div>
+            <div
+              className="relative"
+              ref={dropdownRef}>
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="w-full flex items-center justify-between gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700">
+                {selectedType ? (
+                  <span>{selectedType}</span>
+                ) : (
+                  <span>캐릭터 분류</span>
+                )}
+                <IoChevronDown
+                  className={`text-gray-400 transform transition-transform flex-shrink-0 ${
+                    isOpen ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
 
-              <IoChevronDown
-                className={`text-gray-400 transform transition-transform flex-shrink-0 ${
-                  isOpen ? 'rotate-180' : ''
-                }`}
-              />
-            </button>
+              {isOpen && (
+                <div className="absolute left-0 mt-2 w-36 bg-white rounded-lg shadow-lg border border-gray-100 py-1 z-10">
+                  <button
+                    onClick={() => {
+                      setSelectedType('모두 보기')
+                      setIsOpen(false)
+                    }}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 truncate">
+                    모두 보기
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSelectedType('본캐')
+                      setIsOpen(false)
+                    }}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 truncate">
+                    본캐
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSelectedType('부캐')
+                      setIsOpen(false)
+                    }}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 truncate">
+                    부캐
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSelectedType('외부 부캐')
+                      setIsOpen(false)
+                    }}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 truncate">
+                    외부 부캐
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSelectedType('특이사항')
+                      setIsOpen(false)
+                    }}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 truncate">
+                    특이사항
+                  </button>
+                </div>
+              )}
+            </div>
 
-            {isOpen && (
-              <div className="absolute left-0 mt-2 w-full sm:w-56 bg-white rounded-lg shadow-lg border border-gray-100 py-1 z-10">
-                <button
-                  onClick={() => {
-                    setSelectedType('모두 보기')
-                    setIsOpen(false)
-                  }}
-                  className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 truncate">
-                  모두 보기
-                </button>
-                <button
-                  onClick={() => {
-                    setSelectedType('본캐')
-                    setIsOpen(false)
-                  }}
-                  className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 truncate">
-                  본캐
-                </button>
-                <button
-                  onClick={() => {
-                    setSelectedType('부캐')
-                    setIsOpen(false)
-                  }}
-                  className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 truncate">
-                  부캐
-                </button>
-                <button
-                  onClick={() => {
-                    setSelectedType('외부 부캐')
-                    setIsOpen(false)
-                  }}
-                  className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 truncate">
-                  외부 부캐
-                </button>
-                <button
-                  onClick={() => {
-                    setSelectedType('특이사항')
-                    setIsOpen(false)
-                  }}
-                  className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 truncate">
-                  특이사항
-                </button>
-              </div>
-            )}
+            <div className="relative">
+              <button
+                onClick={() => setGridSize(gridSize === 8 ? 2 : gridSize * 2)}
+                className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700">
+                <IoGridOutline className="text-lg" />
+                <span>{gridSize}개 보기</span>
+              </button>
+            </div>
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-4">
+        <div
+          className={`grid grid-cols-1 ${
+            gridSize === 2
+              ? 'sm:grid-cols-2'
+              : gridSize === 4
+                ? 'sm:grid-cols-4'
+                : 'sm:grid-cols-8'
+          } gap-4 pb-4`}>
           {filteredMembers.map(member => (
             <div
               key={member.name}
@@ -235,7 +342,7 @@ export const MemberContainer = ({
                           ?.flatMap(g => g.memberDetailResponse)
                           .find(
                             m =>
-                              m?.id === member.mainCharacterInfo!.id &&
+                              m?.name === member.mainCharacterInfo!.name &&
                               m.type === '본캐'
                           )
 
@@ -246,58 +353,83 @@ export const MemberContainer = ({
                     : () => onSelect?.(member.type, member)
               }
               className="bg-gray-50 rounded-lg hover:bg-gray-100 transition-all duration-200 cursor-pointer group overflow-hidden border border-gray-100">
-              <div className="flex items-center p-3 gap-3">
+              <div
+                className={`flex items-center p-3 gap-3 ${gridSize === 8 ? 'flex-col' : ''}`}>
                 <img
                   src={member.imagePath}
                   alt={member.name}
-                  className="w-24 h-24 object-cover rounded-lg"
+                  className={`object-cover rounded-lg ${
+                    gridSize === 8 ? 'w-16 h-16' : 'w-24 h-24'
+                  }`}
                 />
-                <div className="flex-1 min-w-0">
+                <div
+                  className={`flex-1 min-w-0 ${gridSize === 8 ? 'text-center w-full' : ''}`}>
                   <h3 className="text-base font-semibold text-gray-900 truncate group-hover:text-blue-600">
                     {member.name}
                   </h3>
                   <p className="text-sm text-gray-500">{member.job}</p>
-                  <div className="flex items-center gap-2 mt-1">
-                    <div className="flex flex-col gap-1">
-                      <div className="flex items-center gap-2">
+                  <div
+                    className={`flex items-center gap-2 mt-1 ${gridSize === 8 ? 'justify-center flex-wrap' : ''}`}>
+                    <div
+                      className={`flex flex-col gap-1 ${gridSize === 8 ? 'items-center' : ''}`}>
+                      <div className="flex items-center gap-2 flex-wrap justify-center">
                         <span className="text-xs text-gray-500">
                           Lv.{member.level}
                         </span>
                         {masterName && (
                           <span
-                            className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                              member.type === '본캐'
-                                ? 'bg-blue-100 text-blue-700'
+                            className={`px-2 py-0.5 rounded-full text-xs font-medium flex items-center gap-1 ${
+                              member.name === masterName
+                                ? 'bg-rose-100 text-rose-700'
+                                : member.type === '본캐'
+                                  ? 'bg-blue-100 text-blue-700'
+                                  : member.type === '부캐' &&
+                                      allMembers?.find(m =>
+                                        m.memberDetailResponse?.find(
+                                          m =>
+                                            m.name ===
+                                            member.mainCharacterInfo?.name
+                                        )
+                                      )
+                                    ? 'bg-yellow-100 text-yellow-700'
+                                    : 'bg-gray-100 text-gray-700'
+                            }`}>
+                            {member.name === masterName && (
+                              <svg
+                                className="w-3 h-3"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 1l3.22 6.52 7.2.97-5.21 5.07 1.23 7.19L12 17.77l-6.44 3.38 1.23-7.19-5.21-5.07 7.2-.97z" />
+                              </svg>
+                            )}
+                            {member.name === masterName
+                              ? '마스터'
+                              : member.type === '본캐'
+                                ? '본캐'
                                 : member.type === '부캐' &&
                                     allMembers?.find(m =>
                                       m.memberDetailResponse?.find(
                                         m =>
-                                          m.id === member.mainCharacterInfo?.id
+                                          m.name ===
+                                          member.mainCharacterInfo?.name
                                       )
                                     )
-                                  ? 'bg-yellow-100 text-yellow-700'
-                                  : 'bg-gray-100 text-gray-700'
-                            }`}>
-                            {member.type === '본캐'
-                              ? '본캐'
-                              : member.type === '부캐' &&
-                                  allMembers?.find(m =>
-                                    m.memberDetailResponse?.find(
-                                      m => m.id === member.mainCharacterInfo?.id
-                                    )
-                                  )
-                                ? '부캐'
-                                : '외부 부캐'}
+                                  ? '부캐'
+                                  : member.mainCharacterInfo === null
+                                    ? ''
+                                    : '외부 부캐'}
                           </span>
                         )}
                       </div>
                       {member.type === '부캐' &&
                         !allMembers?.find(m =>
                           m.memberDetailResponse?.find(
-                            m => m.id === member.mainCharacterInfo?.id
+                            m => m.name === member.mainCharacterInfo?.name
                           )
                         ) && (
-                          <span className="text-xs text-gray-500">
+                          <span
+                            className={`text-xs text-gray-500 ${gridSize === 8 ? 'text-center' : ''}`}>
                             외부 길드에 {member.mainCharacterInfo?.name}님의
                             부캐입니다.
                           </span>

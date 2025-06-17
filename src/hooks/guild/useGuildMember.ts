@@ -28,7 +28,7 @@ export const useGuildMember = () => {
     queryFn: () =>
       Promise.all(guildList?.map(v => fetchGuildMembers(v.guildId ?? 0)) || []),
     staleTime: 1000 * 60 * 10,
-    enabled: userType !== 'guest'
+    enabled: userType === 'member'
   })
 
   if (userType === 'guest') {

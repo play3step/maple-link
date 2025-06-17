@@ -7,26 +7,38 @@ import { StatContainer } from './StatContainer'
 import { useCharacterData } from '../../hooks/character/useCharacterData'
 import { useInventory } from '../../hooks/character/useInventory'
 import { useNavigate } from 'react-router-dom'
+import { useUserStore } from '../../store/userStore'
+import { searchCharacterOcid } from '../../apis/character/characterController'
 
-interface CharacterPageProps {
-  type: 'character' | 'search'
-  characterName?: string
-  setCharacterName?: (characterName: string) => void
-  searchCharacterHandler?: () => Promise<void>
-}
-export const CharacterPage = ({
-  type,
-  characterName,
-  setCharacterName,
-  searchCharacterHandler
-}: CharacterPageProps) => {
+export const CharacterPage = () => {
   const { characterStats, ability, hyperStat, basic, isLoading, error } =
     useCharacterData()
+  const [characterName, setCharacterName] = useState('')
 
   const { inventory } = useInventory()
 
   const [showStats, setShowStats] = useState(true)
   const nav = useNavigate()
+  const { setCharacterOcid } = useUserStore()
+  const [searchLoading, setSearchLoading] = useState(false)
+
+  const searchCharacterHandler = async () => {
+    if (characterName.trim() === '') {
+      alert('캐릭터 이름을 입력해주세요.')
+      return
+    }
+
+    setSearchLoading(true)
+    const { ocid } = await searchCharacterOcid(characterName.trim())
+
+    if (!ocid) {
+      alert('캐릭터를 찾을 수 없습니다.')
+      return
+    }
+
+    setCharacterOcid(ocid)
+    setSearchLoading(false)
+  }
 
   if (isLoading) {
     return (
@@ -73,24 +85,26 @@ export const CharacterPage = ({
             장비 정보
           </button>
         </div>
-        {type === 'search' ? (
-          <div className="flex items-center gap-2 w-64">
-            <input
-              type="text"
-              placeholder="캐릭터 이름을 입력해주세요"
-              className="flex-1 px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
-              value={characterName}
-              onChange={e => setCharacterName?.(e.target.value)}
-            />
-            <button
-              onClick={searchCharacterHandler}
-              className="px-4 py-1.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-medium rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all shadow-sm flex-shrink-0">
-              검색
-            </button>
-          </div>
-        ) : (
-          <div className="w-64">{/* 오른쪽 여백을 위한 빈 div */}</div>
-        )}
+
+        <div className="flex items-center gap-2 w-64">
+          <input
+            type="text"
+            placeholder="캐릭터 이름을 입력해주세요"
+            className="flex-1 px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+            value={characterName}
+            onChange={e => setCharacterName?.(e.target.value)}
+          />
+          <button
+            onClick={searchCharacterHandler}
+            disabled={searchLoading}
+            className={`px-4 py-1.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-medium rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all shadow-sm flex-shrink-0 ${
+              searchLoading
+                ? 'bg-blue-300 cursor-not-allowed'
+                : 'bg-blue-500 hover:bg-blue-600'
+            }`}>
+            {searchLoading ? '검색 중...' : '검색'}
+          </button>
+        </div>
       </div>
 
       {/* 콘텐츠 영역 */}

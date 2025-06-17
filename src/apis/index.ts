@@ -14,6 +14,14 @@ export const basicApi = axios.create({
   }
 })
 
+export const publicApi = axios.create({
+  baseURL: API_KEY,
+  timeout: DEFAULT_TIMEOUT,
+  headers: {
+    'Content-Type': 'application/json;charset=utf-8'
+  }
+})
+
 basicApi.interceptors.request.use(config => {
   const token = useAuthStore.getState().token
   if (token) {

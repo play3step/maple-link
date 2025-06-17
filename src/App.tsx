@@ -15,6 +15,7 @@ import Room from './pages/Room'
 import { GuildPromotion } from './pages/GuildPromotion'
 import Notice from './pages/Notice'
 import { SearchCharacter } from './pages/SearchCharacter'
+import { SearchGuild } from './pages/SearchGuild'
 
 const router = createBrowserRouter([
   {
@@ -124,6 +125,14 @@ const router = createBrowserRouter([
     element: (
       <Layout>
         <SearchCharacter />
+      </Layout>
+    )
+  },
+  {
+    path: '/searchGuild',
+    element: (
+      <Layout>
+        <SearchGuild />
       </Layout>
     )
   }

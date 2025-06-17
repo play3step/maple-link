@@ -16,16 +16,17 @@ import { useUserStore } from '../../store/userStore'
 import { useEffect } from 'react'
 
 export const useCharacterData = () => {
-  const { userInfo, setUserName } = useUserStore()
-  const ocid = userInfo?.ocid
+  const { setUserName, characterOcid } = useUserStore()
 
   const {
     data: characterStats,
     isLoading: statsLoading,
     error: statsError
   } = useQuery<CharacterStats>({
-    queryKey: ['characterStats', ocid],
-    queryFn: ocid ? () => fetchCharacterStat(ocid) : undefined,
+    queryKey: ['characterStats', characterOcid],
+    queryFn: characterOcid
+      ? () => fetchCharacterStat(characterOcid)
+      : undefined,
     staleTime: 5 * 60 * 1000,
     retry: false
   })
@@ -35,8 +36,10 @@ export const useCharacterData = () => {
     isLoading: abilityLoading,
     error: abilityError
   } = useQuery<CharacterAbility>({
-    queryKey: ['characterAbility', ocid],
-    queryFn: ocid ? () => fetchCharacterAbility(ocid) : undefined,
+    queryKey: ['characterAbility', characterOcid],
+    queryFn: characterOcid
+      ? () => fetchCharacterAbility(characterOcid)
+      : undefined,
     staleTime: 5 * 60 * 1000,
     retry: false
   })
@@ -46,8 +49,10 @@ export const useCharacterData = () => {
     isLoading: hyperLoading,
     error: hyperError
   } = useQuery<HyperStat>({
-    queryKey: ['characterHyperStat', ocid],
-    queryFn: ocid ? () => fetchCharacterHyperStat(ocid) : undefined,
+    queryKey: ['characterHyperStat', characterOcid],
+    queryFn: characterOcid
+      ? () => fetchCharacterHyperStat(characterOcid)
+      : undefined,
     staleTime: 5 * 60 * 1000,
     retry: false
   })
@@ -57,8 +62,10 @@ export const useCharacterData = () => {
     isLoading: basicLoading,
     error: basicError
   } = useQuery<CharacterBasic>({
-    queryKey: ['characterBasic', ocid],
-    queryFn: ocid ? () => fetchCharacterBasic(ocid) : undefined,
+    queryKey: ['characterBasic', characterOcid],
+    queryFn: characterOcid
+      ? () => fetchCharacterBasic(characterOcid)
+      : undefined,
     staleTime: 5 * 60 * 1000,
     retry: false
   })

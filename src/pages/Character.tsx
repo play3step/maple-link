@@ -1,7 +1,7 @@
 import { CharacterPage } from '../components/character/CharacterPage'
 
 const Character = () => {
-  return <CharacterPage type="character" />
+  return <CharacterPage />
 }
 
 export default Character

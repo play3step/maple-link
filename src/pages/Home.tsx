@@ -12,30 +12,39 @@ import {
 import Logo from '../assets/logo.png'
 import GoogleLogo from '../assets/gogle.svg'
 import { useUserStore } from '../store/userStore'
-import { guest } from '../data/guest'
 import { useState } from 'react'
 import Button from '../components/common/Button'
 import { searchCharacterOcid } from '../apis/character/characterController'
+import { useSearchGuild } from '../hooks/search/useSearchGuild'
+import { servers } from '../data/worlds'
+import { guest } from '../data/guest'
 
 const Home = () => {
   const { userLogin } = useAuth()
   const { storeLogin } = useAuthStore()
-  const { setUserInfo } = useUserStore()
+  const { setUserInfo, setCharacterOcid } = useUserStore()
+  const [searchLoading, setSearchLoading] = useState(false)
   const nav = useNavigate()
   const KAKAO_CHAT_LINK = 'https://open.kakao.com/o/s4tfG2Ah'
 
   const [characterName, setCharacterName] = useState('')
-  const [guildName, setGuildName] = useState('')
+
+  const {
+    selectedServer,
+    setSelectedServer,
+    guildList,
+    searchGuildHandler,
+    addGuildList,
+    removeGuildList,
+    handleGuildKeyPress,
+    guildName,
+    setGuildName
+  } = useSearchGuild()
 
   const handleGuestLogin = async () => {
     await storeLogin('', '', 'guest')
-    setUserInfo({
-      id: 0,
-      firebaseId: '1',
-      name: 'guest',
-      email: 'play3step@gmail.com',
-      ocid: guest.ocid
-    })
+    setCharacterOcid(guest.ocid)
+
     nav('/character')
   }
 
@@ -44,6 +53,7 @@ const Home = () => {
       const userInfo = await userLogin()
       if (userInfo) {
         setUserInfo(userInfo)
+        setCharacterOcid(userInfo.ocid!)
         if (userInfo?.nexonApiKey) {
           nav('/character')
         } else {
@@ -62,6 +72,7 @@ const Home = () => {
       return
     }
 
+    setSearchLoading(true)
     const { ocid } = await searchCharacterOcid(characterName.trim())
 
     if (!ocid) {
@@ -70,15 +81,14 @@ const Home = () => {
     }
 
     await storeLogin('', '', 'search')
-
-    setUserInfo({
-      id: 0,
-      firebaseId: '1',
-      name: characterName.trim(),
-      email: 'play3step@gmail.com',
-      ocid: ocid
-    })
+    setCharacterOcid(ocid)
     nav(`/searchCharacter`)
+    setSearchLoading(false)
+  }
+
+  const onSearchGuild = async () => {
+    nav(`/searchGuild`)
+    searchGuildHandler()
   }
 
   const recentNotices = [
@@ -96,6 +106,12 @@ const Home = () => {
       id: 3,
       title: '다음 업데이트 예정 기능',
       date: '2025.06'
+    },
+
+    {
+      id: 4,
+      title: '메이플링크 비로그인 기능 업데이트 안내',
+      date: '2025.06.17'
     }
   ]
 
@@ -178,60 +194,82 @@ const Home = () => {
         <div className="grid grid-cols-1 md:grid-cols-2  gap-6 mb-12">
           {/* 길드 검색 */}
           <div className="md:col-span-2 md:w-2/3 md:mx-auto bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
-            <div className="absolute inset-0 bg-black/5 backdrop-blur-[1px] flex flex-col items-center justify-center z-10 gap-2">
-              <div className="bg-amber-500/90 px-4 py-1.5 rounded-full">
-                <span className="text-white font-medium text-sm">
-                  서비스 준비중
-                </span>
-              </div>
-            </div>
-            <div className="opacity-50">
+            <div className="flex flex-col justify-between">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-br from-purple-100 to-purple-200 rounded-lg flex items-center justify-center shadow-sm">
                   <FiUsers className="text-purple-600 text-lg" />
                 </div>
-                <h2 className="text-base font-semibold">길드 검색</h2>
+                <h2 className="text-base font-semibold text-gray-800">
+                  길드 검색
+                </h2>
               </div>
               <div className="space-y-3">
                 <div className="flex gap-2">
+                  <select
+                    value={selectedServer}
+                    onChange={e => setSelectedServer(e.target.value)}
+                    className="px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white min-w-[120px]">
+                    <option value="">서버 선택</option>
+                    {servers.map(server => (
+                      <option
+                        key={server.id}
+                        value={server.id}>
+                        {server.name}
+                      </option>
+                    ))}
+                  </select>
                   <input
                     type="text"
                     placeholder="길드 이름을 입력하세요"
                     value={guildName}
                     onChange={e => setGuildName(e.target.value)}
-                    className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                    disabled
+                    onKeyPress={handleGuildKeyPress}
+                    className="flex-1 px-4 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white"
                   />
                   <Button
                     size="medium"
                     scheme="solid"
-                    className="px-3 py-2 !bg-purple-500 hover:!bg-purple-600 text-sm"
-                    disabled>
+                    onClick={() => addGuildList(guildName)}
+                    className="px-4 py-2.5 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-sm transition-all shadow-sm">
                     추가
                   </Button>
                 </div>
 
                 <div className="space-y-1.5">
-                  <p className="text-xs text-gray-500">검색할 길드 목록</p>
+                  <p className="text-xs text-gray-600">검색할 길드 목록</p>
                   <div className="flex flex-wrap gap-1.5">
-                    <div className="flex items-center gap-1 px-2 py-0.5 bg-purple-50 border border-purple-200 rounded-md">
-                      <span className="text-base text-purple-700">
-                        아르카나
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1 px-2 py-0.5 bg-purple-50 border border-purple-200 rounded-md">
-                      <span className="text-base text-purple-700">
-                        노비맙단
-                      </span>
-                    </div>
+                    {guildList.map(guild => (
+                      <div
+                        key={guild}
+                        className="flex items-center gap-1 px-2.5 py-1 bg-gradient-to-r from-purple-50 to-purple-100 border border-purple-200 rounded-md group">
+                        <span className="text-sm text-purple-700">{guild}</span>
+                        <button
+                          onClick={() => removeGuildList(guild)}
+                          className="p-0.5 text-purple-400 hover:text-purple-600 rounded-full hover:bg-purple-100 transition-colors">
+                          <svg
+                            className="w-3.5 h-3.5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M6 18L18 6M6 6l12 12"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
                 <Button
                   size="medium"
                   scheme="solid"
-                  className="w-full !bg-purple-500 hover:!bg-purple-600 text-sm"
-                  disabled>
+                  onClick={onSearchGuild}
+                  className="w-full text-sm bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 transition-all shadow-sm">
                   길드 검색
                 </Button>
               </div>
@@ -260,9 +298,14 @@ const Home = () => {
                 <Button
                   size="medium"
                   scheme="solid"
-                  className="w-full text-sm bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 transition-all shadow-sm"
+                  disabled={searchLoading}
+                  className={`w-full text-sm bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 transition-all shadow-sm ${
+                    searchLoading
+                      ? 'bg-blue-300 cursor-not-allowed'
+                      : 'bg-blue-500 hover:bg-blue-600'
+                  }`}
                   onClick={searchCharacterHandler}>
-                  캐릭터 검색
+                  {searchLoading ? '검색 중...' : '검색'}
                 </Button>
               </div>
             </div>
@@ -328,7 +371,7 @@ const Home = () => {
             </div>
           </div>
           <div className="divide-y divide-gray-200">
-            {recentNotices.map(notice => (
+            {recentNotices.reverse().map(notice => (
               <Link
                 key={notice.id}
                 to="/notice"

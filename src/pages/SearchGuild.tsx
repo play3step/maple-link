@@ -176,6 +176,7 @@ export const SearchGuild = () => {
                   mainCharacterInfoSearchHandler={
                     mainCharacterInfoSearchHandler
                   }
+                  isUpdating={isUpdating}
                 />
               </div>
             </div>

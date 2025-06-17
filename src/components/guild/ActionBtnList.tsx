@@ -16,6 +16,7 @@ interface Props {
   handleDetect?: () => void
   refreshMember?: (guildId: number) => void
   mainCharacterInfoSearchHandler?: () => void
+  isUpdating?: boolean
 }
 
 export const ActionBtnList = ({
@@ -23,7 +24,8 @@ export const ActionBtnList = ({
   guildList,
   handleDetect,
   refreshMember,
-  mainCharacterInfoSearchHandler
+  mainCharacterInfoSearchHandler,
+  isUpdating
 }: Props) => {
   const [searchParams, setSearchParams] = useSearchParams()
   const [selectedGuild, setSelectedGuild] = useState<Guild | null>(null)
@@ -164,7 +166,12 @@ export const ActionBtnList = ({
                   onClick={() => {
                     mainCharacterInfoSearchHandler?.()
                   }}
-                  className="sm:w-32 shrink-0 bg-blue-500 hover:bg-blue-600 text-white rounded-lg px-1 py-2 text-sm font-medium transition-colors duration-200 flex items-center justify-center gap-2 shadow-sm">
+                  disabled={isUpdating}
+                  className={`sm:w-32 shrink-0 ${
+                    isUpdating
+                      ? 'bg-blue-300 cursor-not-allowed'
+                      : 'bg-blue-500 hover:bg-blue-600'
+                  } text-white rounded-lg px-1 py-2 text-sm font-medium transition-colors duration-200 flex items-center justify-center gap-2 shadow-sm`}>
                   <svg
                     className="w-4 h-4"
                     fill="none"
@@ -178,7 +185,7 @@ export const ActionBtnList = ({
                       d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                     />
                   </svg>
-                  본캐/부캐 조회
+                  {isUpdating ? '조회 중...' : '본캐/부캐 조회'}
                 </button>
               </div>
             )}

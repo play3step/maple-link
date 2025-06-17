@@ -20,7 +20,7 @@ export const useUserNotice = () => {
   const { data, isLoading } = useQuery<CalendarResponse>({
     queryKey: ['calendar'],
     queryFn: getCalendar,
-    enabled: userType !== 'guest'
+    enabled: userType === 'member'
   })
 
   const createPersonalCalendarMutation = useMutation({

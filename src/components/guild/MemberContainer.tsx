@@ -138,7 +138,7 @@ export const MemberContainer = ({
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 mr-10">
               <p className="bg-gray-700/70 px-3 py-1.5 rounded text-white text-sm font-bold shadow-md">
                 총 인원 : {members.length}
               </p>

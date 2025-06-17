@@ -186,6 +186,24 @@ export const ActionBtnList = ({
             {handleDetect && showModal && (
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
                 <div className="relative group">
+                  <button
+                    onClick={() => {
+                      handleDetect()
+                      showModal('detectMember')
+                    }}
+                    className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700">
+                    <IoGitCompare className="text-lg text-gray-500" />
+                    <span className="sm:hidden md:inline">길드원 변경사항</span>
+                  </button>
+                  <div className="absolute left-0 -bottom-1 translate-y-full invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 z-20">
+                    <div className="bg-gray-800 text-white text-base px-3 py-2 rounded-lg shadow-lg whitespace-nowrap">
+                      기록된 길드원 정보와 게임 내 정보를 비교하고 변경합니다.
+                      <br />
+                      ⭐︎ 길드원 변동이 있을경우 꼭 눌러주세요. ⭐︎
+                    </div>
+                  </div>
+                </div>
+                <div className="relative group">
                   {
                     <button
                       onClick={() => {
@@ -207,24 +225,7 @@ export const ActionBtnList = ({
 
                   <div className="absolute left-0 -bottom-1 translate-y-full invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 z-20">
                     <div className="bg-gray-800 text-white text-base px-3 py-2 rounded-lg shadow-lg whitespace-nowrap">
-                      캐릭터의 본/부캐 정보를 새로고침합니다
-                    </div>
-                  </div>
-                </div>
-
-                <div className="relative group">
-                  <button
-                    onClick={() => {
-                      handleDetect()
-                      showModal('detectMember')
-                    }}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700">
-                    <IoGitCompare className="text-lg text-gray-500" />
-                    <span className="sm:hidden md:inline">비교하기</span>
-                  </button>
-                  <div className="absolute left-0 -bottom-1 translate-y-full invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 z-20">
-                    <div className="bg-gray-800 text-white text-base px-3 py-2 rounded-lg shadow-lg whitespace-nowrap">
-                      기록된 길드원 정보를 게임 내 정보와 비교합니다.
+                      캐릭터의 본/부캐 정보가 오류 있을 경우 새로고침합니다.
                     </div>
                   </div>
                 </div>

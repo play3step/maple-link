@@ -17,11 +17,13 @@ import Button from '../components/common/Button'
 import { searchCharacterOcid } from '../apis/character/characterController'
 import { useSearchGuild } from '../hooks/search/useSearchGuild'
 import { servers } from '../data/worlds'
+import { guest } from '../data/guest'
 
 const Home = () => {
   const { userLogin } = useAuth()
   const { storeLogin } = useAuthStore()
   const { setUserInfo, setCharacterOcid } = useUserStore()
+  const [searchLoading, setSearchLoading] = useState(false)
   const nav = useNavigate()
   const KAKAO_CHAT_LINK = 'https://open.kakao.com/o/s4tfG2Ah'
 
@@ -41,6 +43,7 @@ const Home = () => {
 
   const handleGuestLogin = async () => {
     await storeLogin('', '', 'guest')
+    setCharacterOcid(guest.ocid)
 
     nav('/character')
   }
@@ -69,6 +72,7 @@ const Home = () => {
       return
     }
 
+    setSearchLoading(true)
     const { ocid } = await searchCharacterOcid(characterName.trim())
 
     if (!ocid) {
@@ -79,7 +83,9 @@ const Home = () => {
     await storeLogin('', '', 'search')
     setCharacterOcid(ocid)
     nav(`/searchCharacter`)
+    setSearchLoading(false)
   }
+
   const onSearchGuild = async () => {
     nav(`/searchGuild`)
     searchGuildHandler()
@@ -292,9 +298,14 @@ const Home = () => {
                 <Button
                   size="medium"
                   scheme="solid"
-                  className="w-full text-sm bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 transition-all shadow-sm"
+                  disabled={searchLoading}
+                  className={`w-full text-sm bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 transition-all shadow-sm ${
+                    searchLoading
+                      ? 'bg-blue-300 cursor-not-allowed'
+                      : 'bg-blue-500 hover:bg-blue-600'
+                  }`}
                   onClick={searchCharacterHandler}>
-                  캐릭터 검색
+                  {searchLoading ? '검색 중...' : '검색'}
                 </Button>
               </div>
             </div>

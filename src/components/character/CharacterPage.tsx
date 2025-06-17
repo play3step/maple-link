@@ -20,6 +20,7 @@ export const CharacterPage = () => {
   const [showStats, setShowStats] = useState(true)
   const nav = useNavigate()
   const { setCharacterOcid } = useUserStore()
+  const [searchLoading, setSearchLoading] = useState(false)
 
   const searchCharacterHandler = async () => {
     if (characterName.trim() === '') {
@@ -27,6 +28,7 @@ export const CharacterPage = () => {
       return
     }
 
+    setSearchLoading(true)
     const { ocid } = await searchCharacterOcid(characterName.trim())
 
     if (!ocid) {
@@ -35,6 +37,7 @@ export const CharacterPage = () => {
     }
 
     setCharacterOcid(ocid)
+    setSearchLoading(false)
   }
 
   if (isLoading) {
@@ -93,8 +96,13 @@ export const CharacterPage = () => {
           />
           <button
             onClick={searchCharacterHandler}
-            className="px-4 py-1.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-medium rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all shadow-sm flex-shrink-0">
-            검색
+            disabled={searchLoading}
+            className={`px-4 py-1.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-medium rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all shadow-sm flex-shrink-0 ${
+              searchLoading
+                ? 'bg-blue-300 cursor-not-allowed'
+                : 'bg-blue-500 hover:bg-blue-600'
+            }`}>
+            {searchLoading ? '검색 중...' : '검색'}
           </button>
         </div>
       </div>

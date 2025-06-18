@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import Button from './Button'
 import Logo from '../../assets/logo.png'
@@ -22,8 +22,8 @@ function Header() {
   return (
     <header className="w-full max-w-[1440px] mx-auto px-6 py-4 border-b border-blue-100 backdrop-blur-sm bg-white/80 flex justify-between items-center sticky top-0 z-50 shadow-sm">
       <div className="flex items-center">
-        <button
-          onClick={userLogout}
+        <Link
+          to={userType === 'member' ? '/character' : '/'}
           className="flex items-center gap-2 hover:opacity-80 transition-all">
           <img
             src={Logo}
@@ -33,7 +33,7 @@ function Header() {
           <span className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
             Maple Link
           </span>
-        </button>
+        </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-5 ml-10">

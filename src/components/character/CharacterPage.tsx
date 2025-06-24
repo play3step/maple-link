@@ -168,14 +168,39 @@ export const CharacterPage = ({ type }: CharacterPageProps) => {
 
       {/* 콘텐츠 영역 */}
       {isSyncing || isLoading ? (
-        <div className="w-full h-full flex justify-center items-center p-8">
-          <div className="flex flex-col items-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-4"></div>
-            <p className="text-gray-600 font-medium">
-              캐릭터 정보를 불러오는 중...
-            </p>
-          </div>
-          <div className="flex flex-col items-center"></div>
+        <div className="w-full max-w-6xl mx-auto rounded-xl bg-white/90 shadow-lg border border-blue-100 p-3 sm:p-4">
+          {showStats ? (
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-3">
+              {/* 캐릭터 정보와 어빌리티 스켈레톤 */}
+              <div className="lg:col-span-1 order-1 flex flex-col gap-3">
+                <div className="bg-gray-100 animate-pulse rounded-lg h-[200px]"></div>
+                <div className="bg-gray-100 animate-pulse rounded-lg h-[150px]"></div>
+              </div>
+
+              {/* 기본 스탯 스켈레톤 */}
+              <div className="lg:col-span-2 order-3 lg:order-2">
+                <div className="bg-gray-100 animate-pulse rounded-lg h-[500px]"></div>
+              </div>
+
+              {/* 하이퍼 스탯 스켈레톤 */}
+              <div className="lg:col-span-1 order-4 lg:order-3">
+                <div className="bg-gray-100 animate-pulse rounded-lg h-[500px]"></div>
+              </div>
+            </div>
+          ) : (
+            <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* 캐릭터 이미지 스켈레톤 */}
+              <div className="bg-gray-100 animate-pulse rounded-lg h-[600px]"></div>
+              {/* 장비 정보 스켈레톤 */}
+              <div className="grid grid-cols-3 gap-2">
+                {Array.from({ length: 15 }).map((_, index) => (
+                  <div
+                    key={index}
+                    className="bg-gray-100 animate-pulse rounded-lg aspect-square"></div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <div className="w-full max-w-6xl mx-auto rounded-xl bg-white/90 shadow-lg border border-blue-100 p-3 sm:p-4">

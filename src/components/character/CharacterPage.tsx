@@ -17,8 +17,16 @@ interface CharacterPageProps {
 }
 
 export const CharacterPage = ({ type }: CharacterPageProps) => {
-  const { characterStats, ability, hyperStat, basic, isLoading, error } =
-    useCharacterData()
+  const {
+    characterStats,
+    ability,
+    hyperStat,
+    basic,
+    isLoading,
+    error,
+    syncCharacterHandler,
+    isSyncing
+  } = useCharacterData()
   const [characterName, setCharacterName] = useState('')
 
   const { inventory } = useInventory()
@@ -50,34 +58,32 @@ export const CharacterPage = ({ type }: CharacterPageProps) => {
     }
   }
 
-  if (isLoading) {
-    return (
-      <div className="w-full h-full flex justify-center items-center p-8">
-        <div className="flex flex-col items-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-4"></div>
-          <p className="text-gray-600 font-medium">
-            캐릭터 정보를 불러오는 중...
-          </p>
-        </div>
-        <div className="flex flex-col items-center"></div>
-      </div>
-    )
-  }
-
   if (error) {
     return (
       <div className="w-full h-full flex justify-center items-center p-8">
         <div className="max-w-lg w-full bg-white rounded-xl p-8 shadow-lg">
           <div className="flex items-center justify-center mb-6 relative">
-            {type === 'search' && (
+            {type === 'search' ? (
               <div className="absolute top-0 right-0 flex flex-col items-center justify-center gap-2">
                 <button
-                  onClick={() => {}}
-                  className="flex items-center gap-2 border border-red-500 text-red-500 px-4 py-2 rounded-md hover:bg-red-50 transition-all duration-200 hover:shadow-sm">
-                  <FiRefreshCcw className="text-red-500 text-2xl flex-shrink-0" />
-                  <span className="text-red-500 text-sm">동기화하기</span>
+                  onClick={syncCharacterHandler}
+                  disabled={isSyncing}
+                  className={`flex items-center gap-2 border border-red-500 px-4 py-2 rounded-md hover:bg-red-50 transition-all duration-200 hover:shadow-sm ${
+                    isSyncing ? 'opacity-50 cursor-not-allowed' : 'text-red-500'
+                  }`}>
+                  <FiRefreshCcw
+                    className={`text-2xl flex-shrink-0 ${isSyncing ? 'animate-spin text-red-300' : 'text-red-500'}`}
+                  />
+                  <span
+                    className={
+                      isSyncing ? 'text-red-300' : 'text-red-500 text-sm'
+                    }>
+                    {isSyncing ? '동기화 중...' : '동기화하기'}
+                  </span>
                 </button>
               </div>
+            ) : (
+              <div className="w-64"></div>
             )}
             <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
               <FiAlertTriangle className="text-red-500 text-2xl" />
@@ -101,10 +107,18 @@ export const CharacterPage = ({ type }: CharacterPageProps) => {
         {type === 'character' ? (
           <div className="flex flex-col items-center justify-center gap-2 mr-24">
             <button
-              onClick={() => {}}
-              className="flex items-center gap-2 border border-red-500 text-red-500 px-4 py-2 rounded-md hover:bg-red-50 transition-all duration-200 hover:shadow-sm">
-              <FiRefreshCcw className="text-red-500 text-2xl flex-shrink-0" />
-              <span className="text-red-500 text-sm">동기화하기</span>
+              onClick={syncCharacterHandler}
+              disabled={isSyncing}
+              className={`flex items-center gap-2 border border-red-500 px-4 py-2 rounded-md hover:bg-red-50 transition-all duration-200 hover:shadow-sm ${
+                isSyncing ? 'opacity-50 cursor-not-allowed' : 'text-red-500'
+              }`}>
+              <FiRefreshCcw
+                className={`text-2xl flex-shrink-0 ${isSyncing ? 'animate-spin text-red-300' : 'text-red-500'}`}
+              />
+              <span
+                className={isSyncing ? 'text-red-300' : 'text-red-500 text-sm'}>
+                {isSyncing ? '동기화 중...' : '동기화하기'}
+              </span>
             </button>
           </div>
         ) : (
@@ -153,39 +167,51 @@ export const CharacterPage = ({ type }: CharacterPageProps) => {
       </div>
 
       {/* 콘텐츠 영역 */}
-      <div className="w-full max-w-6xl mx-auto rounded-xl bg-white/90 shadow-lg border border-blue-100 p-3 sm:p-4">
-        {showStats ? (
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-3">
-            {/* 캐릭터 정보와 어빌리티 (큰 화면에서 세로로 배치) */}
-            <div className="lg:col-span-1 order-1 flex flex-col gap-3">
-              {/* 캐릭터 정보 (작은 화면에서 맨 위) */}
-              <div>{basic && <CharacterInfoContainer basic={basic} />}</div>
-
-              {/* 어빌리티 (캐릭터 정보 아래에 배치) */}
-              <div>{ability && <AbilitryContainer ability={ability} />}</div>
-            </div>
-
-            {/* 기본 스탯 (큰 화면에서 중앙에 위치) */}
-            <div className="lg:col-span-2 order-3 lg:order-2 min-h-[500px]">
-              {characterStats && <StatContainer Stats={characterStats} />}
-            </div>
-
-            {/* 하이퍼 스탯 (큰 화면에서 오른쪽에 위치) */}
-            <div className="lg:col-span-1 order-4 lg:order-3 min-h-[500px] flex flex-col">
-              {hyperStat && <HyperStatContainer hyperStat={hyperStat} />}
-            </div>
+      {isSyncing || isLoading ? (
+        <div className="w-full h-full flex justify-center items-center p-8">
+          <div className="flex flex-col items-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-4"></div>
+            <p className="text-gray-600 font-medium">
+              캐릭터 정보를 불러오는 중...
+            </p>
           </div>
-        ) : (
-          <div className="w-full">
-            {inventory && basic?.character_image && (
-              <InventoryContainer
-                inventory={inventory}
-                characterImg={basic?.character_image}
-              />
-            )}
-          </div>
-        )}
-      </div>
+          <div className="flex flex-col items-center"></div>
+        </div>
+      ) : (
+        <div className="w-full max-w-6xl mx-auto rounded-xl bg-white/90 shadow-lg border border-blue-100 p-3 sm:p-4">
+          {showStats ? (
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-3">
+              {/* 캐릭터 정보와 어빌리티 (큰 화면에서 세로로 배치) */}
+              <div className="lg:col-span-1 order-1 flex flex-col gap-3">
+                {/* 캐릭터 정보 (작은 화면에서 맨 위) */}
+                <div>{basic && <CharacterInfoContainer basic={basic} />}</div>
+
+                {/* 어빌리티 (캐릭터 정보 아래에 배치) */}
+                <div>{ability && <AbilitryContainer ability={ability} />}</div>
+              </div>
+
+              {/* 기본 스탯 (큰 화면에서 중앙에 위치) */}
+              <div className="lg:col-span-2 order-3 lg:order-2 min-h-[500px]">
+                {characterStats && <StatContainer Stats={characterStats} />}
+              </div>
+
+              {/* 하이퍼 스탯 (큰 화면에서 오른쪽에 위치) */}
+              <div className="lg:col-span-1 order-4 lg:order-3 min-h-[500px] flex flex-col">
+                {hyperStat && <HyperStatContainer hyperStat={hyperStat} />}
+              </div>
+            </div>
+          ) : (
+            <div className="w-full">
+              {inventory && basic?.character_image && (
+                <InventoryContainer
+                  inventory={inventory}
+                  characterImg={basic?.character_image}
+                />
+              )}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }

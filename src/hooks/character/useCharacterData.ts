@@ -76,6 +76,8 @@ export const useCharacterData = () => {
   })
 
   const syncCharacterHandler = async () => {
+    if (mutateSyncCharacter.isPending) return
+
     try {
       await mutateSyncCharacter.mutateAsync()
     } catch (error) {
@@ -101,6 +103,7 @@ export const useCharacterData = () => {
     basic,
     isLoading,
     error,
-    syncCharacterHandler
+    syncCharacterHandler,
+    isSyncing: mutateSyncCharacter.isPending
   }
 }

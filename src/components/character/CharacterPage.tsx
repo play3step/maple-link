@@ -63,7 +63,7 @@ export const CharacterPage = ({ type }: CharacterPageProps) => {
       <div className="w-full h-full flex justify-center items-center p-8">
         <div className="max-w-lg w-full bg-white rounded-xl p-8 shadow-lg">
           <div className="flex items-center justify-center mb-6 relative">
-            {type === 'search' ? (
+            {type === 'character' && (
               <div className="absolute top-0 right-0 flex flex-col items-center justify-center gap-2">
                 <button
                   onClick={syncCharacterHandler}
@@ -82,8 +82,6 @@ export const CharacterPage = ({ type }: CharacterPageProps) => {
                   </span>
                 </button>
               </div>
-            ) : (
-              <div className="w-64"></div>
             )}
             <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
               <FiAlertTriangle className="text-red-500 text-2xl" />

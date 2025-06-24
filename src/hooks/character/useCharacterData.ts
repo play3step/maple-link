@@ -15,10 +15,13 @@ import {
 import { useUserStore } from '../../store/userStore'
 import { useEffect } from 'react'
 import { syncCharacter } from '../../apis/user/userController'
+import { useAuth } from '../useAuth'
+import { useNavigate } from 'react-router-dom'
 
 export const useCharacterData = () => {
   const { setUserName, characterOcid } = useUserStore()
-
+  const { userLogout } = useAuth()
+  const nav = useNavigate()
   const {
     data: characterStats,
     isLoading: statsLoading,
@@ -72,7 +75,15 @@ export const useCharacterData = () => {
   })
 
   const mutateSyncCharacter = useMutation({
-    mutationFn: () => syncCharacter()
+    mutationFn: () => syncCharacter(),
+    onSuccess: () => {
+      alert('동기화가 완료되었습니다. 다시 로그인해주세요.')
+      userLogout()
+      nav('/')
+    },
+    onError: () => {
+      alert('동기화에 실패했습니다. 다시 시도해주세요.')
+    }
   })
 
   const syncCharacterHandler = async () => {

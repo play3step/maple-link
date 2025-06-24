@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import {
   fetchCharacterAbility,
   fetchCharacterBasic,
@@ -14,6 +14,7 @@ import {
 
 import { useUserStore } from '../../store/userStore'
 import { useEffect } from 'react'
+import { syncCharacter } from '../../apis/user/userController'
 
 export const useCharacterData = () => {
   const { setUserName, characterOcid } = useUserStore()
@@ -70,6 +71,18 @@ export const useCharacterData = () => {
     retry: false
   })
 
+  const mutateSyncCharacter = useMutation({
+    mutationFn: () => syncCharacter()
+  })
+
+  const syncCharacterHandler = async () => {
+    try {
+      await mutateSyncCharacter.mutateAsync()
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   useEffect(() => {
     if (basic?.character_name) {
       setUserName(basic.character_name)
@@ -87,6 +100,7 @@ export const useCharacterData = () => {
     hyperStat,
     basic,
     isLoading,
-    error
+    error,
+    syncCharacterHandler
   }
 }

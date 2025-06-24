@@ -10,9 +10,13 @@ import { useInventory } from '../../hooks/character/useInventory'
 import { useUserStore } from '../../store/userStore'
 import { searchCharacterOcid } from '../../apis/character/characterController'
 
-import { FiAlertTriangle } from 'react-icons/fi'
+import { FiAlertTriangle, FiRefreshCcw } from 'react-icons/fi'
 
-export const CharacterPage = () => {
+interface CharacterPageProps {
+  type: 'character' | 'search'
+}
+
+export const CharacterPage = ({ type }: CharacterPageProps) => {
   const { characterStats, ability, hyperStat, basic, isLoading, error } =
     useCharacterData()
   const [characterName, setCharacterName] = useState('')
@@ -64,7 +68,17 @@ export const CharacterPage = () => {
     return (
       <div className="w-full h-full flex justify-center items-center p-8">
         <div className="max-w-lg w-full bg-white rounded-xl p-8 shadow-lg">
-          <div className="flex items-center justify-center mb-6">
+          <div className="flex items-center justify-center mb-6 relative">
+            {type === 'search' && (
+              <div className="absolute top-0 right-0 flex flex-col items-center justify-center gap-2">
+                <button
+                  onClick={() => {}}
+                  className="flex items-center gap-2 border border-red-500 text-red-500 px-4 py-2 rounded-md hover:bg-red-50 transition-all duration-200 hover:shadow-sm">
+                  <FiRefreshCcw className="text-red-500 text-2xl flex-shrink-0" />
+                  <span className="text-red-500 text-sm">동기화하기</span>
+                </button>
+              </div>
+            )}
             <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
               <FiAlertTriangle className="text-red-500 text-2xl" />
             </div>
@@ -73,7 +87,7 @@ export const CharacterPage = () => {
             캐릭터 정보를 불러올 수 없습니다
           </h1>
           <p className="text-gray-600 text-center mb-6">
-            '2023년 12월 21일 이후의 데이터만 조회할 수 있습니다.'
+            2023년 12월 21일 이후의 데이터만 조회할 수 있습니다.
           </p>
         </div>
       </div>
@@ -84,7 +98,18 @@ export const CharacterPage = () => {
     <div className="w-full h-full flex flex-col gap-4 py-4">
       {/* 탭 버튼 */}
       <div className="flex justify-between items-center mb-2 max-w-6xl mx-auto w-full px-4">
-        <div className="w-64"></div>
+        {type === 'character' ? (
+          <div className="flex flex-col items-center justify-center gap-2 mr-24">
+            <button
+              onClick={() => {}}
+              className="flex items-center gap-2 border border-red-500 text-red-500 px-4 py-2 rounded-md hover:bg-red-50 transition-all duration-200 hover:shadow-sm">
+              <FiRefreshCcw className="text-red-500 text-2xl flex-shrink-0" />
+              <span className="text-red-500 text-sm">동기화하기</span>
+            </button>
+          </div>
+        ) : (
+          <div className="w-64"></div>
+        )}
         <div className="bg-white shadow-sm rounded-lg p-1 flex gap-1">
           <button
             onClick={() => setShowStats(true)}

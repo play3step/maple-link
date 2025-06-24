@@ -6,9 +6,11 @@ import { InventoryContainer } from './inventory/InventoryContainer'
 import { StatContainer } from './StatContainer'
 import { useCharacterData } from '../../hooks/character/useCharacterData'
 import { useInventory } from '../../hooks/character/useInventory'
-import { useNavigate } from 'react-router-dom'
+
 import { useUserStore } from '../../store/userStore'
 import { searchCharacterOcid } from '../../apis/character/characterController'
+
+import { FiAlertTriangle } from 'react-icons/fi'
 
 export const CharacterPage = () => {
   const { characterStats, ability, hyperStat, basic, isLoading, error } =
@@ -18,7 +20,7 @@ export const CharacterPage = () => {
   const { inventory } = useInventory()
 
   const [showStats, setShowStats] = useState(true)
-  const nav = useNavigate()
+
   const { setCharacterOcid } = useUserStore()
   const [searchLoading, setSearchLoading] = useState(false)
 
@@ -53,15 +55,29 @@ export const CharacterPage = () => {
             캐릭터 정보를 불러오는 중...
           </p>
         </div>
+        <div className="flex flex-col items-center"></div>
       </div>
     )
   }
 
   if (error) {
-    alert(
-      '2023년 12월 21일 이후의 데이터만 조회할 수 있습니다.\n게임에 접속한 뒤 다시 시도해주세요.'
+    return (
+      <div className="w-full h-full flex justify-center items-center p-8">
+        <div className="max-w-lg w-full bg-white rounded-xl p-8 shadow-lg">
+          <div className="flex items-center justify-center mb-6">
+            <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+              <FiAlertTriangle className="text-red-500 text-2xl" />
+            </div>
+          </div>
+          <h1 className="text-xl font-bold text-center text-gray-800 mb-2">
+            캐릭터 정보를 불러올 수 없습니다
+          </h1>
+          <p className="text-gray-600 text-center mb-6">
+            '2023년 12월 21일 이후의 데이터만 조회할 수 있습니다.'
+          </p>
+        </div>
+      </div>
     )
-    nav('/')
   }
 
   return (

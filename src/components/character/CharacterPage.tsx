@@ -10,7 +10,8 @@ import { useInventory } from '../../hooks/character/useInventory'
 import { useUserStore } from '../../store/userStore'
 import { searchCharacterOcid } from '../../apis/character/characterController'
 
-import { FiAlertTriangle, FiRefreshCcw } from 'react-icons/fi'
+import { FiAlertTriangle, FiRefreshCcw, FiSearch } from 'react-icons/fi'
+import Button from '../common/Button'
 
 interface CharacterPageProps {
   type: 'character' | 'search'
@@ -62,37 +63,74 @@ export const CharacterPage = ({ type }: CharacterPageProps) => {
     return (
       <div className="w-full h-full flex justify-center items-center p-8">
         <div className="max-w-lg w-full bg-white rounded-xl p-8 shadow-lg">
-          <div className="flex items-center justify-center mb-6 relative">
-            {type === 'character' && (
-              <div className="absolute top-0 right-0 flex flex-col items-center justify-center gap-2">
-                <button
-                  onClick={syncCharacterHandler}
-                  disabled={isSyncing}
-                  className={`flex items-center gap-2 border border-red-500 px-4 py-2 rounded-md hover:bg-red-50 transition-all duration-200 hover:shadow-sm ${
-                    isSyncing ? 'opacity-50 cursor-not-allowed' : 'text-red-500'
-                  }`}>
-                  <FiRefreshCcw
-                    className={`text-2xl flex-shrink-0 ${isSyncing ? 'animate-spin text-red-300' : 'text-red-500'}`}
-                  />
-                  <span
-                    className={
-                      isSyncing ? 'text-red-300' : 'text-red-500 text-sm'
-                    }>
-                    {isSyncing ? '동기화 중...' : '동기화하기'}
-                  </span>
-                </button>
+          <div>
+            <div className="flex items-center justify-center mb-6 relative">
+              {type === 'character' && (
+                <div className="absolute top-0 right-0 flex flex-col items-center justify-center gap-2">
+                  <button
+                    onClick={syncCharacterHandler}
+                    disabled={isSyncing}
+                    className={`flex items-center gap-2 border border-red-500 px-4 py-2 rounded-md hover:bg-red-50 transition-all duration-200 hover:shadow-sm ${
+                      isSyncing
+                        ? 'opacity-50 cursor-not-allowed'
+                        : 'text-red-500'
+                    }`}>
+                    <FiRefreshCcw
+                      className={`text-2xl flex-shrink-0 ${isSyncing ? 'animate-spin text-red-300' : 'text-red-500'}`}
+                    />
+                    <span
+                      className={
+                        isSyncing ? 'text-red-300' : 'text-red-500 text-sm'
+                      }>
+                      {isSyncing ? '동기화 중...' : '동기화하기'}
+                    </span>
+                  </button>
+                </div>
+              )}
+              <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                <FiAlertTriangle className="text-red-500 text-2xl" />
               </div>
-            )}
-            <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
-              <FiAlertTriangle className="text-red-500 text-2xl" />
+            </div>
+            <h1 className="text-xl font-bold text-center text-gray-800 mb-2">
+              캐릭터 정보를 불러올 수 없습니다
+            </h1>
+            <p className="text-gray-600 text-center mb-6">
+              2023년 12월 21일 이후의 데이터만 조회할 수 있습니다.
+            </p>
+          </div>
+          <div className="bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden h-fit self-start">
+            <div className="flex flex-col justify-between">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg flex items-center justify-center shadow-sm">
+                  <FiSearch className="text-blue-600 text-lg" />
+                </div>
+                <h2 className="text-base font-semibold text-gray-800">
+                  캐릭터 검색
+                </h2>
+              </div>
+              <div className="space-y-3">
+                <input
+                  type="text"
+                  placeholder="캐릭터 이름을 입력하세요"
+                  value={characterName}
+                  onChange={e => setCharacterName(e.target.value)}
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm bg-white"
+                />
+                <Button
+                  size="medium"
+                  scheme="solid"
+                  disabled={searchLoading}
+                  className={`w-full text-sm bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 transition-all shadow-sm ${
+                    searchLoading
+                      ? 'bg-blue-300 cursor-not-allowed'
+                      : 'bg-blue-500 hover:bg-blue-600'
+                  }`}
+                  onClick={searchCharacterHandler}>
+                  {searchLoading ? '검색 중...' : '검색'}
+                </Button>
+              </div>
             </div>
           </div>
-          <h1 className="text-xl font-bold text-center text-gray-800 mb-2">
-            캐릭터 정보를 불러올 수 없습니다
-          </h1>
-          <p className="text-gray-600 text-center mb-6">
-            2023년 12월 21일 이후의 데이터만 조회할 수 있습니다.
-          </p>
         </div>
       </div>
     )

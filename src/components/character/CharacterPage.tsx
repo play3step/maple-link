@@ -67,24 +67,50 @@ export const CharacterPage = ({ type }: CharacterPageProps) => {
             <div className="flex items-center justify-center mb-6 relative">
               {type === 'character' && (
                 <div className="absolute top-0 right-0 flex flex-col items-center justify-center gap-2">
-                  <button
-                    onClick={syncCharacterHandler}
-                    disabled={isSyncing}
-                    className={`flex items-center gap-2 border border-red-500 px-4 py-2 rounded-md hover:bg-red-50 transition-all duration-200 hover:shadow-sm ${
-                      isSyncing
-                        ? 'opacity-50 cursor-not-allowed'
-                        : 'text-red-500'
-                    }`}>
-                    <FiRefreshCcw
-                      className={`text-2xl flex-shrink-0 ${isSyncing ? 'animate-spin text-red-300' : 'text-red-500'}`}
-                    />
-                    <span
-                      className={
-                        isSyncing ? 'text-red-300' : 'text-red-500 text-sm'
-                      }>
-                      {isSyncing ? '동기화 중...' : '동기화하기'}
-                    </span>
-                  </button>
+                  <div className="relative group">
+                    <button
+                      onClick={syncCharacterHandler}
+                      disabled={isSyncing}
+                      className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 
+                        ${
+                          isSyncing
+                            ? 'bg-gray-100 cursor-not-allowed'
+                            : 'hover:bg-red-50 bg-white border border-red-200 shadow-sm hover:shadow-md hover:border-red-300'
+                        }`}>
+                      <FiRefreshCcw
+                        className={`text-xl flex-shrink-0 
+                          ${
+                            isSyncing
+                              ? 'animate-spin text-gray-400'
+                              : 'text-red-500 group-hover:rotate-180 transition-transform duration-500'
+                          }`}
+                      />
+                      <span
+                        className={`text-sm font-medium ${isSyncing ? 'text-gray-400' : 'text-red-500'}`}>
+                        {isSyncing ? '동기화 중...' : '동기화'}
+                      </span>
+                    </button>
+                    <div className="absolute invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 top-full left-1/2 -translate-x-1/2 mt-2 z-10">
+                      <div className="bg-white border border-gray-100 text-gray-600 px-4 py-3 rounded-xl shadow-lg relative">
+                        <div className="absolute w-3 h-3 bg-white border-t border-l border-gray-100 transform -rotate-45 left-1/2 -translate-x-1/2 -top-1.5"></div>
+                        <div className="w-[280px]">
+                          <p className="text-sm leading-relaxed">
+                            본캐릭터는 넥슨 OpenAPI에서 레벨이 가장 높은
+                            캐릭터를 기준으로 자동 설정됩니다.
+                          </p>
+                          <p className="text-sm mt-2 flex items-center gap-1">
+                            <span className="text-gray-400">
+                              정보가 정확하지 않다면
+                            </span>
+                            <strong className="text-red-500">동기화</strong>
+                            <span className="text-gray-400">
+                              버튼을 눌러주세요
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               )}
               <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
@@ -142,20 +168,48 @@ export const CharacterPage = ({ type }: CharacterPageProps) => {
       <div className="flex justify-between items-center mb-2 max-w-6xl mx-auto w-full px-4">
         {type === 'character' ? (
           <div className="flex flex-col items-center justify-center gap-2 mr-24">
-            <button
-              onClick={syncCharacterHandler}
-              disabled={isSyncing}
-              className={`flex items-center gap-2 border border-red-500 px-4 py-2 rounded-md hover:bg-red-50 transition-all duration-200 hover:shadow-sm ${
-                isSyncing ? 'opacity-50 cursor-not-allowed' : 'text-red-500'
-              }`}>
-              <FiRefreshCcw
-                className={`text-2xl flex-shrink-0 ${isSyncing ? 'animate-spin text-red-300' : 'text-red-500'}`}
-              />
-              <span
-                className={isSyncing ? 'text-red-300' : 'text-red-500 text-sm'}>
-                {isSyncing ? '동기화 중...' : '동기화하기'}
-              </span>
-            </button>
+            <div className="relative group">
+              <button
+                onClick={syncCharacterHandler}
+                disabled={isSyncing}
+                className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 
+                  ${
+                    isSyncing
+                      ? 'bg-gray-100 cursor-not-allowed'
+                      : 'hover:bg-red-50 bg-white border border-red-200 shadow-sm hover:shadow-md hover:border-red-300'
+                  }`}>
+                <FiRefreshCcw
+                  className={`text-xl flex-shrink-0 
+                    ${
+                      isSyncing
+                        ? 'animate-spin text-gray-400'
+                        : 'text-red-500 group-hover:rotate-180 transition-transform duration-500'
+                    }`}
+                />
+                <span
+                  className={`text-sm font-medium ${isSyncing ? 'text-gray-400' : 'text-red-500'}`}>
+                  {isSyncing ? '동기화 중...' : '동기화'}
+                </span>
+              </button>
+              <div className="absolute invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 top-full left-1/2 -translate-x-1/2 mt-2 z-10">
+                <div className="bg-white border border-gray-100 text-gray-600 px-4 py-3 rounded-xl shadow-lg relative">
+                  <div className="absolute w-3 h-3 bg-white border-t border-l border-gray-100 transform -rotate-45 left-1/2 -translate-x-1/2 -top-1.5"></div>
+                  <div className="w-[280px]">
+                    <p className="text-sm leading-relaxed">
+                      본캐릭터는 넥슨 OpenAPI에서 레벨이 가장 높은 캐릭터를
+                      기준으로 자동 설정됩니다.
+                    </p>
+                    <p className="text-sm mt-2 flex items-center gap-1">
+                      <span className="text-gray-400">
+                        정보가 정확하지 않다면
+                      </span>
+                      <strong className="text-red-500">동기화</strong>
+                      <span className="text-gray-400">버튼을 눌러주세요</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         ) : (
           <div className="w-64"></div>

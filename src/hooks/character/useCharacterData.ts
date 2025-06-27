@@ -91,8 +91,8 @@ export const useCharacterData = () => {
 
     try {
       await mutateSyncCharacter.mutateAsync()
-    } catch (error) {
-      console.error(error)
+    } catch {
+      alert('동기화에 실패했습니다. 다시 시도해주세요.')
     }
   }
 

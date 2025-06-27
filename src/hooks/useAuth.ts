@@ -10,17 +10,23 @@ export const useAuth = () => {
 
   const userLogin = async () => {
     try {
-      const provider = new GoogleAuthProvider()
+      const provider = await new GoogleAuthProvider()
       const result = await signInWithPopup(authService, provider)
       const token = await result.user.getIdToken()
 
-      if (token && result.user.uid) {
-        storeLogin(token, result.user.uid, 'member')
-        const userInfo = await fetchUserInfo(result.user.uid)
-        return userInfo
+      if (!token || !result.user.uid) {
+        throw new Error('로그인에 필요한 정보를 가져올 수 없습니다.')
       }
-    } catch (error) {
-      console.log(error)
+
+      storeLogin(token, result.user.uid, 'member')
+      const userInfo = await fetchUserInfo(result.user.uid)
+
+      if (!userInfo) {
+        throw new Error('사용자 정보를 가져올 수 없습니다.')
+      }
+      return userInfo
+    } catch {
+      return null
     }
   }
 

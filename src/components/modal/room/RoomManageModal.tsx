@@ -76,7 +76,7 @@ export const GuildManageModal = ({
       title={`${room.groupName} 관리`}
       showFooterButtons={false}>
       <div className="bg-white rounded-lg max-w-4xl w-full">
-        <div className="space-y-6">
+        <div className="space-y-6 max-h-[calc(90vh-200px)] overflow-y-auto p-6">
           {/* 안내 메시지 */}
           <div className="bg-blue-50 border border-blue-100 rounded-xl p-4">
             <div className="flex items-start gap-3">
@@ -184,13 +184,13 @@ export const GuildManageModal = ({
           )}
 
           {/* 관리자 목록 */}
-          <div className="bg-white border border-gray-100 rounded-xl overflow-hidden">
+          <div className="bg-white border border-gray-100 rounded-xl overflow-hidden flex flex-col">
             <div className="px-6 py-4 border-b border-gray-100">
               <h3 className="text-lg font-semibold text-gray-800">
                 관리자 목록
               </h3>
             </div>
-            <div className="max-h-[320px] overflow-y-scroll">
+            <div className="min-h-[200px] max-h-[calc(90vh-500px)] overflow-y-auto">
               <div className="divide-y divide-gray-100">
                 {room.admins.map(admin => (
                   <div

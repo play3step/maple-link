@@ -10,7 +10,7 @@ import { useInventory } from '../../hooks/character/useInventory'
 import { useUserStore } from '../../store/userStore'
 import { searchCharacterOcid } from '../../apis/character/characterController'
 
-import { FiAlertTriangle, FiRefreshCcw, FiSearch } from 'react-icons/fi'
+import { FiAlertTriangle, FiSearch } from 'react-icons/fi'
 import Button from '../common/Button'
 
 interface CharacterPageProps {
@@ -18,16 +18,8 @@ interface CharacterPageProps {
 }
 
 export const CharacterPage = ({ type }: CharacterPageProps) => {
-  const {
-    characterStats,
-    ability,
-    hyperStat,
-    basic,
-    isLoading,
-    error,
-    syncCharacterHandler,
-    isSyncing
-  } = useCharacterData()
+  const { characterStats, ability, hyperStat, basic, isLoading, error } =
+    useCharacterData()
   const [characterName, setCharacterName] = useState('')
 
   const { inventory } = useInventory()
@@ -67,7 +59,7 @@ export const CharacterPage = ({ type }: CharacterPageProps) => {
               {type === 'character' && (
                 <div className="absolute top-0 right-0 flex flex-col items-center justify-center gap-2">
                   <div className="relative group">
-                    <button
+                    {/* <button
                       onClick={syncCharacterHandler}
                       disabled={isSyncing}
                       className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 
@@ -88,7 +80,7 @@ export const CharacterPage = ({ type }: CharacterPageProps) => {
                         className={`text-sm font-medium ${isSyncing ? 'text-gray-400' : 'text-red-500'}`}>
                         {isSyncing ? '동기화 중...' : '동기화'}
                       </span>
-                    </button>
+                    </button> */}
                     <div className="absolute invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 top-full left-1/2 -translate-x-1/2 mt-2 z-10">
                       <div className="bg-white border border-gray-100 text-gray-600 px-4 py-3 rounded-xl shadow-lg relative">
                         <div className="absolute w-3 h-3 bg-white border-t border-l border-gray-100 transform -rotate-45 left-1/2 -translate-x-1/2 -top-1.5"></div>
@@ -168,7 +160,7 @@ export const CharacterPage = ({ type }: CharacterPageProps) => {
         {type === 'character' ? (
           <div className="flex flex-col items-center justify-center gap-2 mr-24">
             <div className="relative group">
-              <button
+              {/* <button
                 onClick={syncCharacterHandler}
                 disabled={isSyncing}
                 className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 
@@ -189,7 +181,7 @@ export const CharacterPage = ({ type }: CharacterPageProps) => {
                   className={`text-sm font-medium ${isSyncing ? 'text-gray-400' : 'text-red-500'}`}>
                   {isSyncing ? '동기화 중...' : '동기화'}
                 </span>
-              </button>
+              </button> */}
               <div className="absolute invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 top-full left-1/2 -translate-x-1/2 mt-2 z-10">
                 <div className="bg-white border border-gray-100 text-gray-600 px-4 py-3 rounded-xl shadow-lg relative">
                   <div className="absolute w-3 h-3 bg-white border-t border-l border-gray-100 transform -rotate-45 left-1/2 -translate-x-1/2 -top-1.5"></div>
@@ -256,7 +248,7 @@ export const CharacterPage = ({ type }: CharacterPageProps) => {
       </div>
 
       {/* 콘텐츠 영역 */}
-      {isSyncing || isLoading ? (
+      {isLoading ? (
         <div className="w-full max-w-6xl mx-auto rounded-xl bg-white/90 shadow-lg border border-blue-100 p-3 sm:p-4">
           {showStats ? (
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-3">

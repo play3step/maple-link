@@ -60,8 +60,7 @@ const Home = () => {
           nav('/signup')
         }
       }
-    } catch (error) {
-      console.error(error)
+    } catch {
       alert('로그인에 실패했습니다.')
     }
   }
@@ -83,8 +82,7 @@ const Home = () => {
       await storeLogin('', '', 'search')
       setCharacterOcid(ocid)
       nav(`/searchCharacter`)
-    } catch (error) {
-      console.error(error)
+    } catch {
       alert('캐릭터 검색에 실패했습니다.')
     } finally {
       setSearchLoading(false)

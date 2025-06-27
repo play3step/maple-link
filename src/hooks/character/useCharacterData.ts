@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import {
   fetchCharacterAbility,
   fetchCharacterBasic,
@@ -14,10 +14,14 @@ import {
 
 import { useUserStore } from '../../store/userStore'
 import { useEffect } from 'react'
+import { syncCharacter } from '../../apis/user/userController'
+import { useAuth } from '../useAuth'
+import { useNavigate } from 'react-router-dom'
 
 export const useCharacterData = () => {
   const { setUserName, characterOcid } = useUserStore()
-
+  const { userLogout } = useAuth()
+  const nav = useNavigate()
   const {
     data: characterStats,
     isLoading: statsLoading,
@@ -70,6 +74,28 @@ export const useCharacterData = () => {
     retry: false
   })
 
+  const mutateSyncCharacter = useMutation({
+    mutationFn: () => syncCharacter(),
+    onSuccess: () => {
+      alert('동기화가 완료되었습니다. 다시 로그인해주세요.')
+      userLogout()
+      nav('/')
+    },
+    onError: () => {
+      alert('동기화에 실패했습니다. 다시 시도해주세요.')
+    }
+  })
+
+  const syncCharacterHandler = async () => {
+    if (mutateSyncCharacter.isPending) return
+
+    try {
+      await mutateSyncCharacter.mutateAsync()
+    } catch {
+      alert('동기화에 실패했습니다. 다시 시도해주세요.')
+    }
+  }
+
   useEffect(() => {
     if (basic?.character_name) {
       setUserName(basic.character_name)
@@ -87,6 +113,8 @@ export const useCharacterData = () => {
     hyperStat,
     basic,
     isLoading,
-    error
+    error,
+    syncCharacterHandler,
+    isSyncing: mutateSyncCharacter.isPending
   }
 }

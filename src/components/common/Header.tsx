@@ -5,6 +5,7 @@ import Logo from '../../assets/logo.png'
 import { useState } from 'react'
 import { useAuthStore } from '../../store/authStore'
 import KakaoOpenChatButton from './KakaoOpenChatButton'
+import { useUserStore } from '../../store/userStore'
 
 function Header() {
   const { userLogout } = useAuth()
@@ -12,6 +13,7 @@ function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const { userType } = useAuthStore()
+  const { setCharacterOcid, userInfo } = useUserStore()
 
   const KAKAO_CHAT_LINK = 'https://open.kakao.com/o/s4tfG2Ah'
 
@@ -59,7 +61,10 @@ function Header() {
               <Button
                 scheme="subtle"
                 size="small"
-                onClick={() => nav('/character')}
+                onClick={() => {
+                  nav('/character')
+                  setCharacterOcid(userInfo?.ocid || '')
+                }}
                 className="hover:text-blue-600 font-medium transition-all">
                 캐릭터정보
               </Button>

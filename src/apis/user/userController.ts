@@ -30,3 +30,13 @@ export const addUserInfo = async (apiKey: string) => {
     throw error
   }
 }
+
+export const syncCharacter = async () => {
+  try {
+    const response = await basicApi.post(`/api/game-character/sync-character`)
+    return response.data
+  } catch (error) {
+    console.error('Error syncing character:', error)
+    throw error
+  }
+}

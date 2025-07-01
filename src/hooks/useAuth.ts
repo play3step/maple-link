@@ -3,6 +3,8 @@ import { useAuthStore } from '../store/authStore'
 import { authService } from '../firebase'
 import { fetchUserInfo } from '../apis/user/userController'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { ErrorResponse } from '../types'
 
 export const useAuth = () => {
   const { storeLogin, storeLogout } = useAuthStore()
@@ -25,7 +27,11 @@ export const useAuth = () => {
         throw new Error('사용자 정보를 가져올 수 없습니다.')
       }
       return userInfo
-    } catch {
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.data) {
+        const errorData = error.response.data as ErrorResponse
+        alert(errorData.data.message)
+      }
       return null
     }
   }

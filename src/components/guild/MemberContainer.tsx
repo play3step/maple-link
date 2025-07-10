@@ -42,6 +42,8 @@ export const MemberContainer = ({
 
   const [gridSize, setGridSize] = useState(2)
 
+  const [showPart, setShowPart] = useState(false) // 분류해서 보기
+
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   if (!members) return null
@@ -318,6 +320,17 @@ export const MemberContainer = ({
                 className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700">
                 <IoGridOutline className="text-lg" />
                 <span>{gridSize}개 보기</span>
+              </button>
+            </div>
+            <div>
+              <button
+                onClick={() => setShowPart(prev => !prev)}
+                className={`flex items-center gap-2 px-4 py-2  border border-gray-200 rounded-lg  transition-colors text-sm font-medium  ${
+                  showPart
+                    ? 'bg-blue-500 text-white hover:bg-blue-600'
+                    : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                }`}>
+                <span>분류해서 보기</span>
               </button>
             </div>
           </div>

@@ -62,6 +62,61 @@ export const MemberContainer = ({
         .toLowerCase()
         .includes(searchCharacter?.toLowerCase() || '')
 
+      if (showPart) {
+        const mainCharacter: {
+          name: string
+          job: string
+          level: string
+          type: string
+          imagePath: string
+          subCharacters: {
+            name: string
+            job: string
+            level: string
+            type: string
+            imagePath: string
+          }[]
+        }[] = []
+
+        // 먼저 본캐들을 찾아서 추가
+        allMembers?.forEach(guild => {
+          guild.memberDetailResponse?.forEach(character => {
+            if (character.type === '본캐') {
+              mainCharacter.push({
+                name: character.name,
+                job: character.job,
+                level: character.level,
+                type: character.type,
+                imagePath: character.imagePath,
+                subCharacters: []
+              })
+            }
+          })
+        })
+
+        // 그 다음 부캐들을 해당하는 본캐에 추가
+        allMembers?.forEach(guild => {
+          guild.memberDetailResponse?.forEach(character => {
+            if (character.type === '부캐') {
+              const mainChar = mainCharacter.find(
+                main => character.mainCharacterInfo?.name === main.name
+              )
+              if (mainChar) {
+                mainChar.subCharacters.push({
+                  name: character.name,
+                  job: character.job,
+                  level: character.level,
+                  type: character.type,
+                  imagePath: character.imagePath
+                })
+              }
+            }
+          })
+        })
+
+        return searchMatch
+      }
+
       if (selectedType === '모두 보기' || selectedType === '캐릭터 분류')
         return searchMatch
 

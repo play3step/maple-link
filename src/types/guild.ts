@@ -60,6 +60,13 @@ export interface Member {
     job: string
     imagePath: string
   }
+  subCharacters?: {
+    name: string
+    job: string
+    level: string
+    type: string
+    imagePath: string
+  }[]
 }
 
 export interface Detect {

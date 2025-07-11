@@ -7,6 +7,7 @@ import {
   IoHelpCircleOutline,
   IoGridOutline
 } from 'react-icons/io5'
+import { MemberCard } from './member/MemberCard'
 
 interface MemberContainerProps {
   members?: Member[]
@@ -42,6 +43,8 @@ export const MemberContainer = ({
 
   const [gridSize, setGridSize] = useState(2)
 
+  const [showPart, setShowPart] = useState(false) // 분류해서 보기
+
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   if (!members) return null
@@ -54,49 +57,72 @@ export const MemberContainer = ({
     setShowMenu(false)
   }
 
-  const filteredMembers = members
-    .filter(member => {
-      const searchMatch = member.name
-        .toLowerCase()
-        .includes(searchCharacter?.toLowerCase() || '')
-
-      if (selectedType === '모두 보기' || selectedType === '캐릭터 분류')
-        return searchMatch
-
-      if (selectedType === '본캐') return member.type === '본캐' && searchMatch
-
-      if (selectedType === '부캐')
-        return (
-          member.type === '부캐' &&
-          allMembers?.find(m =>
-            m.memberDetailResponse?.find(
-              m => m.name === member.mainCharacterInfo?.name
-            )
-          ) &&
-          searchMatch
+  const allMember = allMembers?.flatMap(m => m.memberDetailResponse) || []
+  const filteredMembers = showPart
+    ? allMember
+        .filter(
+          (member): member is Member =>
+            member !== undefined &&
+            member !== null &&
+            member.type === '본캐' &&
+            member.name
+              .toLowerCase()
+              .includes(searchCharacter?.toLowerCase() || '')
         )
-
-      if (selectedType === '특이사항') return member.description && searchMatch
-
-      return (
-        member.type === '부캐' &&
-        !allMembers?.find(m =>
-          m.memberDetailResponse?.find(
-            m => m.name === member.mainCharacterInfo?.name
+        .map(mainChar => {
+          // 부캐 찾기
+          const subChars = allMember.filter(
+            (sub): sub is Member =>
+              sub !== undefined &&
+              sub !== null &&
+              sub.type === '부캐' &&
+              sub.mainCharacterInfo?.name === mainChar.name
           )
-        ) &&
-        searchMatch
-      )
-    })
-    .sort((a, b) => {
-      if (sortType === '이름순') {
-        return a.name.localeCompare(b.name)
-      }
-      if (sortType === '레벨순') {
-        return Number(b.level) - Number(a.level)
-      }
-      return 0
-    })
+
+          return {
+            ...mainChar,
+            subCharacters: subChars
+          }
+        })
+    : members
+        .filter(member => {
+          const searchMatch = member.name
+            .toLowerCase()
+            .includes(searchCharacter?.toLowerCase() || '')
+
+          if (selectedType === '모두 보기' || selectedType === '캐릭터 분류')
+            return searchMatch
+
+          if (selectedType === '본캐')
+            return member.type === '본캐' && searchMatch
+
+          if (selectedType === '부캐')
+            return member.type === '부캐' && searchMatch
+
+          if (selectedType === '외부 부캐')
+            return (
+              member.type === '부캐' &&
+              !allMembers?.find(m =>
+                m.memberDetailResponse?.find(
+                  m => m.name === member.mainCharacterInfo?.name
+                )
+              )
+            )
+
+          if (selectedType === '특이사항')
+            return member.description && searchMatch
+
+          return false
+        })
+        .sort((a, b) => {
+          if (sortType === '이름순') {
+            return a.name.localeCompare(b.name)
+          }
+          if (sortType === '레벨순') {
+            return Number(b.level) - Number(a.level)
+          }
+          return 0
+        })
 
   return (
     <div className="w-full max-w-7xl mx-auto bg-white rounded-xl shadow-lg">
@@ -320,126 +346,71 @@ export const MemberContainer = ({
                 <span>{gridSize}개 보기</span>
               </button>
             </div>
+            <div>
+              <button
+                onClick={() => setShowPart(prev => !prev)}
+                className={`flex items-center gap-2 px-4 py-2  border border-gray-200 rounded-lg  transition-colors text-sm font-medium  ${
+                  showPart
+                    ? 'bg-blue-500 text-white hover:bg-blue-600'
+                    : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                }`}>
+                <span>분류해서 보기</span>
+              </button>
+            </div>
           </div>
         </div>
-        <div
-          className={`grid grid-cols-1 ${
-            gridSize === 2
-              ? 'sm:grid-cols-2'
-              : gridSize === 4
-                ? 'sm:grid-cols-4'
-                : 'sm:grid-cols-8'
-          } gap-4 pb-4`}>
-          {filteredMembers.map(member => (
-            <div
-              key={member.name}
-              onClick={
-                member.type === '본캐'
-                  ? () => onSelect?.(member.type, member)
-                  : member.type === '부캐' && member.mainCharacterInfo
-                    ? () => {
-                        const found = allMembers
-                          ?.flatMap(g => g.memberDetailResponse)
-                          .find(
-                            m =>
-                              m?.name === member.mainCharacterInfo!.name &&
-                              m.type === '본캐'
-                          )
-
-                        if (found) {
-                          onSelect?.(found.type, found)
-                        }
-                      }
-                    : () => onSelect?.(member.type, member)
-              }
-              className="bg-gray-50 rounded-lg hover:bg-gray-100 transition-all duration-200 cursor-pointer group overflow-hidden border border-gray-100">
+        <div className="flex flex-col gap-8">
+          {showPart ? (
+            (filteredMembers as Member[]).map(member => (
               <div
-                className={`flex items-center p-3 gap-3 ${gridSize === 8 ? 'flex-col' : ''}`}>
-                <img
-                  src={member.imagePath}
-                  alt={member.name}
-                  className={`object-cover rounded-lg ${
-                    gridSize === 8 ? 'w-16 h-16' : 'w-24 h-24'
-                  }`}
-                />
-                <div
-                  className={`flex-1 min-w-0 ${gridSize === 8 ? 'text-center w-full' : ''}`}>
-                  <h3 className="text-base font-semibold text-gray-900 truncate group-hover:text-blue-600">
-                    {member.name}
-                  </h3>
-                  <p className="text-sm text-gray-500">{member.job}</p>
-                  <div
-                    className={`flex items-center gap-2 mt-1 ${gridSize === 8 ? 'justify-center flex-wrap' : ''}`}>
-                    <div
-                      className={`flex flex-col gap-1 ${gridSize === 8 ? 'items-center' : ''}`}>
-                      <div className="flex items-center gap-2 flex-wrap justify-center">
-                        <span className="text-xs text-gray-500">
-                          Lv.{member.level}
-                        </span>
-                        {masterName && (
-                          <span
-                            className={`px-2 py-0.5 rounded-full text-xs font-medium flex items-center gap-1 ${
-                              member.name === masterName
-                                ? 'bg-rose-100 text-rose-700'
-                                : member.type === '본캐'
-                                  ? 'bg-blue-100 text-blue-700'
-                                  : member.type === '부캐' &&
-                                      allMembers?.find(m =>
-                                        m.memberDetailResponse?.find(
-                                          m =>
-                                            m.name ===
-                                            member.mainCharacterInfo?.name
-                                        )
-                                      )
-                                    ? 'bg-yellow-100 text-yellow-700'
-                                    : 'bg-gray-100 text-gray-700'
-                            }`}>
-                            {member.name === masterName && (
-                              <svg
-                                className="w-3 h-3"
-                                fill="currentColor"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 1l3.22 6.52 7.2.97-5.21 5.07 1.23 7.19L12 17.77l-6.44 3.38 1.23-7.19-5.21-5.07 7.2-.97z" />
-                              </svg>
-                            )}
-                            {member.name === masterName
-                              ? '마스터'
-                              : member.type === '본캐'
-                                ? '본캐'
-                                : member.type === '부캐' &&
-                                    allMembers?.find(m =>
-                                      m.memberDetailResponse?.find(
-                                        m =>
-                                          m.name ===
-                                          member.mainCharacterInfo?.name
-                                      )
-                                    )
-                                  ? '부캐'
-                                  : member.mainCharacterInfo === null
-                                    ? ''
-                                    : '외부 부캐'}
-                          </span>
-                        )}
-                      </div>
-                      {member.type === '부캐' &&
-                        !allMembers?.find(m =>
-                          m.memberDetailResponse?.find(
-                            m => m.name === member.mainCharacterInfo?.name
-                          )
-                        ) && (
-                          <span
-                            className={`text-xs text-gray-500 ${gridSize === 8 ? 'text-center' : ''}`}>
-                            외부 길드에 {member.mainCharacterInfo?.name}님의
-                            부캐입니다.
-                          </span>
-                        )}
-                    </div>
+                key={member.name}
+                className="flex gap-4 items-start border-b border-gray-100 pb-8">
+                <div className="w-[300px] flex-shrink-0">
+                  <MemberCard
+                    member={member}
+                    onSelect={onSelect!}
+                    allMembers={allMembers!}
+                    gridSize={4}
+                    masterName={masterName!}
+                  />
+                </div>
+                <div className="flex-1">
+                  <div className="grid grid-cols-3 gap-4">
+                    {member.subCharacters?.map(subChar => (
+                      <MemberCard
+                        key={subChar.name}
+                        member={subChar as Member}
+                        onSelect={onSelect!}
+                        allMembers={allMembers!}
+                        gridSize={4}
+                        masterName={masterName!}
+                      />
+                    ))}
                   </div>
                 </div>
               </div>
+            ))
+          ) : (
+            <div
+              className={`grid grid-cols-1 ${
+                gridSize === 2
+                  ? 'sm:grid-cols-2'
+                  : gridSize === 4
+                    ? 'sm:grid-cols-4'
+                    : 'sm:grid-cols-8'
+              } gap-4`}>
+              {(filteredMembers as Member[]).map(member => (
+                <MemberCard
+                  key={member.name}
+                  member={member}
+                  onSelect={onSelect!}
+                  allMembers={allMembers!}
+                  gridSize={gridSize}
+                  masterName={masterName!}
+                />
+              ))}
             </div>
-          ))}
+          )}
         </div>
       </div>
     </div>

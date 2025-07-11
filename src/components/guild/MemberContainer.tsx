@@ -57,74 +57,73 @@ export const MemberContainer = ({
     setShowMenu(false)
   }
 
-  const filteredMembers = members
-    .filter(member => {
-      const searchMatch = member.name
-        .toLowerCase()
-        .includes(searchCharacter?.toLowerCase() || '')
-
-      if (showPart) {
-        // 본캐들만 먼저 찾아서 반환
-        if (member.type === '본캐') {
-          // 해당 본캐의 부캐들 찾기
-          const subCharacters = members
-            .filter(
-              m =>
-                m.type === '부캐' && m.mainCharacterInfo?.name === member.name
-            )
-            .map(m => ({
-              name: m.name,
-              job: m.job,
-              level: m.level,
-              type: m.type,
-              imagePath: m.imagePath
-            }))
-
-          // 본캐에 부캐 정보 추가
-          member.subCharacters = subCharacters
-          return searchMatch
-        }
-        return false
-      }
-
-      if (selectedType === '모두 보기' || selectedType === '캐릭터 분류')
-        return searchMatch
-
-      if (selectedType === '본캐') return member.type === '본캐' && searchMatch
-
-      if (selectedType === '부캐')
-        return (
-          member.type === '부캐' &&
-          allMembers?.find(m =>
-            m.memberDetailResponse?.find(
-              m => m.name === member.mainCharacterInfo?.name
-            )
-          ) &&
-          searchMatch
+  const allMember = allMembers?.flatMap(m => m.memberDetailResponse) || []
+  const filteredMembers = showPart
+    ? allMember
+        .filter(
+          (member): member is Member =>
+            member !== undefined &&
+            member !== null &&
+            member.type === '본캐' &&
+            member.name
+              .toLowerCase()
+              .includes(searchCharacter?.toLowerCase() || '')
         )
-
-      if (selectedType === '특이사항') return member.description && searchMatch
-
-      return (
-        member.type === '부캐' &&
-        !allMembers?.find(m =>
-          m.memberDetailResponse?.find(
-            m => m.name === member.mainCharacterInfo?.name
+        .map(mainChar => {
+          // 부캐 찾기
+          const subChars = allMember.filter(
+            (sub): sub is Member =>
+              sub !== undefined &&
+              sub !== null &&
+              sub.type === '부캐' &&
+              sub.mainCharacterInfo?.name === mainChar.name
           )
-        ) &&
-        searchMatch
-      )
-    })
-    .sort((a, b) => {
-      if (sortType === '이름순') {
-        return a.name.localeCompare(b.name)
-      }
-      if (sortType === '레벨순') {
-        return Number(b.level) - Number(a.level)
-      }
-      return 0
-    })
-  console.log(filteredMembers)
+
+          return {
+            ...mainChar,
+            subCharacters: subChars
+          }
+        })
+    : members
+        .filter(member => {
+          const searchMatch = member.name
+            .toLowerCase()
+            .includes(searchCharacter?.toLowerCase() || '')
+
+          if (selectedType === '모두 보기' || selectedType === '캐릭터 분류')
+            return searchMatch
+
+          if (selectedType === '본캐')
+            return member.type === '본캐' && searchMatch
+
+          if (selectedType === '부캐')
+            return member.type === '부캐' && searchMatch
+
+          if (selectedType === '외부 부캐')
+            return (
+              member.type === '부캐' &&
+              !allMembers?.find(m =>
+                m.memberDetailResponse?.find(
+                  m => m.name === member.mainCharacterInfo?.name
+                )
+              )
+            )
+
+          if (selectedType === '특이사항')
+            return member.description && searchMatch
+
+          return false
+        })
+        .sort((a, b) => {
+          if (sortType === '이름순') {
+            return a.name.localeCompare(b.name)
+          }
+          if (sortType === '레벨순') {
+            return Number(b.level) - Number(a.level)
+          }
+          return 0
+        })
+
   return (
     <div className="w-full max-w-7xl mx-auto bg-white rounded-xl shadow-lg">
       {guildName && (
@@ -362,11 +361,10 @@ export const MemberContainer = ({
         </div>
         <div className="flex flex-col gap-8">
           {showPart ? (
-            filteredMembers.map(member => (
+            (filteredMembers as Member[]).map(member => (
               <div
                 key={member.name}
                 className="flex gap-4 items-start border-b border-gray-100 pb-8">
-                {/* 본캐 카드 */}
                 <div className="w-[300px] flex-shrink-0">
                   <MemberCard
                     member={member}
@@ -376,32 +374,23 @@ export const MemberContainer = ({
                     masterName={masterName!}
                   />
                 </div>
-
-                {/* 부캐 목록 */}
                 <div className="flex-1">
                   <div className="grid grid-cols-3 gap-4">
-                    {members
-                      ?.filter(
-                        m =>
-                          m.type === '부캐' &&
-                          m.mainCharacterInfo?.name === member.name
-                      )
-                      .map(subChar => (
-                        <MemberCard
-                          key={subChar.name}
-                          member={subChar}
-                          onSelect={onSelect!}
-                          allMembers={allMembers!}
-                          gridSize={4}
-                          masterName={masterName!}
-                        />
-                      ))}
+                    {member.subCharacters?.map(subChar => (
+                      <MemberCard
+                        key={subChar.name}
+                        member={subChar as Member}
+                        onSelect={onSelect!}
+                        allMembers={allMembers!}
+                        gridSize={4}
+                        masterName={masterName!}
+                      />
+                    ))}
                   </div>
                 </div>
               </div>
             ))
           ) : (
-            // 기존 그리드 뷰
             <div
               className={`grid grid-cols-1 ${
                 gridSize === 2
@@ -410,7 +399,7 @@ export const MemberContainer = ({
                     ? 'sm:grid-cols-4'
                     : 'sm:grid-cols-8'
               } gap-4`}>
-              {filteredMembers.map(member => (
+              {(filteredMembers as Member[]).map(member => (
                 <MemberCard
                   key={member.name}
                   member={member}

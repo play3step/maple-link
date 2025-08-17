@@ -2,10 +2,10 @@ import {
   searchGuildMemberWithoutLogin,
   searchGuildWithoutLogin
 } from '../../apis/guild/guildController'
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { SearchGuildResponse } from '../../types/guild'
 
 export const useSearchGuild = () => {
@@ -14,12 +14,14 @@ export const useSearchGuild = () => {
   const [guildName, setGuildName] = useState('')
   const [searchParams, setSearchParams] = useSearchParams()
   const [isUpdating, setIsUpdating] = useState(false)
-
+  const navigate = useNavigate()
   const params = new URLSearchParams(searchParams)
 
   const serachGuildList = params.get('guildList')?.split(',') || []
   const serachServer = params.get('server') || ''
   const selectedGuild = params.get('guild') || ''
+
+  const isQueryEnabled = serachGuildList.length > 0 && !!serachServer
 
   const queryClient = useQueryClient()
 
@@ -31,7 +33,8 @@ export const useSearchGuild = () => {
     queryKey: ['guildsInfo', serachGuildList, serachServer],
     queryFn: () => searchGuildWithoutLogin(serachGuildList, serachServer),
     retry: false,
-    staleTime: 1000 * 60 * 10
+    staleTime: 1000 * 60 * 10,
+    enabled: isQueryEnabled
   })
 
   const mainCharacterInfoSearchMutation = useMutation({
@@ -129,14 +132,17 @@ export const useSearchGuild = () => {
     guild => guild.guildName === selectedGuild
   )
 
-  const resetSearchParams = () => {
+  const resetSearchParams = useCallback(() => {
     setSearchParams(new URLSearchParams())
-  }
+    navigate('/')
+  }, [setSearchParams])
 
-  if (isError) {
-    alert('길드 정보가 존재하지 않습니다.')
-    resetSearchParams()
-  }
+  useEffect(() => {
+    if (isError && isQueryEnabled) {
+      alert('길드 정보가 존재하지 않습니다.')
+      resetSearchParams()
+    }
+  }, [isError, isQueryEnabled, resetSearchParams])
 
   return {
     searchGuildHandler,

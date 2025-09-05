@@ -1,42 +1,14 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { FiSearch } from 'react-icons/fi'
-import { useAuthStore } from '../../store/authStore'
-import { useUserStore } from '../../store/userStore'
-import { searchCharacterOcid } from '../../apis/character/characterController'
+import { useCharacterSearch } from '../../hooks/search/useCharacterSearch'
 import Button from '../common/Button'
 
 const CharacterSearchSection = () => {
-  const [characterName, setCharacterName] = useState('')
-  const [searchLoading, setSearchLoading] = useState(false)
-  const { storeLogin } = useAuthStore()
-  const { setCharacterOcid } = useUserStore()
-  const nav = useNavigate()
-
-  const searchCharacterHandler = async () => {
-    if (characterName.trim() === '') {
-      alert('캐릭터 이름을 입력해주세요.')
-      return
-    }
-
-    setSearchLoading(true)
-    try {
-      const { ocid } = await searchCharacterOcid(characterName.trim())
-
-      if (!ocid) {
-        alert('캐릭터를 찾을 수 없습니다.')
-        return
-      }
-      await storeLogin('', '', 'search')
-      setCharacterOcid(ocid)
-      nav('/searchCharacter')
-    } catch {
-      alert('캐릭터 검색에 실패했습니다.')
-    } finally {
-      setSearchLoading(false)
-    }
-  }
-
+  const {
+    searchCharacterHandler,
+    characterName,
+    setCharacterName,
+    searchLoading
+  } = useCharacterSearch()
   return (
     <div className="bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden h-fit self-start">
       <div className="flex flex-col justify-between">

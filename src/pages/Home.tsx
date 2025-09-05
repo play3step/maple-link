@@ -1,4 +1,3 @@
-// src/pages/Home.tsx
 import { Link } from 'react-router-dom'
 import { FiClock, FiChevronRight } from 'react-icons/fi'
 
@@ -11,7 +10,7 @@ import { recentNotices } from '../data/notices'
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div className="min-h-dvh bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       <HomeNavigation />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <HeroSection />

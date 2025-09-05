@@ -5,33 +5,34 @@ import { useUserStore } from '../../store/userStore'
 import { guest } from '../../data/guest'
 import Logo from '../../assets/logo.png'
 import GoogleLogo from '../../assets/gogle.svg'
+import { useShallow } from 'zustand/react/shallow'
 
 const HeroSection = () => {
-  const { userLogin } = useAuth()
-  const { storeLogin } = useAuthStore()
-  const { setUserInfo, setCharacterOcid } = useUserStore()
+  const { userLogin, isLoading } = useAuth()
+  const storeLogin = useAuthStore(s => s.storeLogin)
+  const [setUserInfo, setCharacterOcid] = useUserStore(
+    useShallow(s => [s.setUserInfo, s.setCharacterOcid])
+  )
   const nav = useNavigate()
 
   const handleGuestLogin = async () => {
-    await storeLogin('', '', 'guest')
-    setCharacterOcid(guest.ocid)
-    nav('/character')
+    try {
+      await storeLogin('', '', 'guest')
+      setCharacterOcid(guest.ocid)
+      nav('/character')
+    } catch (error) {
+      console.error('게스트 로그인 실패:', error)
+      alert('게스트 로그인에 실패했습니다.')
+    }
   }
 
   const handleMemberLogin = async () => {
-    try {
-      const userInfo = await userLogin()
-      if (userInfo) {
-        setUserInfo(userInfo)
-        setCharacterOcid(userInfo.ocid!)
-        if (userInfo?.nexonApiKey) {
-          nav('/character')
-        } else {
-          nav('/signup')
-        }
-      }
-    } catch {
-      alert('로그인에 실패했습니다.')
+    const userInfo = await userLogin()
+    if (userInfo) {
+      setUserInfo(userInfo)
+      setCharacterOcid(userInfo.ocid!)
+      const redirectPath = userInfo.nexonApiKey ? '/character' : '/signup'
+      nav(redirectPath)
     }
   }
 
@@ -60,18 +61,20 @@ const HeroSection = () => {
       <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mt-6 sm:mt-8 px-4">
         <button
           onClick={handleGuestLogin}
-          className="w-full sm:w-auto px-5 py-3 sm:py-2.5 bg-white text-blue-600 border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors font-medium">
+          disabled={isLoading}
+          className="w-full sm:w-auto px-5 py-3 sm:py-2.5 bg-white text-blue-600 border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed">
           체험하기
         </button>
         <button
           onClick={handleMemberLogin}
-          className="w-full sm:w-auto px-5 py-3 sm:py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 font-medium">
+          disabled={isLoading}
+          className="w-full sm:w-auto px-5 py-3 sm:py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed">
           <img
             src={GoogleLogo}
             alt="Google"
             className="w-5 h-5"
           />
-          Google로 시작하기
+          {isLoading ? '로그인 중...' : 'Google로 시작하기'}
         </button>
       </div>
     </div>

@@ -1,3 +1,4 @@
+// src/pages/Home.tsx
 import { Link } from 'react-router-dom'
 import { FiClock, FiChevronRight } from 'react-icons/fi'
 
@@ -14,8 +15,12 @@ const Home = () => {
       <HomeNavigation />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <HeroSection />
-        <div className="grid grid-cols-1 md:grid-cols-2  gap-6 mb-12">
+
+        <div className="mb-6">
           <GuildSearchSection />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
           <CharacterSearchSection />
           <FeatureShowcase />
         </div>

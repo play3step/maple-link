@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { FiUsers } from 'react-icons/fi'
-import { useSearchGuild } from '../../hooks/search/useSearchGuild'
+import { useGuildSearch } from '../../hooks/search/useGuildSearch'
 import { servers } from '../../data/worlds'
 import Button from '../common/Button'
 
@@ -16,7 +16,7 @@ const GuildSearchSection = () => {
     handleGuildKeyPress,
     guildName,
     setGuildName
-  } = useSearchGuild()
+  } = useGuildSearch()
 
   const onSearchGuild = async () => {
     nav('/searchGuild')

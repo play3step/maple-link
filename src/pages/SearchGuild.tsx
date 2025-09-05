@@ -1,6 +1,6 @@
 import { FiUsers } from 'react-icons/fi'
 import Button from '../components/common/Button'
-import { useSearchGuild } from '../hooks/search/useSearchGuild'
+import { useGuildSearch } from '../hooks/search/useGuildSearch'
 
 import { servers } from '../data/worlds'
 import { MemberContainer } from '../components/guild/MemberContainer'
@@ -25,10 +25,10 @@ export const SearchGuild = () => {
     searchGuildHandler,
     isLoading,
     selectedGuildMember,
-    mainCharacterInfoSearchHandler,
-    isUpdating,
+    searchMemberInfo,
+    isUpdatingMembers,
     resetSearchParams
-  } = useSearchGuild()
+  } = useGuildSearch()
 
   const [searchCharacter, setSearchCharacter] = useState('')
   const { activeModal, openModal } = useModalStore()
@@ -173,16 +173,14 @@ export const SearchGuild = () => {
                       guildName: v.guildName
                     })) as Guild[]) || []
                   }
-                  mainCharacterInfoSearchHandler={
-                    mainCharacterInfoSearchHandler
-                  }
-                  isUpdating={isUpdating}
+                  mainCharacterInfoSearchHandler={searchMemberInfo}
+                  isUpdating={isUpdatingMembers}
                 />
               </div>
             </div>
             <div className="p-6">
               <div className="min-h-[600px]">
-                {(isLoading || isUpdating) && (
+                {(isLoading || isUpdatingMembers) && (
                   <div className="flex justify-center items-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-4"></div>
                     <p className="text-gray-600 font-medium">
@@ -193,7 +191,7 @@ export const SearchGuild = () => {
                 {guildsInfo &&
                   guildsInfo.length > 0 &&
                   !isLoading &&
-                  !isUpdating && (
+                  !isUpdatingMembers && (
                     <MemberContainer
                       members={selectedGuildMember?.guildMember}
                       allMembers={guildsInfo.map(v => ({

@@ -1,6 +1,6 @@
-import { CharacterStats } from '../../types/character'
-import { formatKoreanNumber } from '../../utils/format'
-import { getStatValue } from '../../utils/getStatValue'
+import { CharacterStats } from '../../../types/character'
+import { formatKoreanNumber } from '../../../utils/format'
+import { getStatValue } from '../../../utils/getStatValue'
 import StatTable from './StatTable'
 
 interface Props {

@@ -1,4 +1,3 @@
-// src/pages/SearchGuild.tsx
 import { FiUsers, FiArrowLeft } from 'react-icons/fi'
 import Button from '../components/common/Button'
 import { useGuildSearch } from '../hooks/search/useGuildSearch'

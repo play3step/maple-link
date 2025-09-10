@@ -8,7 +8,7 @@ interface Prop {
 export const Slot = ({ item, onClick }: Prop) => {
   return (
     <div
-      className={`w-12 h-12 p-1 ${
+      className={`w-8 h-8 sm:w-12 sm:h-12 p-0.5 sm:p-1 ${
         item?.item_icon
           ? 'bg-gray-200 border-gray-400 hover:border-blue-500 cursor-pointer'
           : 'bg-gray-100 border-gray-300'

@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { HyperStat } from '../../types/character'
+
 import { HyperStatTable } from './HyperStatTable'
+import { HyperStat } from '../../../types/character'
 
 interface Props {
   hyperStat: HyperStat

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { CharacterAbility } from '../../types/character'
+import { CharacterAbility } from '../../../types/character'
 
 interface Props {
   ability: CharacterAbility

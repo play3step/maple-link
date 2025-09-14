@@ -2,6 +2,8 @@ import { Navigate, useLocation } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
 import { useUserStore } from '../../store/userStore'
 import { useAuth } from '../../hooks/useAuth'
+import { useEffect } from 'react'
+
 interface ProtectedRouteProps {
   children: React.ReactNode
 }
@@ -14,9 +16,16 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 
   const path = location.pathname
 
+  // useEffect로 사이드 이펙트 처리
+  useEffect(() => {
+    // 1. 로그인도 안 됐는데 루트가 아닌 경로 접근 시
+    if (!isLoggedIn && path !== '/') {
+      userLogout()
+    }
+  }, [isLoggedIn, path, userLogout])
+
   // 1. 로그인도 안 됐는데 루트가 아닌 경로 접근 시
   if (!isLoggedIn && path !== '/') {
-    userLogout()
     return <Navigate to="/" />
   }
 

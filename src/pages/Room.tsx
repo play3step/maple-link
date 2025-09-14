@@ -1,21 +1,19 @@
 import { CreateGuildModal } from '../components/modal/guild/CreateGuildModal'
 import { ModalType, useModalStore } from '../store/modalStore'
 import { useGuildsList } from '../hooks/guild/useGuildsList'
-import { MemberContainer } from '../components/guild/MemberContainer'
-import { ListSwitch } from '../components/guild/ListSwitch'
-import { ActionBtnList } from '../components/guild/ActionBtnList'
 import { DetectMemberModal } from '../components/modal/guild/DetectMemberModal'
 import { useGuildMember } from '../hooks/guild/useGuildMember'
-import { Empty } from '../components/common/Empty'
 import { DetailMemberModal } from '../components/modal/guild/DetailMemberModal'
 import { Loading } from '../components/common/Loading'
 import { useState } from 'react'
 import { Member, NexonMembers } from '../types/guild'
-import { IoArrowBack } from 'react-icons/io5'
 import { useNavigate } from 'react-router-dom'
 import { useGuildDetect } from '../hooks/guild/useGuildDetect'
 import { findMainCharacter } from '../apis/character/characterController'
 import { AlertModal } from '../components/modal/common/AlertModal'
+import { RoomHeader } from '../components/room/RoomHeader'
+import { RoomActionBar } from '../components/room/RoomActionBar'
+import { RoomContent } from '../components/room/RoomContent'
 
 const Room = () => {
   const { activeModal, openModal } = useModalStore()
@@ -96,63 +94,31 @@ const Room = () => {
   return (
     <div className="w-full min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 py-5">
-        <div className="flex items-center gap-4 mb-5">
-          <button
-            onClick={() => navigate('/rooms')}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-            title="뒤로 가기">
-            <IoArrowBack className="text-xl text-gray-600" />
-          </button>
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">길드 관리</h1>
-            <p className="text-sm text-gray-600 mt-1">길드원 정보 관리</p>
-          </div>
-        </div>
+        <RoomHeader onBack={() => navigate('/rooms')} />
 
         <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-          <div className="p-6 border-b border-gray-100">
-            <div className="flex justify-between items-center">
-              <ActionBtnList
-                showModal={showModal}
-                guildList={guildList}
-                handleDetect={handleDetect}
-                refreshMember={refreshMember}
-              />
-              {guildList.length > 0 && <ListSwitch />}
-            </div>
-          </div>
+          <RoomActionBar
+            showModal={showModal}
+            guildList={guildList}
+            handleDetect={handleDetect}
+            refreshMember={refreshMember as (guildId: number) => void}
+          />
 
-          <div className="p-6">
-            <div className="min-h-[600px]">
-              {nexonMembersLoading && (
-                <div className="flex justify-center items-center h-full">
-                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-4"></div>
-                  <p className="text-gray-600 font-medium">
-                    캐릭터 정보를 불러오는 중...
-                  </p>
-                </div>
-              )}
-              {guildList.length > 0 ? (
-                <MemberContainer
-                  members={selectMember?.memberDetailResponse as Member[]}
-                  allMembers={nexonMembers as NexonMembers[]}
-                  masterName={selectMember?.guildMasterName}
-                  guildName={selectMember?.guildName}
-                  onSelect={handleMemberSelect}
-                  isMainGuild={selectMember?.guildName === main}
-                  searchCharacter={searchCharacter}
-                  setSearchCharacter={handleSearchCharacter}
-                  onDeleteGuild={
-                    selectMember?.guildId
-                      ? () => deleteGuild(selectMember.guildId as number)
-                      : undefined
-                  }
-                />
-              ) : (
-                <Empty text="길드를 선택해주세요" />
-              )}
-            </div>
-          </div>
+          <RoomContent
+            nexonMembersLoading={nexonMembersLoading as boolean}
+            guildList={guildList}
+            selectMember={selectMember as NexonMembers}
+            nexonMembers={nexonMembers as NexonMembers[]}
+            main={main}
+            searchCharacter={searchCharacter}
+            onMemberSelect={handleMemberSelect}
+            onSearchCharacter={handleSearchCharacter}
+            onDeleteGuild={
+              selectMember?.guildId
+                ? () => deleteGuild(selectMember.guildId as number)
+                : undefined
+            }
+          />
         </div>
       </div>
 

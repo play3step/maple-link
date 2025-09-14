@@ -1,9 +1,6 @@
 import { FiAlertCircle } from 'react-icons/fi'
-import KakaoOpenChatButton from '../common/KakaoOpenChatButton'
 
 const MaintenancePage = () => {
-  const KAKAO_CHAT_LINK = 'https://open.kakao.com/o/s4tfG2Ah'
-
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-4">
       <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center">
@@ -34,12 +31,7 @@ const MaintenancePage = () => {
         </div>
       </div>
 
-      <div className="mt-8 text-sm text-gray-500">
-        <KakaoOpenChatButton
-          chatLink={KAKAO_CHAT_LINK}
-          className="!py-1.5 !px-3 text-sm"
-        />
-      </div>
+      <div className="mt-8 text-sm text-gray-500"></div>
     </div>
   )
 }

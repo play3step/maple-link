@@ -4,7 +4,7 @@ import Button from './Button'
 import Logo from '../../assets/logo.png'
 import { useState } from 'react'
 import { useAuthStore } from '../../store/authStore'
-import KakaoOpenChatButton from './KakaoOpenChatButton'
+
 import { useUserStore } from '../../store/userStore'
 
 function Header() {
@@ -14,8 +14,6 @@ function Header() {
 
   const { userType } = useAuthStore()
   const { setCharacterOcid, userInfo } = useUserStore()
-
-  const KAKAO_CHAT_LINK = 'https://open.kakao.com/o/s4tfG2Ah'
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen)
@@ -119,7 +117,6 @@ function Header() {
 
       {/* Desktop buttons */}
       <div className="hidden md:flex items-center gap-3">
-        <KakaoOpenChatButton chatLink={KAKAO_CHAT_LINK} />
         <Button
           size="small"
           scheme="outlined"
@@ -199,10 +196,7 @@ function Header() {
           )}
 
           <hr className="my-2 border-blue-100" />
-          <KakaoOpenChatButton
-            chatLink={KAKAO_CHAT_LINK}
-            className="w-full justify-center"
-          />
+
           <Button
             size="small"
             scheme="outlined"

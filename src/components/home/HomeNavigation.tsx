@@ -2,9 +2,6 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FiMenu, FiX } from 'react-icons/fi'
 import Logo from '../../assets/logo.png'
-import KakaoOpenChatButton from '../common/KakaoOpenChatButton'
-
-const KAKAO_CHAT_LINK = 'https://open.kakao.com/o/s4tfG2Ah'
 
 const HomeNavigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -25,10 +22,6 @@ const HomeNavigation = () => {
           </div>
 
           <div className="hidden sm:flex items-center gap-4">
-            <KakaoOpenChatButton
-              chatLink={KAKAO_CHAT_LINK}
-              className="!py-1.5 !px-3 text-sm"
-            />
             <Link
               to="/apiGuide"
               className="text-gray-600 hover:text-blue-600 font-medium text-sm whitespace-nowrap">
@@ -51,10 +44,6 @@ const HomeNavigation = () => {
         {isMenuOpen && (
           <div className="sm:hidden border-t border-gray-200 py-4 bg-white/95 backdrop-blur-sm">
             <div className="flex flex-col space-y-3">
-              <KakaoOpenChatButton
-                chatLink={KAKAO_CHAT_LINK}
-                className="!py-2 !px-4 text-sm mx-auto"
-              />
               <Link
                 to="/apiGuide"
                 className="text-gray-600 hover:text-blue-600 font-medium text-sm text-center py-2"

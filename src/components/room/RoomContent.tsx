@@ -26,12 +26,12 @@ export const RoomContent = ({
   onDeleteGuild
 }: Props) => {
   return (
-    <div className="p-6">
-      <div className="min-h-[600px]">
+    <div className="p-3 sm:p-4 lg:p-6">
+      <div className="min-h-[400px] sm:min-h-[500px] lg:min-h-[600px]">
         {nexonMembersLoading && (
-          <div className="flex justify-center items-center h-full">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-4"></div>
-            <p className="text-gray-600 font-medium">
+          <div className="flex flex-col justify-center items-center h-full py-12">
+            <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-t-2 border-b-2 border-blue-500 mb-3 sm:mb-4"></div>
+            <p className="text-gray-600 font-medium text-sm sm:text-base text-center px-4">
               캐릭터 정보를 불러오는 중...
             </p>
           </div>
@@ -49,7 +49,9 @@ export const RoomContent = ({
             onDeleteGuild={onDeleteGuild}
           />
         ) : (
-          <Empty text="길드를 선택해주세요" />
+          <div className="flex justify-center items-center h-full">
+            <Empty text="길드를 선택해주세요" />
+          </div>
         )}
       </div>
     </div>

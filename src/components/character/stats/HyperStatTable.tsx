@@ -1,4 +1,4 @@
-import { HyperStatInfo } from '../../types/character'
+import { HyperStatInfo } from '../../../types/character'
 
 interface Props {
   hyperStat: HyperStatInfo

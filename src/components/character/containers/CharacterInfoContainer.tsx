@@ -1,5 +1,5 @@
-import { CharacterBasic } from '../../types/character'
-import { formatDate } from '../../utils/format'
+import { CharacterBasic } from '../../../types/character'
+import { formatDate } from '../../../utils/format'
 
 interface Props {
   basic: CharacterBasic

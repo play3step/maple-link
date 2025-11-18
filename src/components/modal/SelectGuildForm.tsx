@@ -59,10 +59,6 @@ export const SelectGuildForm = ({
             <option value="오로라">오로라</option>
             <option value="아케인">아케인</option>
             <option value="노바">노바</option>
-            <option value="챌린저스">챌린저스</option>
-            <option value="챌린저스2">챌린저스2</option>
-            <option value="챌린저스3">챌린저스3</option>
-            <option value="챌린저스4">챌린저스4</option>
           </select>
         </div>
       </div>

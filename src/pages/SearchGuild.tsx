@@ -9,6 +9,7 @@ import { Guild, Member } from '../types/guild'
 import { useState } from 'react'
 import { useModalStore } from '../store/modalStore'
 import { DetailMemberModal } from '../components/modal/guild/DetailMemberModal'
+import { Loading } from '../components/common/Loading'
 
 export const SearchGuild = () => {
   const {
@@ -49,6 +50,17 @@ export const SearchGuild = () => {
     if (type !== '미지정') {
       openModal('detailMember')
     }
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Loading
+          size="large"
+          text="길드 정보를 불러오는 중입니다..."
+        />
+      </div>
+    )
   }
 
   return (

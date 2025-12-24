@@ -55,9 +55,42 @@ const HeroSection = () => {
         메이플스토리를
         <br className="sm:hidden" /> 더 스마트하게
       </h1>
-      <p className="text-base sm:text-lg text-gray-500 px-4">
+      <p className="text-base sm:text-lg text-gray-500 px-4 mb-4">
         캐릭터부터 길드까지, 한눈에 관리하세요
       </p>
+      <div className="w-full p-8 rounded-3xl bg-slate-50 border border-slate-200 shadow-sm text-center">
+        {/* 아이콘이나 작은 라벨 (선택 사항) */}
+        <span className="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wider text-slate-500 uppercase bg-slate-200 rounded-full">
+          Notice
+        </span>
+
+        <h3 className="mb-4 text-xl font-bold text-slate-800">
+          메이플 링크 서비스 이용 안내
+        </h3>
+
+        <div className="space-y-3 text-slate-600 leading-relaxed">
+          <p>
+            안녕하세요, 메이플 링크입니다. 먼저 저희 서비스를 아껴주신 많은
+            유저분들께 진심으로 감사드립니다.
+          </p>
+
+          <p>
+            다름이 아니라, 개인적인 사정으로 인해 현재 제공 중인{' '}
+            <span className="font-semibold text-slate-900">
+              회원 기능 및 길드원 관리 서비스
+            </span>
+            를 더 이상 유지하기 어렵게 되었습니다. <br />
+            서비스를 믿고 이용해 주신 분들께 불편을 끼쳐 드려 대단히 죄송합니다.
+          </p>
+
+          <p className="pt-2 border-t border-slate-200 mt-4">
+            <span className="font-semibold text-slate-900 text-blue-600">
+              길드 및 캐릭터 검색 기능
+            </span>
+            은 정상적으로 이용 가능합니다. 더 나은 모습으로 돌아오아 오겠습니다.
+          </p>
+        </div>
+      </div>
       <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mt-6 sm:mt-8 px-4">
         <button
           onClick={handleGuestLogin}
